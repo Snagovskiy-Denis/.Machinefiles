@@ -5,11 +5,9 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
-PS1='[\u@\h \W]\$ '
-
 
 # env variables
+#PS1='[\u@\h \W]\$ '
 export PATH=$PATH:/home/self/Code/executable
 
 # powerline. pkgs: `sudo pacman -S powerline powerline-fonts`
@@ -21,5 +19,6 @@ if [ -f $(which powerline-daemon) ]; then
 fi
 
 # aliases 
+alias ls='ls --color=auto'
 alias py='python3'
 alias cb='xsel -b'

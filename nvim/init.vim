@@ -123,7 +123,7 @@ let g:airline_powerline_fonts = 1  " Включить поддержку шри�
 " let g:airline#extensions#keymap#enabled = 0  " Не показывать текущую раскладку
 let g:airline_section_z = "\ue0a1:%l/%L : %c"  " Пользовательская графа положения курсора (правый нижний угол)
 let g:Powerline_symbols='unicode'  " Поддержка unicode
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled = 1  " Показывать buffers
 " let g:airline#extensions#xkblayout#enabled=0  " Руссификация
 
 
