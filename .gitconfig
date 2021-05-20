@@ -1,0 +1,5 @@
+[user]
+	email = denis.snagovskiy@list.ru
+	name = Denis
+[core]
+	editor = nvim

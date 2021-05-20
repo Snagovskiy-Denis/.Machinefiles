@@ -3,6 +3,8 @@
 /*/
 
 # except:
+!/.bashrc
+!/.gitconfig
 !/my-packages.txt
 !/nvim/init.vim
 !/vimium-options.json
