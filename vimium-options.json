@@ -1,0 +1,26 @@
+{
+	"name": "Vimium C",
+	"@time": "20.05.2021, 15:02:14",
+	"time": 1621512134746,
+	"environment": {
+		"extension": "1.89.0",
+		"platform": "linux",
+		"chrome": 90
+	},
+	"exclusionRules": [
+		{
+			"pattern": ":https://mail.google.com/",
+			"passKeys": ""
+		},
+		{
+			"pattern": ":https://calendar.google.com/",
+			"passKeys": "? G J K N T W "
+		}
+	],
+	"ignoreKeyboardLayout": 2,
+	"keyMappings": [
+		"unmap <f2>",
+		"unmap <f1>",
+		""
+	]
+}
