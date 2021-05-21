@@ -67,40 +67,44 @@ set imsearch=0 " На старте поиск на английском, а не
 " let g:python3_host_prog = ''
 
 "=============================================================================
-"               ______ _              ______            _       
-"               | ___ \ |             | ___ \          (_)      
-"               | |_/ / |_   _  __ _  | |_/ / ___  __ _ _ _ __  
-"               |  __/| | | | |/ _` | | ___ \/ _ \/ _` | | '_ \ 
-"               | |   | | |_| | (_| | | |_/ /  __/ (_| | | | | |
-"               \_|   |_|\__,_|\__, | \____/ \___|\__, |_|_| |_|
-"                               __/ |              __/ |        
-"                              |___/              |___/         
+"       _     _     _            __         _             _           
+"      | |   (_)   | |          / _|       | |           (_)          
+"      | |    _ ___| |_    ___ | |_   _ __ | |_   _  __ _ _ _ __  ___ 
+"      | |   | / __| __|  / _ \|  _| | '_ \| | | | |/ _` | | '_ \/ __|
+"      | |___| \__ \ |_  | (_) | |   | |_) | | |_| | (_| | | | | \__ \
+"      \_____/_|___/\__|  \___/|_|   | .__/|_|\__,_|\__, |_|_| |_|___/
+"                                    | |             __/ |            
+"                                    |_|            |___/             
 "=============================================================================
-call plug#begin('~/.local/share/nvim/plugged')
+function! PlugInit() abort
+    packadd minpac
 
-"Plug 'lyokha/vim-xkbswitch'
-Plug 'jiangmiao/auto-pairs'
-Plug 'preservim/nerdcommenter'
-Plug 'preservim/nerdtree'
-Plug 'tpope/vim-fugitive'
-Plug 'jmcantrell/vim-virtualenv'
-Plug 'vim-airline/vim-airline-themes'
+    if !exists('g:loaded_minpac')
+        echo "Minpac package does not exist. Plugin-less environment is used"
+    else
+        call minpac#init()
+        call minpac#add('k-takata/minpac', {'type': 'opt'})
 
-Plug 'vim-airline/vim-airline'  " Красивая панель состояния
-Plug 'ryanoasis/vim-devicons'  " Иконки для панели состояний, nordtree etc.
+        call minpac#add('jiangmiao/auto-pairs')
+        call minpac#add('preservim/nerdtree')
+        call minpac#add('preservim/nerdcommenter')
+        call minpac#add('vim-airline/vim-airline-themes')
 
-Plug 'fnune/base16-vim'  " Цветовые схемы
+        call minpac#add('vim-airline/vim-airline')
+        call minpac#add('ryanoasis/vim-devicons')
 
-call plug#end()
+        call minpac#add('fnune/base16-vim')
+    endif
+endfunction
 "=============================================================================
-"                   ______ _               _____          _ 
-"                   | ___ \ |             |  ___|        | |
-"                   | |_/ / |_   _  __ _  | |__ _ __   __| |
-"                   |  __/| | | | |/ _` | |  __| '_ \ / _` |
-"                   | |   | | |_| | (_| | | |__| | | | (_| |
-"                   \_|   |_|\__,_|\__, | \____/_| |_|\__,_|
-"                                   __/ |                   
-"                                  |___/                    
+"     ______ _             _                  _   _   _                 
+"     | ___ \ |           (_)                | | | | (_)                
+"     | |_/ / |_   _  __ _ _ _ __    ___  ___| |_| |_ _ _ __   __ _ ___ 
+"     |  __/| | | | |/ _` | | '_ \  / __|/ _ \ __| __| | '_ \ / _` / __|
+"     | |   | | |_| | (_| | | | | | \__ \  __/ |_| |_| | | | | (_| \__ \
+"     \_|   |_|\__,_|\__, |_|_| |_| |___/\___|\__|\__|_|_| |_|\__, |___/
+"                     __/ |                                    __/ |    
+"                    |___/                                    |___/     
 "=============================================================================
 " General apperance
 "
@@ -198,6 +202,24 @@ cmap <silent> <C-F> <C-^>
 imap <silent> <C-F> <C-^>X<Esc>:call MyKeyMapHighlight()<CR>a<C-H>
 nmap <silent> <C-F> a<C-^><Esc>:call MyKeyMapHighlight()<CR>
 vmap <silent> <C-F> <Esc>a<C-^><Esc>:call MyKeyMapHighlight()<CR>gv>
+
+"=============================================================================
+"            _____                                           _     
+"           /  __ \                                         | |    
+"           | /  \/ ___  _ __ ___  _ __ ___   __ _ _ __   __| |___ 
+"           | |    / _ \| '_ ` _ \| '_ ` _ \ / _` | '_ \ / _` / __|
+"           | \__/\ (_) | | | | | | | | | | | (_| | | | | (_| \__ \
+"            \____/\___/|_| |_| |_|_| |_| |_|\__,_|_| |_|\__,_|___/
+"=============================================================================
+" Управление плагинами
+"
+"   Установить или обновить
+"   Удалить неиспользуемые
+"   Просмотреть статус
+"
+command! PlugUpdate source $MYVIMRC | call PlugInit() | call minpac#update()
+command! PlugClean  source $MYVIMRC | call PlugInit() | call minpac#clean()
+command! PlugStatus packadd minpac | call minpac#status()
 
 "=============================================================================
 "           ______                                 _             
