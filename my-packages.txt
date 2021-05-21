@@ -93,6 +93,7 @@ mutter 40.1-1
 nautilus 40.1-1
 neofetch 7.1.0-2
 neovim 0.4.4-1
+neovim-minpac-git v3.0.0.r50.6cf9850-1
 nerd-fonts-complete 2.1.0-6
 networkmanager 1.30.4-3
 ntfs-3g 2017.3.23-5
@@ -114,6 +115,7 @@ steam 1.0.0.70-1
 sudo 1.9.7-1
 sushi 3.38.0-1
 sysprof 3.40.1-2
+task 2.5.3-1
 telegram-desktop 2.7.4-2
 texinfo 6.7-3
 tor 0.4.5.8-1
