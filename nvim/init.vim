@@ -84,6 +84,7 @@ Plug 'preservim/nerdcommenter'
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-fugitive'
 Plug 'jmcantrell/vim-virtualenv'
+Plug 'vim-airline/vim-airline-themes'
 
 Plug 'vim-airline/vim-airline'  " Красивая панель состояния
 Plug 'ryanoasis/vim-devicons'  " Иконки для панели состояний, nordtree etc.
@@ -116,21 +117,26 @@ vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
 "=============================================================================
 " NERDTree / 'preservim/nerdtree'
 "
-let NERDTreeQuitOnOpen=1
-let g:NERDTreeMinimalUI=1
+let NERDTreeQuitOnOpen = 1
+let g:NERDTreeMinimalUI = 1
 nmap <C-N> :NERDTreeToggle<CR>
 
 "=============================================================================
-" vim-airline / 'vim-airline/vim-airline'
+" vim-airline / 'vim-airline/vim-airline' & vim-ariline-themes
 "
 " Better status line
 "
-let g:airline_powerline_fonts = 1  " Включить поддержку шрифтов powerline
-let g:airline#extensions#keymap#enabled = 1  " Текущая раскладка: 0=не показывать; 1=показывать (по-умолчанию)
-let g:airline_section_z = "\ue0a1:%l/%L : %c"  " Пользовательская графа положения курсора (правый нижний угол)
-let g:Powerline_symbols='unicode'  " Поддержка unicode
-let g:airline#extensions#tabline#enabled = 1  " Показывать buffers
-" let g:airline#extensions#xkblayout#enabled=0  " Руссификация через xkb-plug
+let g:airline_theme = 'base16_spacemacs'
+
+let g:airline_powerline_fonts = 1
+let g:airline_section_z = "\ue0a1:%l/%L : %c"
+let g:airline#parts#ffenc#skip_expected_string = 'utf-8[unix]'
+
+let g:airline#extensions#keymap#label = ""
+let g:airline#extensions#keymap#short_codes = {'russian-jcukenwin': 'RU'}
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_min_count = 2
+let g:airline#extensions#term#enabled = 0
 
 "=============================================================================
 "                 ______                _   _                 
