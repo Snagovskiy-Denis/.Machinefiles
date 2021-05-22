@@ -31,8 +31,7 @@
 "
 "
 "
-setlocal foldmethod=indent
-" za для раскрытия-закрытия
+autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 "=============================================================================
 "                        _   _             _ _ _       
 "                       | | | |           (_) | |      
