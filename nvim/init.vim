@@ -8,7 +8,35 @@
 "             \____/ \___|_|_|       (_)_/ |_|_| |_| |_|_|  \___|
 "          
 "=============================================================================
-" Общие базовые настройки (без категории)
+"
+"                             ┌╌╌╌╌╌╌╌╌╌╌╌╌┐                    █
+"                             ╎            ╎                    █
+"                             ╎ ОГЛАВЛЕНИЕ ╎                    █
+"                             ╎            ╎                  ◥███◤
+"                             └╌╌╌╌╌╌╌╌╌╌╌╌┘                   ◥█◤
+"                                                               ▔
+"       {{en}}                    {{ru}}                    {{marks}}
+"
+"      Vanilla              Базовые настройки                  `v
+"
+"   Plugin Settings         Настройки плагинов                 `p
+"
+"      Functions                 Функции                       `f
+"
+"      Commands                  Команды                       `c
+"
+"     Key mapping            Назначение клавиш                 `m
+"
+"   List of plugins           Список плагинов                  `l
+"
+"=============================================================================
+"                        _   _             _ _ _       
+"                       | | | |           (_) | |      
+"                       | | | | __ _ _ __  _| | | __ _ 
+"                       | | | |/ _` | '_ \| | | |/ _` |
+"                       \ \_/ / (_| | | | | | | | (_| |
+"                        \___/ \__,_|_| |_|_|_|_|\__,_|
+"=============================================================================
 syntax enable
 set number relativenumber
 set splitbelow splitright
@@ -16,6 +44,18 @@ set clipboard=unnamedplus  " Интеграция с системным буфе
 set mouse=nv  " Поддержка мыши
 
 set scrolloff=7 " Между курсором и концом экрана 7 строк, иначе двигай экран
+
+
+" Поддержка русского языка
+set keymap=russian-jcukenwin  " включить встроенную поддержку; см. remapping
+set iminsert=0 " На старте ввод на английском, а не русском
+set imsearch=0 " На старте поиск на английском, а не русском
+
+
+" Внешний вид
+set termguicolors
+colorscheme base16-spacemacs
+
 
 " Настройка табов согласно python-рекомендации
 set tabstop=4
@@ -26,43 +66,6 @@ set expandtab
 set autoindent  " Автоотступ
 
 
-" Поддержка русского языка
-set keymap=russian-jcukenwin  " включить встроенную поддержку; см. remapping
-set iminsert=0 " На старте ввод на английском, а не русском
-set imsearch=0 " На старте поиск на английском, а не русском
-
-
-"=============================================================================
-"       _     _     _            __         _             _           
-"      | |   (_)   | |          / _|       | |           (_)          
-"      | |    _ ___| |_    ___ | |_   _ __ | |_   _  __ _ _ _ __  ___ 
-"      | |   | / __| __|  / _ \|  _| | '_ \| | | | |/ _` | | '_ \/ __|
-"      | |___| \__ \ |_  | (_) | |   | |_) | | |_| | (_| | | | | \__ \
-"      \_____/_|___/\__|  \___/|_|   | .__/|_|\__,_|\__, |_|_| |_|___/
-"                                    | |             __/ |            
-"                                    |_|            |___/             
-"=============================================================================
-function! PlugInit() abort
-    packadd minpac
-
-    if !exists('g:loaded_minpac')
-        echo "Minpac package is not installed. \
-              Plugin-less environment is used"
-    else
-        call minpac#init()
-        call minpac#add('k-takata/minpac', {'type': 'opt'})
-
-        call minpac#add('jiangmiao/auto-pairs')
-        call minpac#add('preservim/nerdtree')
-        call minpac#add('preservim/nerdcommenter')
-        call minpac#add('vim-airline/vim-airline-themes')
-
-        call minpac#add('vim-airline/vim-airline')
-        call minpac#add('ryanoasis/vim-devicons')
-
-        call minpac#add('fnune/base16-vim')
-    endif
-endfunction
 "=============================================================================
 "     ______ _             _                  _   _   _                 
 "     | ___ \ |           (_)                | | | | (_)                
@@ -73,24 +76,21 @@ endfunction
 "                     __/ |                                    __/ |    
 "                    |___/                                    |___/     
 "=============================================================================
-" General apperance
-set termguicolors
-colorscheme base16-spacemacs
-
-"----------------------------------------------------------------------------"
-" NERDCommenter / 'preservim/nerdcommenter'
+" nerdcommenter
+" Добавляет функцию комментирования строк
 nmap <C-_> <Plug>NERDCommenterToggle
 vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
 
 "----------------------------------------------------------------------------"
-" NERDTree / 'preservim/nerdtree'
+" nerdtree
+" Изменяет навигацию по файловой системе
 let NERDTreeQuitOnOpen = 1
 let g:NERDTreeMinimalUI = 1
 nmap <C-N> :NERDTreeToggle<CR>
 
 "----------------------------------------------------------------------------"
-" vim-airline / 'vim-airline/vim-airline' & vim-ariline-themes
-" Better status line
+" vim-airline & vim-airline-themes
+" Изменяет statusline
 let g:airline_theme = 'base16_spacemacs'
 
 let g:airline_powerline_fonts = 1
@@ -132,6 +132,17 @@ function! WinMove(key)
     endif
 endfunction
 
+
+" Показать список установленных плагинов
+"
+"    Используется командами:
+"    PlugOpenDir & PlugOpenUrl
+"
+function! PlugList(...)
+    call PlugInit()
+    return join(sort(keys(minpac#getpluglist())), "\n")
+endfunction
+
 "=============================================================================
 "            _____                                           _     
 "           /  __ \                                         | |    
@@ -142,23 +153,43 @@ endfunction
 "=============================================================================
 " Управление плагинами:
 "
-"   Установить или обновить
-"   Удалить неиспользуемые
-"   Просмотреть статус
+"   1. Установить или обновить
+"   2. Удалить неиспользуемые
+"   3. Просмотреть статус
 "
 command! PlugUpdate source $MYVIMRC | call PlugInit() | call minpac#update()
 command! PlugClean  source $MYVIMRC | call PlugInit() | call minpac#clean()
 command! PlugStatus packadd minpac | call minpac#status()
 
+
+" Управление плагинами:
+"
+"   1. Открыть директорию плагина в split-терминале
+"   2. Открыть репозиторий плагина в браузере
+"
+"       Аргумент команд: 
+"         Имя плагина без имени пользователя
+"         e.g. PlugOpenUrl minpac
+"
+command! -nargs=1 -complete=custom,PlugList
+      \ PlugOpenDir call PlugInit() | :new | call termopen(&shell,
+      \    {'cwd': minpac#getpluginfo(<q-args>).dir,
+      \     'term_finish': 'close'})
+
+command! -nargs=1 -complete=custom,PlugList
+      \ PlugOpenUrl call PlugInit() | call openbrowser#open(
+      \    minpac#getpluginfo(<q-args>).url)
+
+
 "=============================================================================
-"           ______                                 _             
-"           | ___ \                               (_)            
-"           | |_/ /___ _ __ ___   __ _ _ __  _ __  _ _ __   __ _ 
-"           |    // _ \ '_ ` _ \ / _` | '_ \| '_ \| | '_ \ / _` |
-"           | |\ \  __/ | | | | | (_| | |_) | |_) | | | | | (_| |
-"           \_| \_\___|_| |_| |_|\__,_| .__/| .__/|_|_| |_|\__, |
-"                                     | |   | |             __/ |
-"                                     |_|   |_|            |___/ 
+"       _   __                                         _             
+"       | | / /                                        (_)            
+"       | |/ /  ___ _   _   _ __ ___   __ _ _ __  _ __  _ _ __   __ _ 
+"       |    \ / _ \ | | | | '_ ` _ \ / _` | '_ \| '_ \| | '_ \ / _` |
+"       | |\  \  __/ |_| | | | | | | | (_| | |_) | |_) | | | | | (_| |
+"       \_| \_/\___|\__, | |_| |_| |_|\__,_| .__/| .__/|_|_| |_|\__, |
+"                    __/ |                 | |   | |             __/ |
+"                   |___/                  |_|   |_|            |___/ 
 "=============================================================================
 " Установить сочетание клавиш для выхода из терминала
 tnoremap <C-\> <C-\><C-n>
@@ -182,3 +213,37 @@ cmap <silent> <C-F> <C-^>
 imap <silent> <C-F> <C-^>
 nmap <silent> <C-F> a<C-^><Esc>
 vmap <silent> <C-F> <Esc>a<C-^><Esc>gv
+
+
+"=============================================================================
+"       _     _     _            __         _             _           
+"      | |   (_)   | |          / _|       | |           (_)          
+"      | |    _ ___| |_    ___ | |_   _ __ | |_   _  __ _ _ _ __  ___ 
+"      | |   | / __| __|  / _ \|  _| | '_ \| | | | |/ _` | | '_ \/ __|
+"      | |___| \__ \ |_  | (_) | |   | |_) | | |_| | (_| | | | | \__ \
+"      \_____/_|___/\__|  \___/|_|   | .__/|_|\__,_|\__, |_|_| |_|___/
+"                                    | |             __/ |            
+"                                    |_|            |___/             
+"=============================================================================
+function! PlugInit() abort
+    packadd minpac
+
+    if !exists('g:loaded_minpac')
+        echo "Minpac package is not installed. \
+              Plugin-less environment is used"
+    else
+        call minpac#init()
+        call minpac#add('k-takata/minpac', {'type': 'opt'})
+
+        call minpac#add('jiangmiao/auto-pairs')
+        call minpac#add('preservim/nerdcommenter')
+        call minpac#add('preservim/nerdtree')
+
+        call minpac#add('fnune/base16-vim')
+        call minpac#add('vim-airline/vim-airline')
+        call minpac#add('vim-airline/vim-airline-themes')
+        call minpac#add('ryanoasis/vim-devicons')
+
+        call minpac#add('tyru/open-browser.vim')
+    endif
+endfunction
