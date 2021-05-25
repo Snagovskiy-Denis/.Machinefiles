@@ -45,8 +45,8 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     syntax enable
     set number relativenumber
     set splitbelow splitright
-    set clipboard=unnamedplus  " Интеграция с системным буфером обмена
-    set mouse=nv  " Поддержка мыши
+    set clipboard=unnamedplus
+    set mouse=nv
 
     " Между курсором и концом экрана 7 строк, иначе двигай экран
     set scrolloff=7 
@@ -85,18 +85,10 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 "                  |___/                                        |___/     
 "=============================================================================
 
-    " nerdcommenter
-    " Добавляет функцию комментирования строк
-    nmap <C-_> <Plug>NERDCommenterToggle
-    vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
-
-"
-
     " nerdtree
     " Изменяет навигацию по файловой системе
     let NERDTreeQuitOnOpen = 1
     let g:NERDTreeMinimalUI = 1
-    nmap <C-N> :NERDTreeToggle<CR>
 
 "
 
@@ -105,7 +97,7 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     let g:airline_theme = 'base16_spacemacs'
 
     let g:airline_powerline_fonts = 1
-    let g:airline_section_z = "\ue0a1:%l/%L : %c"
+    let g:airline_section_z = "\ue0a1:%l/%L:%c"
     let g:airline#parts#ffenc#skip_expected_string = 'utf-8[unix]'
 
     let g:airline#extensions#keymap#label = ""
@@ -113,7 +105,7 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     let g:airline#extensions#tabline#enabled = 1
     let g:airline#extensions#tabline#buffer_min_count = 2
     let g:airline#extensions#term#enabled = 0
-
+    
 "=============================================================================
 "                 ______                _   _                 
 "                 |  ___|              | | (_)                
@@ -126,10 +118,10 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 
     " Управление окнами
     "
-    "     <C-[hjkl]> вместо <C-w> <C-[hjkl]>
-    "     При отсутствии окна в которое можно переместиться:
-    "         - <С-[hl]> = <C-w><C-v> <C-w><C-[hl]>
-    "         - <C-[jk]> = <C-w><C-s> <C-w><C-[jk]>
+        " <C-[hjkl]> вместо <C-w> <C-[hjkl]>
+        " При отсутствии окна в которое можно переместиться:
+        "     - <С-[hl]> = <C-w><C-v> <C-w><C-[hl]>
+        "     - <C-[jk]> = <C-w><C-s> <C-w><C-[jk]>
     "
     function! WinMove(key)
         let t:curwin = winnr()
@@ -148,8 +140,8 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 
     " Показать список установленных плагинов
     "
-    "    Используется командами:
-    "    PlugOpenDir & PlugOpenUrl
+        " Используется командами:
+        " PlugOpenDir & PlugOpenUrl
     "
     function! PlugList(...)
         call PlugInit()
@@ -167,21 +159,21 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 
     " Управление плагинами:
     "
-    "   1. Установить или обновить
-    "   2. Удалить неиспользуемые
-    "   3. Просмотреть статус
+    " 1. Установить или обновить
+    " 2. Удалить неиспользуемые
+    " 3. Просмотреть статус
     "
     command! PlugUpdate source $MYVIMRC |call PlugInit()| call minpac#update()
     command! PlugClean  source $MYVIMRC |call PlugInit()| call minpac#clean()
     command! PlugStatus packadd minpac | call minpac#status()
 
-
-    "   4. Открыть директорию плагина в split-терминале
-    "   5. Открыть репозиторий плагина в браузере
     "
-    "       Аргумент команд: 
-    "         Имя плагина без имени пользователя
-    "         e.g. PlugOpenUrl minpac
+    " 4. Открыть директорию плагина в split-терминале
+    " 5. Открыть репозиторий плагина в браузере
+    "
+        " Аргумент команд: 
+        "   Имя плагина без имени пользователя
+        "   e.g. PlugOpenDir minpac
     "
     command! -nargs=1 -complete=custom,PlugList
           \ PlugOpenDir call PlugInit() | :new | call termopen(&shell,
@@ -192,9 +184,8 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
           \ PlugOpenUrl call PlugInit() | call openbrowser#open(
           \    minpac#getpluginfo(<q-args>).url)
 
-
 "=============================================================================
-"       _   __                                         _             
+"        _   __                                         _             
 "       | | / /                                        (_)            
 "       | |/ /  ___ _   _   _ __ ___   __ _ _ __  _ __  _ _ __   __ _ 
 "       |    \ / _ \ | | | | '_ ` _ \ / _` | '_ \| '_ \| | '_ \ / _` |
@@ -238,6 +229,18 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     " Добавить плагин
     nmap <Leader>ap ocall minpac#add('')<Esc>2F'p
     nmap <Leader>aop ocall minpac#add('', {'type': 'opt'})<Esc>6F'p
+
+"
+
+    " nerdcommenter
+    " Добавляет функцию комментирования строк
+    nmap <C-_> <Plug>NERDCommenterToggle
+    vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
+
+"
+
+    " nerdtree
+    nmap <C-N> :NERDTreeToggle<CR>
 
 "=============================================================================
 "       _     _     _            __         _             _           
