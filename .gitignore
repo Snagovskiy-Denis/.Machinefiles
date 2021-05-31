@@ -5,6 +5,7 @@
 # except:
 !/.bashrc
 !/.gitconfig
+!/.git-completion.bash
 !/my-packages.txt
 !/nvim/init.vim
 !/vimium-options.json

@@ -97,7 +97,8 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     let g:airline_theme = 'base16_spacemacs'
 
     let g:airline_powerline_fonts = 1
-    let g:airline_section_z = "\ue0a1:%l/%L:%c"
+    "let g:airline_section_z = "\ue0a1:%l/%L:%c"
+    let g:airline_section_z = "\ue0a1:%l:%c|%L"
     let g:airline#parts#ffenc#skip_expected_string = 'utf-8[unix]'
 
     let g:airline#extensions#keymap#label = ""
@@ -211,8 +212,8 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     map <silent> <C-l> :call WinMove('l')<CR>
 
     " Управление размером split
-    map <silent> <C-Left> :vertical resize +3 <CR>
-    map <silent> <C-Right> :vertical resize -3 <CR>
+    map <silent> <C-Left> :vertical resize -3 <CR>
+    map <silent> <C-Right> :vertical resize +3 <CR>
     map <silent> <C-Up> :resize +3 <CR>
     map <silent> <C-Down> :resize -3 <CR>
 

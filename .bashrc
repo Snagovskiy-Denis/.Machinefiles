@@ -7,6 +7,8 @@
 
 
 # env variables
+export VISUAL=nvim
+export EDITOR="$VISUAL"
 #PS1='[\u@\h \W]\$ '
 export PATH=$PATH:/home/self/Code/executable
 
@@ -17,6 +19,9 @@ if [ -f $(which powerline-daemon) ]; then
     POWERLINE_BASH_SELECT=1
     source /usr/share/powerline/bindings/bash/powerline.sh
 fi
+
+# git autocompleion
+source ~/.git-completion.bash
 
 # aliases 
 alias ls='ls --color=auto'
