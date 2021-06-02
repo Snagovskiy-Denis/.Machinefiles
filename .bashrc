@@ -21,7 +21,11 @@ if [ -f $(which powerline-daemon) ]; then
 fi
 
 # git autocompleion
-source ~/.git-completion.bash
+source ~/.config/.git-completion.bash
+
+# set vi-styled movement key bindings
+set -o vi
+
 
 # aliases 
 alias ls='ls --color=auto'

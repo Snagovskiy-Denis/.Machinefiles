@@ -4,6 +4,7 @@
 
 # except:
 !/.bashrc
+!/.inputrc
 !/.gitconfig
 !/.git-completion.bash
 !/my-packages.txt
@@ -12,3 +13,4 @@
 
 
 # .bashrc & .gitconfig are hard link to ~/.bashrc & ~/.gitconfig
+# .inputrc is hard link to ~/.inputrc

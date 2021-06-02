@@ -64,6 +64,9 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     set termguicolors
     colorscheme base16-spacemacs
 
+    " Установить подсвечивание текущей линии
+    set cursorline
+
 "
 
     " Настройка табов согласно python-рекомендации
@@ -195,6 +198,8 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 "                    __/ |                 | |   | |             __/ |
 "                   |___/                  |_|   |_|            |___/ 
 "=============================================================================
+" Установить <Leader> на <Space>
+let g:mapleader = "\<Space>"
 
     " Терминал
     " Установить сочетание клавиш для выхода из терминала
@@ -212,10 +217,17 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     map <silent> <C-l> :call WinMove('l')<CR>
 
     " Управление размером split
-    map <silent> <C-Left> :vertical resize -3 <CR>
-    map <silent> <C-Right> :vertical resize +3 <CR>
-    map <silent> <C-Up> :resize +3 <CR>
-    map <silent> <C-Down> :resize -3 <CR>
+    map <silent> <M-Left> :vertical resize -2 <CR>
+    map <silent> <M-Right> :vertical resize +2 <CR>
+    map <silent> <M-Down> :resize -2 <CR>
+    map <silent> <M-Up> :resize +2 <CR>
+
+"
+
+    " Buffers \ Буферы
+    " Цикличное переключение между буферами
+    nnoremap <TAB> :bnext<CR>
+    nnoremap <S-TAB> :bprevious<CR>
 
 "
 
@@ -227,7 +239,7 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 
 "
 
-    " Добавить плагин
+    " Добавить плагин (в конце буфера не должно быть переноса строки)
     nmap <Leader>ap ocall minpac#add('')<Esc>2F'p
     nmap <Leader>aop ocall minpac#add('', {'type': 'opt'})<Esc>6F'p
 
