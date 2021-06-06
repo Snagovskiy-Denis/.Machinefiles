@@ -29,5 +29,5 @@ set -o vi
 
 # aliases 
 alias ls='ls --color=auto'
-alias py='python3'
+alias py='ipython'
 alias cb='xsel -b'
