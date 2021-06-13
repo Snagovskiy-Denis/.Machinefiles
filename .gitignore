@@ -11,6 +11,8 @@
 !/nvim/init.vim
 !/vimium-options.json
 !/ipython
+!/cmus/autosave  # cmus settings
+!/cmus/my.theme  # my fork of 'ShrekhavingabadDay/cmus-nordic_theme'
 
 
 # .bashrc & .gitconfig are hard link to ~/.bashrc & ~/.gitconfig
