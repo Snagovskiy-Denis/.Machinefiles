@@ -31,3 +31,5 @@ set -o vi
 alias ls='ls --color=auto'
 alias py='ipython'
 alias cb='xsel -b'
+
+alias cr='cmus-remote'  # c music player
