@@ -1,0 +1,52 @@
+# [Created by task 2.5.3 5/21/2021 13:59:10]
+# Taskwarrior program configuration file.
+# For more documentation, see http://taskwarrior.org or try 'man task', 'man task-color',
+# 'man task-sync' or 'man taskrc'
+
+# Here is an example of entries that use the default, override and blank values
+#   variable=foo   -- By specifying a value, this overrides the default
+#   variable=      -- By specifying no value, this means no default
+#   #variable=foo  -- By commenting out the line, or deleting it, this uses the default
+
+# Use the command 'task show' to see all defaults and overrides
+
+# Files
+data.location=~/.task
+
+# Color theme (uncomment one to use)
+#include /usr/share/doc/task/rc/light-16.theme
+#include /usr/share/doc/task/rc/light-256.theme
+#include /usr/share/doc/task/rc/dark-16.theme
+#include /usr/share/doc/task/rc/dark-256.theme
+#include /usr/share/doc/task/rc/dark-red-256.theme
+#include /usr/share/doc/task/rc/dark-green-256.theme
+#include /usr/share/doc/task/rc/dark-blue-256.theme
+include /usr/share/doc/task/rc/dark-violets-256.theme
+#include /usr/share/doc/task/rc/dark-yellow-green.theme
+#include /usr/share/doc/task/rc/dark-gray-256.theme
+#include /usr/share/doc/task/rc/dark-gray-blue-256.theme
+#include /usr/share/doc/task/rc/solarized-dark-256.theme
+#include /usr/share/doc/task/rc/solarized-light-256.theme
+#include /usr/share/doc/task/rc/no-color.theme
+
+# Date & Time
+rc.dateformat=D-M-Y  # 31-01-2000
+weekstart=Monday
+
+# UDA stands for User Defined Arguments
+## Esimate — how much time will task occupy
+uda.estimate.label=Estimate
+uda.estimate.type=duration
+uda.estimate.default=1day
+
+# task context
+context.work=project:Employment or +work
+context.study=+study or +learn
+
+# Urgency coefficients
+urgency.user.project.Employment.coefficient=6.0
+urgency.user.project.Employment.Portfolio.coefficient=8.0  # temp
+urgency.user.tag.someday.coefficient=-6.0
+
+# End of file
+# Below are 'task config'-setted values

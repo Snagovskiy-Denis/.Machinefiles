@@ -188,6 +188,11 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
           \ PlugOpenUrl call PlugInit() | call openbrowser#open(
           \    minpac#getpluginfo(<q-args>).url)
 
+"
+
+    " gf open [[link to file]] as link\ to\ file.md
+    autocmd BufEnter *.md set suffixesadd+=.md
+
 "=============================================================================
 "        _   __                                         _             
 "       | | / /                                        (_)            
@@ -199,6 +204,7 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 "                   |___/                  |_|   |_|            |___/ 
 "=============================================================================
 " Установить <Leader> на <Space>
+noremap <Space> <NOP>
 let g:mapleader = "\<Space>"
 
     " Терминал
