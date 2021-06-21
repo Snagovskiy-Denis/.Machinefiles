@@ -101,7 +101,7 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 
     let g:airline_powerline_fonts = 1
     "let g:airline_section_z = "\ue0a1:%l/%L:%c"
-    let g:airline_section_z = "\ue0a1:%l:%c|%L"
+    let g:airline_section_z = "%l:%c %P"
     let g:airline#parts#ffenc#skip_expected_string = 'utf-8[unix]'
 
     let g:airline#extensions#keymap#label = ""

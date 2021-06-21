@@ -30,23 +30,32 @@ include /usr/share/doc/task/rc/dark-violets-256.theme
 #include /usr/share/doc/task/rc/no-color.theme
 
 # Date & Time
-rc.dateformat=D-M-Y  # 31-01-2000
 weekstart=Monday
+#dateformat=D-M-Y            # 31-01-2000*/
+#dateformat.edit=D-M-Y H:N:S # 31-01-2000 23:59:59
 
 # UDA stands for User Defined Arguments
 ## Esimate — how much time will task occupy
 uda.estimate.label=Estimate
 uda.estimate.type=duration
-uda.estimate.default=1day
+#uda.estimate.default=1day
 
 # task context
 context.work=project:Employment or +work
 context.study=+study or +learn
 
+# report
+
+
 # Urgency coefficients
-urgency.user.project.Employment.coefficient=6.0
-urgency.user.project.Employment.Portfolio.coefficient=8.0  # temp
+#urgency.user.project.Employment.coefficient=2.0
+#urgency.user.project.Employment.Portfolio.coefficient=6.0  # temp priority
+
+urgency.user.project.Flesh.coefficient=-3.0
+
 urgency.user.tag.someday.coefficient=-6.0
+urgency.user.tag.Terminal.coefficient=-4.0  # terminal task = end of project
+
 
 # End of file
 # Below are 'task config'-setted values
