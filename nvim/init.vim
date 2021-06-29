@@ -62,10 +62,13 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 
     " Внешний вид
     set termguicolors
-    colorscheme base16-spacemacs
+    colorscheme base16-isotope  " hi blue Operator нечитаем в sh (e.g. точка)
+    "colorscheme base16-colors
+    "colorscheme base16-atelier-seaside  
+    "colorscheme base16-outrun-dark      " No purple :(
 
     " Установить подсвечивание текущей линии
-    set cursorline
+    "set cursorline
 
 "
 
@@ -97,7 +100,8 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 
     " vim-airline & vim-airline-themes
     " Изменяет statusline
-    let g:airline_theme = 'base16_spacemacs'
+    "let g:airline_theme = 'base16_atelier_seaside'
+    let g:airline_theme = 'base16_isotope'
 
     let g:airline_powerline_fonts = 1
     "let g:airline_section_z = "\ue0a1:%l/%L:%c"
@@ -107,7 +111,7 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     let g:airline#extensions#keymap#label = ""
     let g:airline#extensions#keymap#short_codes = {'russian-jcukenwin': 'RU'}
     let g:airline#extensions#tabline#enabled = 1
-    let g:airline#extensions#tabline#buffer_min_count = 2
+    let g:airline#extensions#tabline#buffer_min_count = 4
     let g:airline#extensions#term#enabled = 0
     
 "=============================================================================
@@ -152,6 +156,22 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
         return join(sort(keys(minpac#getpluglist())), "\n")
     endfunction
 
+"
+
+    " Redirect ex command output into new split
+    function! TabMessage(cmd)
+      redir => message
+      silent execute a:cmd
+      redir END
+      if empty(message)
+        echoerr "no output"
+      else
+        new
+        setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
+        silent put=message
+      endif
+    endfunction
+    command! -nargs=+ -complete=command TabMessage call TabMessage(<q-args>)
 "=============================================================================
 "            _____                                           _     
 "           /  __ \                                         | |    
@@ -169,7 +189,7 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     "
     command! PlugUpdate source $MYVIMRC |call PlugInit()| call minpac#update()
     command! PlugClean  source $MYVIMRC |call PlugInit()| call minpac#clean()
-    command! PlugStatus packadd minpac | call minpac#status()
+    command! PlugStatus packadd minpac  | call minpac#status()
 
     "
     " 4. Открыть директорию плагина в split-терминале
@@ -292,5 +312,7 @@ let g:mapleader = "\<Space>"
             call minpac#add('ryanoasis/vim-devicons')
 
             call minpac#add('tyru/open-browser.vim')
+
+            "call minpac#add('sakhnik/nvim-gdb')
         endif
     endfunction
