@@ -15,6 +15,7 @@
 !/cmus/my.theme             # my fork of ShrekhavingabadDay/cmus-nordic_theme
 !/.taskrc                   # ~/.taskrc
 !/.config.ini               # ~/.vin/config.ini  # vim interface taskwarrior
+!/oj.ini
 
 
 # ipython/ipython_config.py > ~/.ipython/profile_default/

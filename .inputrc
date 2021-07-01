@@ -1,9 +1,22 @@
 set editing-mode vi
 
 $if mode=vi
+    # colored cursor
     set show-mode-in-prompt on
     set vi-ins-mode-string \1\e[5 q\e]12;red\a\2
     set vi-cmd-mode-string \1\e[1 q\e]12;green\a\2
     # \1\e[5 q\2   # for colorless cursor
+    #set vi-cmd-mode-string \1\e[5 q\2
+    
+    # these are for vi-command move
+    set keymap vi-command
+    "\e[A": history-search-backward
+    "\e[B": history-search-forward
+    j: history-search-forward
+    k: history-search-backward
+    # these are for vi-insert mode
+    set keymap vi-insert
+    "\e[A": history-search-backward
+    "\e[B": history-search-forward
 $endif
 

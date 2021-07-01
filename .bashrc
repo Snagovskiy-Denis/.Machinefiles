@@ -12,6 +12,9 @@ export EDITOR="$VISUAL"
 #PS1='[\u@\h \W]\$ '
 export PATH=$PATH:/home/self/Code/executable
 
+# less colors
+export LESS='-R --use-color -Dd+r$Du+b'
+
 # powerline. pkgs: `sudo pacman -S powerline powerline-fonts`
 if [ -f $(which powerline-daemon) ] && [ -z $MYVIMRC ]; then
     powerline-daemon -q
@@ -22,26 +25,6 @@ fi
 
 # git autocompleion
 source ~/.config/.git-completion.bash
-
-
-# messing with stuff
-#todo () {
-    #max_width=0
-    #while read -r line ; do
-        #line_width=$(echo $line | wc -c)
-        #if [ $line_width -gt $max_width ]; then
-            #max_width=$line_width
-        #fi
-    #done < <(grep TODO . -Rn --exclude-dir=venv --color=always)
-
-    ## I knows that this is dumb..
-    #while read -r line ; do
-        #line_width=$(echo $line | wc -c)
-        #num_of_spaces=$(expr $max_width - $line_width)
-        #echo $num_of_spaces
-        #sed $line -r 's/(\:.*\:)(.*)\#/\1/'
-    #done < <(grep TODO . -Rn --exclude-dir=venv --color=always)
-#}
 
 # aliases 
 alias ls='ls --color=auto'

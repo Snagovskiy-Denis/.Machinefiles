@@ -80,6 +80,15 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     set expandtab
     set autoindent  " Автоотступ
 
+"
+
+    " Если нет GUI (TTY)
+    "if empty($DISPLAY)
+      "colorscheme elflord
+    "else
+      "colorscheme gruvbox
+    "endif
+
 "=============================================================================
 "   ______ _             _                      _   _   _                 
 "   | ___ \ |           (_)                    | | | | (_)                
