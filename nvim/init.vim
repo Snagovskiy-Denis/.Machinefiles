@@ -62,13 +62,14 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 
     " Внешний вид
     set termguicolors
-    colorscheme base16-isotope  " hi blue Operator нечитаем в sh (e.g. точка)
-    "colorscheme base16-colors
+    colorscheme base16-colors
+    "colorscheme base16-isotope  " hi blue Operator нечитаем в sh (e.g. точка)
     "colorscheme base16-atelier-seaside  
-    "colorscheme base16-outrun-dark      " No purple :(
 
     " Установить подсвечивание текущей линии
     "set cursorline
+    autocmd FileType sh colorscheme pop-punk
+    autocmd FileType python colorscheme base16-colors
 
 "
 
@@ -323,5 +324,6 @@ let g:mapleader = "\<Space>"
             call minpac#add('tyru/open-browser.vim')
 
             "call minpac#add('sakhnik/nvim-gdb')
+            call minpac#add('bignimbus/pop-punk.vim')
         endif
     endfunction

@@ -29,12 +29,37 @@ source ~/.config/.git-completion.bash
 # aliases 
 alias ls='ls --color=auto'
 alias py='ipython'
-alias cb='xsel -b'
+alias cb='xsel -b'  # copy to clipboard or print cb
+alias ti='tilda -g ~/.config/tilda/config_0'
 
+## vi
+alias :q='exit'
+alias :Q='exit'
+
+## advanced
 alias cr='cmus-remote'  # c music player
 alias tt='taskwarrior-tui'
 
 ## dev
 alias ut='python -m unittest'
 alias ft='python -m unittest test/functional_tests/*.py'
-alias TODO="grep TODO . -Rn --exclude-dir=venv --exclude-dir=htmlcov --color=always | sed -r 's/(\:.*\:).*\#/\1/'"
+alias TODO="grep TODO . -Rn --exclude-dir=lib* --exclude-dir=htmlcov --color=always | sed -r 's/(\:.*\:).*\#/\1/'"
+
+# functions
+note () {
+    # if file doesn't exist, create it
+    if [[ ! -f $HOME/.notes ]]; then
+        touch "$HOME/.notes"
+    fi
+
+    if ! (($#)); then
+        # no arguments, print file
+        cat "$HOME/.notes"
+    elif [[ "$1" == "-c" ]]; then
+        # clear file
+        printf "%s" > "$HOME/.notes"
+    else
+        # add all arguments to file
+        printf "%s\n" "$*" >> "$HOME/.notes"
+    fi
+}

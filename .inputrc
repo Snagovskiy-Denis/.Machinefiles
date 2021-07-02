@@ -1,5 +1,21 @@
-set editing-mode vi
+# include is antibug line
+$include /etc/inputrc
 
+# tab-completion
+set show-all-if-unmodified on
+set show-all-if-ambiguous on
+
+# colorised completion
+set colored-stats On
+set visible-stats On
+set mark-symlinked-directories On
+set colored-completion-prefix On
+set menu-complete-display-prefix On
+
+# disable echo ^C
+set echo-control-characters off
+
+set editing-mode vi
 $if mode=vi
     # colored cursor
     set show-mode-in-prompt on
@@ -8,13 +24,13 @@ $if mode=vi
     # \1\e[5 q\2   # for colorless cursor
     #set vi-cmd-mode-string \1\e[5 q\2
     
-    # these are for vi-command move
+    # better history search for vi-command move
     set keymap vi-command
     "\e[A": history-search-backward
     "\e[B": history-search-forward
     j: history-search-forward
     k: history-search-backward
-    # these are for vi-insert mode
+    # better history search for vi-insert mode
     set keymap vi-insert
     "\e[A": history-search-backward
     "\e[B": history-search-forward
