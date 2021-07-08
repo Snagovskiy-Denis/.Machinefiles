@@ -31,6 +31,7 @@ alias ls='ls --color=auto'
 alias py='ipython'
 alias cb='xsel -b'  # copy to clipboard or print cb
 alias ti='tilda -g ~/.config/tilda/config_0'
+alias r='ranger'
 
 ## vi
 alias :q='exit'
