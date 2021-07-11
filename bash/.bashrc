@@ -16,6 +16,7 @@ export PATH=$PATH:/home/self/Code/executable
 export LESS='-R --use-color -Dd+r$Du+b'
 
 # powerline. pkgs: `sudo pacman -S powerline powerline-fonts`
+# if powerline-daemon exists and current terminal is not nvim terminal
 if [ -f $(which powerline-daemon) ] && [ -z $MYVIMRC ]; then
     powerline-daemon -q
     POWERLINE_BASH_CONTINUATION=1
@@ -28,18 +29,17 @@ source ~/.config/.git-completion.bash
 
 # aliases 
 alias ls='ls --color=auto'
+
 alias py='ipython'
 alias cb='xsel -b'  # copy to clipboard or print cb
 alias ti='tilda -g ~/.config/tilda/config_0'
 alias r='ranger'
+alias cr='cmus-remote'  # c music player
+alias tt='taskwarrior-tui'
 
 ## vi
 alias :q='exit'
 alias :Q='exit'
-
-## advanced
-alias cr='cmus-remote'  # c music player
-alias tt='taskwarrior-tui'
 
 ## dev
 alias ut='python -m unittest'

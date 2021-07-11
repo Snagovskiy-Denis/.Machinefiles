@@ -1,3 +1,5 @@
+# This .inputrc file is for bash
+# 
 # include is antibug line
 $include /etc/inputrc
 
