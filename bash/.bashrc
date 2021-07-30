@@ -15,9 +15,10 @@ export PATH=$PATH:/home/self/Code/executable
 # less colors
 export LESS='-R --use-color -Dd+r$Du+b'
 
-# powerline. pkgs: `sudo pacman -S powerline powerline-fonts`
-# if powerline-daemon exists and current terminal is not nvim terminal
-if [ -f $(which powerline-daemon) ] && [ -z $MYVIMRC ]; then
+# if powerline-daemon exists 
+# and current terminal is not nvim terminal
+# and there is X server session
+if [ -f $(which powerline-daemon) ] && [ -z $MYVIMRC ] && [[ $DISPLAY ]]; then
     powerline-daemon -q
     POWERLINE_BASH_CONTINUATION=1
     POWERLINE_BASH_SELECT=1
@@ -63,4 +64,9 @@ note () {
         # add all arguments to file
         printf "%s\n" "$*" >> "$HOME/.notes"
     fi
+}
+
+is_x_session () {
+    if xhost >& /dev/null ; then echo 'Display exists'
+    else echo 'Display invalid' ; fi
 }
