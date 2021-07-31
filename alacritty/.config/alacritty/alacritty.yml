@@ -201,9 +201,9 @@ colors:
   #cursor:
   #  text: CellBackground
   #  cursor: CellForeground
-  cursor:
-    text: '0x000000'
-    cursor: '0xff0000'
+  #cursor:
+    #text: '0x000000'
+    #cursor: '0xff0000'
 
   # Vi mode cursor colors
   #
