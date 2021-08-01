@@ -24,3 +24,6 @@ export LESS='-R --use-color -Dd+r$Du+b'
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
     exec startx
 fi
+
+# without x session
+#loadkeys ...

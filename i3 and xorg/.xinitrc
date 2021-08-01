@@ -8,13 +8,6 @@ sysmodmap=/etc/X11/xinit/.Xmodmap
 # merge in defaults and keymaps
 
 if [ -f $sysresources ]; then
-
-
-
-
-
-
-
     xrdb -merge $sysresources
 
 fi
@@ -24,13 +17,6 @@ if [ -f $sysmodmap ]; then
 fi
 
 if [ -f "$userresources" ]; then
-
-
-
-
-
-
-
     xrdb -merge "$userresources"
 
 fi
@@ -49,18 +35,22 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
 fi
 
 
-# alone <CapsLock> sends <Escape>
-# <CapsLock> plus another key sends <Control>
-# 
-# need this line as fix for xcape
-setxkbmap -option
+# layouts and switch btn
+setxkbmap us,ru -option grp:menu_toggle
 
+
+# compose key
+#setxkbmap -option compose:rctrl
+
+
+# alone <CapsLock> sends <Escape>
+# <CapsLock> plus another_key sends <Control-another_key>
 setxkbmap -option ctrl:nocaps
 xcape -e 'Control_L=Escape'
 
 
-# <Space> sends super when it is pressed (<Space+Return> == <Super+Return>)
-# <Space> sends space character if it was pressed and released alone
+# alone <Space> sends <Escape>
+# <Space> plus another_key sends <Super-another_key>
 xmodmap /home/self/.Xmodmap
 
 spare_modifier="Hyper_L"
@@ -70,8 +60,9 @@ xmodmap -e "keycode any = space"
 xcape -e "$spare_modifier=space"
 
 
-# run wm
+# run my custom desktop environment
 nitrogen --restore &
-#picom &
-udiskie &
+picom &
+udiskie --smart-tray &
+volumeicon &
 exec i3

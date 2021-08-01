@@ -1,12 +1,13 @@
 configuration {
     modi: "window,drun,run,ssh";
-    theme: "dmenu";
+    theme: "~/.config/rofi/themes/dt-dmenu.rasi";
     /*font: "hack 18";*/
     /*location: 1;*/
     /*width: 1680;*/
     /*show-icons: true;*/
 }
 
+/*defaults:*/
 /*	width: 50;*/
 /*	lines: 15;*/
 /*	bw: 1;*/
