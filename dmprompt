@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# dmenu binary prompt
+# Gives a dmenu prompt labeled with $1 to perform command $2
+#
+# bash  example:
+#       ./dmprompt "Do you want to shutdown?" "shutdown -h now"
+# 
+# i3-wm example:
+#       bindsym $mod+Shift+x exec dmprompt "Are you exiting i3?" "i3-msg exit"
+
+[ $(echo -e "No\nYes" | rofi -dmenu -i -p "$1") == "Yes" ] && $2

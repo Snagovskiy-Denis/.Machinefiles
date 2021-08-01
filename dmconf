@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# 
+# Opens dmenu-chosen config file in text editor
+# It does not open new window so that terminal must be provided by wm-app
+# 
+# i3-wm example:
+#   bindcode $mod+Shift+f exec $terminal -e dmconf
+
+EDITOR="${EDITOR:=nvim}"
+declare -a options=(
+"alacritty - $HOME/.config/alacritty/alacritty.yml"
+"bash - $HOME/.bashrc"
+"i3 - $HOME/.config/i3/config"
+"i3blocks - $HOME/.config/i3/i3blocks.conf"
+"nvim - $HOME/.config/nvim/init.vim"
+"task - $HOME/.taskrc"
+"xinit - $HOME/.xinitrc"
+"quit"
+)
+
+# Pipe options array into dmenu
+# We use "printf '%s\n'" to format the array one item to ane
+choice=$(printf '%s\n' "${options[@]}" | rofi -dmenu -i -p 'Edit config: ')
+
+[[ "${choice}" == "quit" ]] && echo "quit was chosen" && exit
+[[ "${choice}" ]] && $EDITOR $(printf '%s\n' "${choice}" | awk '{print $NF}')
