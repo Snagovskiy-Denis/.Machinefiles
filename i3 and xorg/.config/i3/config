@@ -1,45 +1,37 @@
 # Defaults: Mod1=<Alt>, Mod4=<Super>
 # My xmonadmap Mod3=<Space>
 set $mod Mod3
-
-
-########################################
-########		Autostart		########
-########################################
-exec alacritty
-exec vivaldi-stable
-
-# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
-# screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+set $terminal i3-sensible-terminal
 
 
 ########################################
 ########		Workspaces		########
 ########################################
 #  
+workspace_auto_back_and_forth yes
+
 set $ws1  "1  "
 set $ws2  "2 爵 "
-set $ws3  "3  "
+set $ws3  "3  "
 set $ws4  "4"
 set $ws5  "5"
 set $ws6  "6"
-set $ws7  "7"
+set $ws7  "7  "
 set $ws8  "8  "
 set $ws9  "9"
 set $ws10 "10 ﴣ "
 
 # switch to workspace
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
-bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws10
+bindsym $mod+1 workspace  $ws1; bar mode dock bar-1
+bindsym $mod+2 workspace  $ws2; bar mode hide bar-1  # auto-hide bar on ws2
+bindsym $mod+3 workspace  $ws3; bar mode dock bar-1
+bindsym $mod+4 workspace  $ws4; bar mode dock bar-1
+bindsym $mod+5 workspace  $ws5; bar mode dock bar-1
+bindsym $mod+6 workspace  $ws6; bar mode dock bar-1
+bindsym $mod+7 workspace  $ws7; bar mode dock bar-1
+bindsym $mod+8 workspace  $ws8; bar mode hide bar-1  # auto-hide bar on ws8
+bindsym $mod+9 workspace  $ws9; bar mode dock bar-1
+bindsym $mod+0 workspace $ws10; bar mode dock bar-1
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $ws1
@@ -119,11 +111,6 @@ bindsym $mod+s split v
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
-# change container layout (stacked, tabbed, toggle split)
-#bindsym $mod+s layout stacking
-#bindsym $mod+w layout tabbed
-#bindsym $mod+e layout toggle split
-
 # toggle tiling / floating
 # p for "pop-up"
 bindsym $mod+Shift+p floating toggle
@@ -131,16 +118,19 @@ bindsym $mod+Shift+p floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+p focus mode_toggle
 
-# focus the parent container
-bindsym $mod+a focus parent
-
-# focus the child container
-#bindsym $mod+d focus child
-
 
 #########
-# Modes #
+# Mods #
 #########
+
+bindsym $mod+r mode         "resize"
+bindsym $mod+d mode         "favorite"
+bindsym $mod+a mode         "audio"
+bindsym $mod+semicolon mode "layout"
+
+# keycode 108 = Right Alt
+bindcode  108  mode         "writing"
+
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -150,16 +140,16 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
+        bindsym h resize shrink width  10 px or 10 ppt
+        bindsym j resize grow   height 10 px or 10 ppt
         bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+        bindsym l resize grow   width  10 px or 10 ppt
 
         # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+        bindsym Left  resize shrink width  10 px or 10 ppt
+        bindsym Down  resize grow   height 10 px or 10 ppt
+        bindsym Up    resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow   width  10 px or 10 ppt
 
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
@@ -167,35 +157,104 @@ mode "resize" {
         bindsym $mod+r mode "default"
 }
 
-bindsym $mod+r mode "resize"
+# open favorite application or execute favorite script
+mode "favorite" {
 
+        # launcher (duplicate $mod+Shift+Return)
+        bindsym Return exec "rofi -modi drun,run -show drun" ; mode "default"
 
-# Exit from Default mode and free all keys
-mode "passive" {
+        # GUI applications
+        bindsym w exec vivaldi-stable                        ; mode "default"
+        bindsym d exec gnome-dictionary                      ; mode "default"
+        bindsym o exec obsidian                              ; mode "default"
 
-        # back to normal: Enter or Escape or $mod+Mod4
-        bindsym Return mode "default"
+        # CLI & TUI applications
+        bindsym r exec $terminal -e ranger                   ; mode "default"
+        bindsym n exec $terminal -e nvim                     ; mode "default"
+        bindsym m exec $terminal -e cmus                     ; mode "default"
+        bindsym t exec $terminal -e taskwarrior-tui          ; mode "default"
+        bindsym p exec $terminal -e ipython                  ; mode "default"
+        bindsym h exec $terminal -e htop                     ; mode "default"
+
+        # scripts
+        bindsym j exec $terminal -e oj                       ; mode "default"
+        bindsym f exec $terminal -e dmconf                   ; mode "default"
+        # TODO: dmenu passwords (pass) picker
+
+        # back to normal: Escape or $mod+d
         bindsym Escape mode "default"
-        bindsym $mod+Mod4 mode "default"
+        bindsym $mod+d mode "default"
 }
 
-bindsym $mod+Mod4 mode "passive"
+# control PulseAudio, cmus and playerctl
+mode "audio" {
+
+        # back to normal: Enter or Escape or $mod+Shift+a
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+a mode "default"
+}
+
+
+# change container layout
+mode "layout" {
+
+        bindsym q layout stacking
+        bindsym w layout tabbed
+        bindsym e layout toggle split
+
+        # focus the parent container
+        bindsym a focus parent
+
+        # focus the child container
+        bindsym d focus child
+
+        # toggle tiling / floating
+        # p for "pop-up"
+        # duplicate for $mod+Shift+p
+        bindsym Shift+p floating toggle
+
+        # duplicate for $mod+p
+        bindsym p focus mode_toggle
+
+        # move focused window
+        # duplicate for $mod+Shift+[hjkl]
+        bindsym h move left
+        bindsym j move down
+        bindsym k move up
+        bindsym l move right
+
+        # back to normal: Enter or Escape or $mod+; (semicolon)
+        bindsym Return         mode "default"
+        bindsym Escape         mode "default"
+        bindsym $mod+semicolon mode "default"
+}
+
+
+# exit from default mode and free all keys
+mode "writing" {
+        # Useful in games or in case of dzen-typing
+
+        bindsym $mod+Left  focus left
+        bindsym $mod+Down  focus down
+        bindsym $mod+Up    focus up
+        bindsym $mod+Right focus right
+
+        # back to normal: Right Alt
+        bindcode 108 mode "default"
+}
 
 
 #########
 # Audio #
 #########
 
-# Use pactl to adjust volume in PulseAudio.
-# pamixer
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec pamixer --increase 10
+bindsym XF86AudioLowerVolume exec pamixer --decrease 10
+bindsym XF86AudioMute        exec pamixer --toggle-mute
+#bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 # cmus
-# if any media then playerctl play-pause
 # keycode 172 = 懶  (play_pause)    = XF86AudioPlay = XF86AudioPause
 # keycode 174 = 栗  (stop)          = XF86AudioStop = XF86AudioEject 
 # keycode 173 = 玲  (skip_previous)
@@ -205,48 +264,39 @@ bindcode 172 exec "cmus-remote --pause"
 bindcode 174 exec "cmus-remote --stop"
 bindcode 173 exec "cmus-remote --prev"
 bindcode 171 exec "cmus-remote --next"
-#bindcode 179 exec ""  # switch beetwen cmus-remote and playerctl?
-
-# playerctl
-#   ...
+#bindcode 179 exec ""
 
 
 #########
 # Other #
 #########
 
-set $terminal i3-sensible-terminal
-
 # start a terminal
 bindsym $mod+Return exec $terminal
 
 # start rofi
 bindsym $mod+Shift+Return exec "rofi -modi drun,run -show drun"
-# run shell command:
-#bindsym $mod+d exec --no-startup-id "rofi -show drun -font \\"DejaVu 9\\" -run-shell-command '{terminal} -e \\" {cmd}; read -n 1 -s\\"'"
 
-# TODO: Should I create launch-mode?
-# favor-apps
-bindsym $mod+Shift+w exec vivaldi-stable
-bindsym $mod+Shift+d exec gnome-dictionary
-bindsym $mod+Shift+r exec $terminal -e ranger
-bindsym $mod+Shift+n exec $terminal -e nvim
-
-# custom scripts
-bindsym $mod+Shift+o exec $terminal -e oj
-bindsym $mod+Shift+f exec $terminal -e dmconf
+# run shell command (keycode 68 = <F2>)
+bindcode $mod+68 exec bash -c "$(rofi -dmenu -p 'Run command:')"
 
 # reload the configuration file (keycode 67 = <F1>)
 bindcode $mod+67 reload
 
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# restart i3 inplace (keycode 71 = <F5>, can be used to upgrade i3)
 bindcode $mod+71 restart
 
-# exit i3 (logs you out of your X session)
+# exit i3
 bindsym $mod+Shift+x exec dmprompt "Are you sure you want to exit i3?" "i3-msg exit"
 
 # jump to urgent window (keycode 69 = <F3>)
 bindcode $mod+69 [urgent=latest] focus
+
+# TODO: screenshot & screencast (gh repo in browser inbox)
+
+# TODO: emoji selector
+
+# TODO: look at keypirinha...
 
 # keycode 148 =    (calculator)
 # keycode 152 =    (desktokp)
@@ -262,6 +312,7 @@ bindcode 148 exec gnome-calculator
 # Bar #
 #######
 bar {
+        id bar-1
         status_command          i3blocks -c ~/.config/i3/i3blocks.conf
         i3bar_command           i3bar --transparency
         position                top
@@ -269,5 +320,28 @@ bar {
         strip_workspace_numbers yes
 }
 
-# bar toggle, hide or show
+# toggle bar mode <hide|show>
 bindsym $mod+m bar mode toggle
+
+
+########################################
+########		Autostart		########
+########################################
+# ws1
+exec --no-startup-id i3-msg "workspace $ws1"
+exec --no-startup-id i3-msg "exec $terminal -e oj"
+exec --no-startup-id i3-msg "exec $terminal -e taskwarrior-tui"
+exec bash -c "sleep 5"
+# ws2
+exec --no-startup-id i3-msg "workspace $ws2"
+exec --no-startup-id i3-msg "exec vivaldi-stable"
+exec bash -c "sleep 5"
+# ws8
+exec --no-startup-id i3-msg "workspace $ws8"
+exec --no-startup-id i3-msg "exec $terminal -e cmus"
+exec bash -c "sleep 5"
+#exec --no-startup-id i3-msg "exec $terminal -e bash -c sleep 5"
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork

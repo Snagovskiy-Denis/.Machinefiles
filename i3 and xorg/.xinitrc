@@ -61,6 +61,7 @@ xcape -e "$spare_modifier=space"
 
 
 # run my custom desktop environment
+numlockx &
 nitrogen --restore &
 picom &
 udiskie --smart-tray &

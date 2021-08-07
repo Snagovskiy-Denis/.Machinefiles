@@ -9,7 +9,10 @@
 EDITOR="${EDITOR:=nvim}"
 declare -a options=(
 "alacritty - $HOME/.config/alacritty/alacritty.yml"
-"bash - $HOME/.bashrc"
+"bash_aliases - $HOME/.config/.bash_aliases"
+"bash_functions - $HOME/.config/.bash_functions"
+"bash_profile - $HOME/.bash_profile"
+"bashrc - $HOME/.bashrc"
 "i3 - $HOME/.config/i3/config"
 "i3blocks - $HOME/.config/i3/i3blocks.conf"
 "nvim - $HOME/.config/nvim/init.vim"

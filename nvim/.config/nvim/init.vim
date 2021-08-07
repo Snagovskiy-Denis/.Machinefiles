@@ -65,9 +65,13 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     colorscheme base16-colors
     "colorscheme base16-isotope  " hi blue Operator нечитаем в sh (e.g. точка)
     "colorscheme base16-atelier-seaside  
+    "colorscheme base16-google-dark
+
+    " Reset theme background-color to regain background opacity
+    autocmd BufEnter * highlight normal guibg=000000
 
     " Установить подсвечивание текущей линии
-    "set cursorline
+    set cursorline
     autocmd FileType sh colorscheme pop-punk
     autocmd FileType python colorscheme base16-colors
 
@@ -110,15 +114,13 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 
     " vim-airline & vim-airline-themes
     " Изменяет statusline
-    "let g:airline_theme = 'base16_atelier_seaside'
-    let g:airline_theme = 'base16_isotope'
+    let g:airline_theme = 'google_dark'
+    let g:airline_powerline_fonts = 0
 
-    let g:airline_powerline_fonts = 1
-    "let g:airline_section_z = "\ue0a1:%l/%L:%c"
     let g:airline_section_z = "%l:%c %P"
     let g:airline#parts#ffenc#skip_expected_string = 'utf-8[unix]'
 
-    let g:airline#extensions#keymap#label = ""
+    let g:airline#extensions#keymap#label = "⌨"
     let g:airline#extensions#keymap#short_codes = {'russian-jcukenwin': 'RU'}
     let g:airline#extensions#tabline#enabled = 1
     let g:airline#extensions#tabline#buffer_min_count = 4
@@ -316,14 +318,15 @@ let g:mapleader = "\<Space>"
             call minpac#add('preservim/nerdcommenter')
             call minpac#add('preservim/nerdtree')
 
+                " themes and aesthetics
             call minpac#add('fnune/base16-vim')
             call minpac#add('vim-airline/vim-airline')
             call minpac#add('vim-airline/vim-airline-themes')
             call minpac#add('ryanoasis/vim-devicons')
+            call minpac#add('bignimbus/pop-punk.vim')
 
             call minpac#add('tyru/open-browser.vim')
 
             "call minpac#add('sakhnik/nvim-gdb')
-            call minpac#add('bignimbus/pop-punk.vim')
         endif
     endfunction

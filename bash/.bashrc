@@ -6,9 +6,9 @@
 [[ $- != *i* ]] && return
 
 
-# source .bashrc modules
-source ./.bash_aliases
-source ./.bash_functions
+# load aliases and functions if existent
+[ -f $HOME/.config/.bash_aliases ]   && source $HOME/.config/.bash_aliases
+[ -f $HOME/.config/.bash_functions ] && source $HOME/.config/.bash_functions
 
 
 # if powerline-daemon exists 

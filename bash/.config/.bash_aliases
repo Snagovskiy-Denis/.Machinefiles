@@ -13,5 +13,5 @@ alias :Q='exit'
 
 # dev
 alias ut='python -m unittest'
-alias ft='python -m unittest test(s)+/*fun*/*.py'
+alias ft='python -m unittest tests/functional_tests/*.py'
 alias TODO="grep TODO . -Rn --exclude-dir=lib* --exclude-dir=htmlcov --color=always | sed -r 's/(\:.*\:).*\#/\1/'"
