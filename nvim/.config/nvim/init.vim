@@ -33,6 +33,7 @@
 "
 autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 "=============================================================================
+" Vanilla
 "                        _   _             _ _ _       
 "                       | | | |           (_) | |      
 "                       | | | | __ _ _ __  _| | | __ _ 
@@ -62,8 +63,8 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 
     " Внешний вид
     set termguicolors
-    colorscheme base16-colors
-    "colorscheme base16-isotope  " hi blue Operator нечитаем в sh (e.g. точка)
+    "colorscheme base16-colors
+    colorscheme base16-isotope  " hi blue Operator нечитаем в sh (e.g. точка)
     "colorscheme base16-atelier-seaside  
     "colorscheme base16-google-dark
 
@@ -73,7 +74,7 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     " Установить подсвечивание текущей линии
     set cursorline
     autocmd FileType sh colorscheme pop-punk
-    autocmd FileType python colorscheme base16-colors
+    autocmd FileType python colorscheme base16-isotope
 
 "
 
@@ -87,14 +88,8 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 
 "
 
-    " Если нет GUI (TTY)
-    "if empty($DISPLAY)
-      "colorscheme elflord
-    "else
-      "colorscheme gruvbox
-    "endif
-
 "=============================================================================
+" Plugins settings
 "   ______ _             _                      _   _   _                 
 "   | ___ \ |           (_)                    | | | | (_)                
 "   | |_/ / |_   _  __ _ _ _ __  ___   ___  ___| |_| |_ _ _ __   __ _ ___ 
@@ -115,7 +110,6 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     " vim-airline & vim-airline-themes
     " Изменяет statusline
     let g:airline_theme = 'google_dark'
-    let g:airline_powerline_fonts = 0
 
     let g:airline_section_z = "%l:%c %P"
     let g:airline#parts#ffenc#skip_expected_string = 'utf-8[unix]'
@@ -127,6 +121,7 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     let g:airline#extensions#term#enabled = 0
     
 "=============================================================================
+" Functions
 "                 ______                _   _                 
 "                 |  ___|              | | (_)                
 "                 | |_ _   _ _ __   ___| |_ _  ___  _ __  ___ 
@@ -184,7 +179,9 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
       endif
     endfunction
     command! -nargs=+ -complete=command TabMessage call TabMessage(<q-args>)
+
 "=============================================================================
+" Commands
 "            _____                                           _     
 "           /  __ \                                         | |    
 "           | /  \/ ___  _ __ ___  _ __ ___   __ _ _ __   __| |___ 
@@ -226,6 +223,7 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     autocmd BufEnter *.md set suffixesadd+=.md
 
 "=============================================================================
+" Key mapping
 "        _   __                                         _             
 "       | | / /                                        (_)            
 "       | |/ /  ___ _   _   _ __ ___   __ _ _ __  _ __  _ _ __   __ _ 
@@ -235,9 +233,10 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 "                    __/ |                 | |   | |             __/ |
 "                   |___/                  |_|   |_|            |___/ 
 "=============================================================================
-" Установить <Leader> на <Space>
-noremap <Space> <NOP>
-let g:mapleader = "\<Space>"
+" Установить <Leader> на <Space> <= this is a lie
+"noremap <Space> <NOP>
+"let g:mapleader = "\<Space>"
+let g:mapleader = ","
 
     " Терминал
     " Установить сочетание клавиш для выхода из терминала
@@ -293,7 +292,41 @@ let g:mapleader = "\<Space>"
     " nerdtree
     nmap <C-N> :NERDTreeToggle<CR>
 
+"
+
+    " Behave Vim
+    nnoremap Y y$
+
+"
+    " Moving text
+    vnoremap J :m '>+1<CR>gv=gv
+    inoremap <C-j> <Esc>:m .+1<CR>==a
+    nnoremap <leader>j :m .+1<CR>==
+
+    vnoremap K :m '<-2<CR>gv=gv
+    inoremap <C-k> <Esc>:m .-2<CR>==a
+    nnoremap <leader>k :m .-2<CR>==
+
+"
+
+    " Find and replace <++>
+    vnoremap <leader>q <Esc>/<++><CR>c4l
+    inoremap <leader>q <Esc>/<++><CR>c4l
+    nnoremap <leader>q <Esc>/<++><CR>c4l
+
+    vnoremap <leader>w <Esc>?<++><CR>c4l
+    inoremap <leader>w <Esc>?<++><CR>c4l
+    nnoremap <leader>w <Esc>?<++><CR>c4l
+
+"
+
+    " Copy closest URL
+    " URL regexp pattern:
+    " (http OR https) AND :// AND 1-256 any characters AND . AND 1-12 alphabetic characters AND (end of regexp OR (/ AND any number of any characters))
+    nnoremap <leader>u <Esc>mz/https\?:\/\/.\{1,256}\.[\s]\@!\a\{1,12}\/\?.*\c<CR>yE`z
+
 "=============================================================================
+" List of plugins
 "       _     _     _            __         _             _           
 "      | |   (_)   | |          / _|       | |           (_)          
 "      | |    _ ___| |_    ___ | |_   _ __ | |_   _  __ _ _ _ __  ___ 

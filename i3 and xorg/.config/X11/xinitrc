@@ -51,7 +51,7 @@ xcape -e 'Control_L=Escape'
 
 # alone <Space> sends <Escape>
 # <Space> plus another_key sends <Super-another_key>
-xmodmap /home/self/.Xmodmap
+xmodmap $HOME/.config/.Xmodmap
 
 spare_modifier="Hyper_L"
 xmodmap -e "keycode 65 = $spare_modifier"

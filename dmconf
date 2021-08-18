@@ -16,8 +16,9 @@ declare -a options=(
 "i3 - $HOME/.config/i3/config"
 "i3blocks - $HOME/.config/i3/i3blocks.conf"
 "nvim - $HOME/.config/nvim/init.vim"
-"task - $HOME/.taskrc"
-"xinit - $HOME/.xinitrc"
+"qtile - $HOME/.config/qtile/config"
+"task - $HOME/.config/taskrc"
+"xinit - $HOME/.config/X11/xinitrc"
 "quit"
 )
 

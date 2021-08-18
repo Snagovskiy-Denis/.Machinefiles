@@ -3,6 +3,9 @@
 set $mod Mod3
 set $terminal i3-sensible-terminal
 
+# 133, 134 = winkey
+#bindcode 133 exec alacritty
+
 
 ########################################
 ########		Workspaces		########
@@ -167,6 +170,7 @@ mode "favorite" {
         bindsym w exec vivaldi-stable                        ; mode "default"
         bindsym d exec gnome-dictionary                      ; mode "default"
         bindsym o exec obsidian                              ; mode "default"
+        bindsym z exec anki                                  ; mode "default"
 
         # CLI & TUI applications
         bindsym r exec $terminal -e ranger                   ; mode "default"
