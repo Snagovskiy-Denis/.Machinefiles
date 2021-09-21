@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+
+# Increas verbosity
+alias cp="cp -iv"
+alias mv="mv -iv"
+alias rm="rm -vI"
+alias mkdir="mkdir -pv"
+
+# Colorize
+alias ls="ls -hN --color=auto --group-directories-first"
+alias grep="grep --color=auto"
+alias diff="diff --color=auto"
+
+# Abbreviate long commands
+alias py="ipython"
+alias r="ranger"
+alias tt="taskwarrior-tui"
+alias cr="cmus-remote"
+alias ka="killall"
+alias p="pacman"
+alias e="${EDITOR}"
+alias f="dmconf"
+
+alias ll="ls -Al"
+alias yt="youtube-dl --add-metadata --ignore-errors"
+alias yta="yt --extract-audio"
+alias ffprobe="ffprobe -hide_banner"
+alias cb="xsel -b"  # if piped copy to clipboard else print cb
+t ()  { trans "$*"; }
+tr () { trans ru:en "$*"; }
+
+# "New" commands
+alias ps?="ps aux | grep"
+alias reload="source ~/.bashrc"
+alias l.="ll --color=always | grep --color=none '\.'"
+
+# Allow sudo before other aliases
+alias sudo="sudo "
+alias s="sudo "
+
+# Timer
+alias t5=" termdown $(calc  5*60) && mpv ~/Data/Music/alarm.mp3"
+alias t10="termdown $(calc 10*60) && mpv ~/Data/Music/alarm.mp3"
+alias t15="termdown $(calc 15*60) && mpv ~/Data/Music/alarm.mp3"
+tn  ()   { termdown $(calc $1*60) && mpv "${HOME}/Data/Music/alarm.mp3"; }
+
+# Dev stuff
+alias ut="python -m unittest"
+ft () { python -m unittest "${2:-test}"/"${1:-functional_tests}"/*.py; }
+alias TODO="grep TODO . -Rn --exclude-dir=lib* --exclude-dir=htmlcov --color=always | sed -r 's/(\:.*\:).*\#/\1/'"
+
+alias vc="python -m venv ./venv"
+alias va="source ./venv/bin/activate"
+
+note () {
+    help_note="How to use:
+        No arguments = print file
+        If more then 1 argument = add all arguments to file
+        
+        If first argument is one of these:
+        -h = print this help message
+        -o = open note in editor specified by EDITOR
+        -c = put\paste clipboard to file
+        --clear-file = clear file"
+    filepath="${HOME}/.notes"
+
+    # if file doesn't exist, create it
+    if [[ ! -f $filepath ]]; then
+        touch $filepath
+    fi
+
+    if ! (($#)); then
+        cat $filepath
+    elif [[ "$1" == "-h" ]]; then
+        printf "${help_note}\n"
+    elif [[ "$1" == "--clear-file" ]]; then
+        printf "%s" > $filepath
+    elif [[ "$1" == "-o" ]]; then
+        $EDITOR $filepath
+    elif [[ "$1" == "-c" ]]; then
+        xsel -b >> $filepath
+    else
+        printf "%s\n" "$*" >> $filepath
+    fi
+}
+
+# Errorless experience
+alias :q="exit"
+alias :Q="exit"
+
+# ~/ Clean-up:
+alias irssi="irssi --config=$XDG_CONFIG_HOME/irssi/config --home=$XDG_DATA_HOME/irssi"
+alias wget="wget --hsts-file=$XDG_CACHE_HOME/wget-hsts"

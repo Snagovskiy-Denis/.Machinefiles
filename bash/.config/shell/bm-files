@@ -1,0 +1,11 @@
+alacritty  cfa   $HOME/.config/alacritty/alacritty.yml
+aliasrc    cfs   $HOME/.config/shell/aliases
+bashrc     cfb   $HOME/.bashrc
+bm-dirs    bmd   $HOME/.config/shell/bm-dirs
+bm-files   bmf   $HOME/.config/shell/bm-files
+i3blocks   cfib  $HOME/.config/i3/i3blocks.conf
+i3         cfi   $HOME/.config/i3/config
+nvim       cfv   $HOME/.config/nvim/init.vim
+profile    cfp   $HOME/.bash_profile
+qtile      cfq   $HOME/.config/qtile/config.py
+task       cft   $HOME/.config/taskrc
