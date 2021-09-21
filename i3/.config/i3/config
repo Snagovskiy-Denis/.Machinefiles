@@ -126,7 +126,7 @@ bindsym $mod+p focus mode_toggle
 # Mods #
 #########
 
-bindsym $mod+r mode         "resize"
+bindsym $mod+e mode         "resize"
 bindsym $mod+d mode         "favorite"
 bindsym $mod+a mode         "audio"
 bindsym $mod+semicolon mode "layout"
@@ -154,10 +154,9 @@ mode "resize" {
         bindsym Up    resize shrink height 10 px or 10 ppt
         bindsym Right resize grow   width  10 px or 10 ppt
 
-        # back to normal: Enter or Escape or $mod+r
+        # back to normal
         bindsym Return mode "default"
         bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
 }
 
 # open favorite application or execute favorite script
@@ -168,7 +167,7 @@ mode "favorite" {
 
         # GUI applications
         bindsym w exec vivaldi-stable                        ; mode "default"
-        bindsym d exec gnome-dictionary                      ; mode "default"
+        bindsym t exec torbrowser-launcher                   ; mode "default"
         bindsym o exec obsidian                              ; mode "default"
         bindsym z exec anki                                  ; mode "default"
 
@@ -176,27 +175,26 @@ mode "favorite" {
         bindsym r exec $terminal -e ranger                   ; mode "default"
         bindsym n exec $terminal -e nvim                     ; mode "default"
         bindsym m exec $terminal -e cmus                     ; mode "default"
-        bindsym t exec $terminal -e taskwarrior-tui          ; mode "default"
+        bindsym u exec $terminal -e taskwarrior-tui          ; mode "default"
         bindsym p exec $terminal -e ipython                  ; mode "default"
         bindsym h exec $terminal -e htop                     ; mode "default"
 
-        # scripts
+        # Binaries & Scripts
         bindsym j exec $terminal -e oj                       ; mode "default"
         bindsym f exec $terminal -e dmconf                   ; mode "default"
-        # TODO: dmenu passwords (pass) picker
 
-        # back to normal: Escape or $mod+d
+        # back to normal
         bindsym Escape mode "default"
-        bindsym $mod+d mode "default"
 }
 
 # control PulseAudio, cmus and playerctl
 mode "audio" {
 
-        # back to normal: Enter or Escape or $mod+Shift+a
+        # TODO
+
+        # back to normal
         bindsym Return mode "default"
         bindsym Escape mode "default"
-        bindsym $mod+a mode "default"
 }
 
 
@@ -228,10 +226,9 @@ mode "layout" {
         bindsym k move up
         bindsym l move right
 
-        # back to normal: Enter or Escape or $mod+; (semicolon)
+        # back to normal
         bindsym Return         mode "default"
         bindsym Escape         mode "default"
-        bindsym $mod+semicolon mode "default"
 }
 
 
@@ -281,6 +278,12 @@ bindsym $mod+Return exec $terminal
 # start rofi
 bindsym $mod+Shift+Return exec "rofi -modi drun,run -show drun"
 
+# start file browser (ranger)
+bindsym $mod+r exec $terminal -e ranger
+
+# start web browser  (vivaldi)
+bindsym $mod+w exec vivaldi-stable
+
 # run shell command (keycode 68 = <F2>)
 bindcode $mod+68 exec bash -c "$(rofi -dmenu -p 'Run command:')"
 
@@ -298,18 +301,16 @@ bindcode $mod+69 [urgent=latest] focus
 
 # TODO: screenshot & screencast (gh repo in browser inbox)
 
-# TODO: emoji selector
-
 # TODO: look at keypirinha...
 
 # keycode 148 =    (calculator)
-# keycode 152 =    (desktokp)
+# keycode 152 =    (desktop)
 # keycode 163 =    (mail)
 # keycode 180 = ﮟ   (home)
-bindcode 148 exec gnome-calculator
-#bindcode 152 exec ""
+bindcode 148 exec rofi -modi calc  -show calc
+bindcode 152 exec rofi -modi emoji -show emoji
 #bindcode 163 exec ""
-#bindcode 180 exec ""
+bindcode 180 exec rofi-pass
 
 
 #######
@@ -328,23 +329,7 @@ bar {
 bindsym $mod+m bar mode toggle
 
 
-########################################
-########		Autostart		########
-########################################
-# ws1
-exec --no-startup-id i3-msg "workspace $ws1"
-exec --no-startup-id i3-msg "exec $terminal -e oj"
-exec --no-startup-id i3-msg "exec $terminal -e taskwarrior-tui"
-exec bash -c "sleep 5"
-# ws2
-exec --no-startup-id i3-msg "workspace $ws2"
-exec --no-startup-id i3-msg "exec vivaldi-stable"
-exec bash -c "sleep 5"
-# ws8
-exec --no-startup-id i3-msg "workspace $ws8"
-exec --no-startup-id i3-msg "exec $terminal -e cmus"
-exec bash -c "sleep 5"
-#exec --no-startup-id i3-msg "exec $terminal -e bash -c sleep 5"
+exec --no-startup-id exec ~/.config/shell/autostart.sh
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
