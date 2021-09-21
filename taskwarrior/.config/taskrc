@@ -31,8 +31,6 @@ include /usr/share/doc/task/rc/dark-violets-256.theme
 
 # Date & Time
 weekstart=Monday
-#dateformat=D-M-Y            # 31-01-2000*/
-#dateformat.edit=D-M-Y H:N:S # 31-01-2000 23:59:59
 
 # UDA stands for User Defined Arguments
 ## Esimate — how much time will task occupy
@@ -42,10 +40,13 @@ uda.estimate.type=duration
 
 # task context
 context.work=project:Employment or +work
-context.study=+study or +learn
+context.study=+study or +Obsidian
+context.strange=project: -study -Obsidian
+context.undefined=tags.none: project:
 
 # report
-
+# description.count instead of desctiption
+report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
 
 # Urgency coefficients
 #urgency.user.project.Employment.coefficient=2.0

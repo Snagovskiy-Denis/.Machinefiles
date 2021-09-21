@@ -1,8 +1,8 @@
 ## Installing
 1. `# pacman -S git stow`
-2. `$ git clone git@github.com:Di0nisBloody/Machinefiles.git`
+2. `$ git clone git@github.com:Di0nisBloody/.Machinefiles.git`
 3. Optional dry run: `$ stow */ --target=$HOME --simulate --verbose=1`
-4. `$ stow */ --target=$HOME` or `$ stow nvim --target=$HOME`
+4. all: `$ stow */ --target=$HOME`; only one:`$ stow nvim --target=$HOME`
 
 ## Programs
 Create\update .pacman.list file:
@@ -11,13 +11,13 @@ Create\update .pacman.list file:
 Install .pacman.list file:
 `# pacman -S - < .pacman.list`
 
-It might be better to use yay for synchronize because of aur
+It might be better to use aur helper (like yay) for synchronization
 
 ## Keymap
 File on path `/etc/vconsole.conf` should contain this string: `KEYMAP=<path to personal.map>`
 
-## Temp
-dmconf & dmprompt are not configs but still here for a while
+## bin
+Scripts are in `binary files` folder
 
 ## TODO
 1. Add stow targets for each directory individually (add --ignore option or create .stow-local-ignore)

@@ -219,7 +219,7 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 
 "
 
-    " gf open [[link to file]] as link\ to\ file.md
+    " gf opens [[link to file]] as link\ to\ file.md
     autocmd BufEnter *.md set suffixesadd+=.md
 
 "=============================================================================
@@ -301,29 +301,75 @@ let g:mapleader = ","
     " Moving text
     vnoremap J :m '>+1<CR>gv=gv
     inoremap <C-j> <Esc>:m .+1<CR>==a
-    nnoremap <leader>j :m .+1<CR>==
+    "nnoremap <leader>j :m .+1<CR>==
 
     vnoremap K :m '<-2<CR>gv=gv
     inoremap <C-k> <Esc>:m .-2<CR>==a
-    nnoremap <leader>k :m .-2<CR>==
+    "nnoremap <leader>k :m .-2<CR>==
 
 "
 
     " Find and replace <++>
     vnoremap <leader>q <Esc>/<++><CR>c4l
-    inoremap <leader>q <Esc>/<++><CR>c4l
+    "inoremap <leader>q <Esc>/<++><CR>c4l
     nnoremap <leader>q <Esc>/<++><CR>c4l
 
     vnoremap <leader>w <Esc>?<++><CR>c4l
-    inoremap <leader>w <Esc>?<++><CR>c4l
+    "inoremap <leader>w <Esc>?<++><CR>c4l
     nnoremap <leader>w <Esc>?<++><CR>c4l
 
 "
 
-    " Copy closest URL
-    " URL regexp pattern:
-    " (http OR https) AND :// AND 1-256 any characters AND . AND 1-12 alphabetic characters AND (end of regexp OR (/ AND any number of any characters))
-    nnoremap <leader>u <Esc>mz/https\?:\/\/.\{1,256}\.[\s]\@!\a\{1,12}\/\?.*\c<CR>yE`z
+    " Interact with closest link
+    "
+    " URL regular expression pattern:
+    "
+    " g0 = http[s]:// AND optional www.
+    " g1 (1-∞ chars) = alphabetic OR digital OR one of these: -@:%._+~#=
+    " g2 (1-∞ chars) = . AND alphabetic OR digital OR ) OR (
+    " g3 (0 or ∞ chars) = / AND g1 chars OR ?& AND end with alpha-digital
+    "
+    "          https://www.youtube.com/results?search_query=search
+    "            /            |      \                 \
+    "          g0            g1       `- g2             `g3
+    "   ( https://www. ) ( youtube ) ( .com ) ( /results?search_query=test )
+    "
+    "     Test links:
+    "         HTTP://WWW.EXAMPLE.COM - match
+    "         http://example. com    - do not match
+    "
+    let url_g0 = '[Hh][Tt][Tt][Pp][Ss]\?:\/\/\([Ww]\{3,3}\.\)\?'
+    let url_g1 = '[-a-zA-Z0-9@:%._+~#=]\+'
+    let url_g2 = '\.[a-zA-Z0-9()]\+'
+    let url_g3 = '\/\?[-a-zA-Z0-9()@:%._+~#=?&/]*[a-zA-Z0-9]'
+
+    let url_regexp = url_g0 . url_g1 . url_g2 . url_g3
+    let url_short_regexp =    url_g1 . url_g2 . url_g3
+
+    " [y]ank closest ([s]hort) [u]rl link
+    nnoremap <expr> <leader>yu  'mb/' . url_regexp .       '<CR>ygn`b:echo "\"<C-R>+\" was copied"<CR>'
+    nnoremap <expr> <leader>ysu 'mb/' . url_short_regexp . '<CR>ygn`b:echo "\"<C-R>+\" was copied"<CR>'
+
+    " [o]pen closest ([s]hort) [u]rl link
+    nnoremap <expr> <leader>ou  'mb/' . url_regexp .       '<CR>"bygn`b:!xdg-open <C-R>b<CR>'
+    nnoremap <expr> <leader>osu 'mb/' . url_short_regexp . '<CR>"bygn`b:!xdg-open <C-R>b<CR>'
+
+    " wikilink regular exppression pattern:
+    "
+    "     [[
+    "     any number of any characters except |
+    "     optional |
+    "     any number of any characters
+    "     ]]
+    "
+    "let wikilink_regexp = '\[\[.*\]\]'
+    let wikilink_regexp = '\[\[\([^|]*\)|\?\(.*\)\]\]'
+
+    " [g]oto [f]ile named inside the closest wikilink
+    nnoremap <expr> <leader>gf 'mb/' . wikilink_regexp . '<CR>:nohl<CR>lvi[gf'
+
+    " Create [n]ew [m]arkdown file named via wikilink
+    nnoremap <leader>nm "byi[:e <C-R>b.md<CR>"hPG
 
 "=============================================================================
 " List of plugins
