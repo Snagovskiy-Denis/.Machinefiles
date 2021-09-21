@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# 
+# Opens the file selected using menu in the $EDITOR
+# It does not open a new window, so the terminal must be provided by wm
+# 
+# bash  example:
+#   $ dmconf
+#
+# i3-wm example:
+#   bindcode $mod+Shift+f exec $terminal -e dmconf
+
+get_filename() {
+    bmfiles="${HOME}/.config/shell/bm-files"
+    menu="rofi -matching fuzzy -dmenu -i -p Edit:"
+
+    awk '{print $NF}' "${bmfiles}" | envsubst | ${menu}
+}
+
+edit_file() {
+    # $1 = absolute path to file
+    cd $(dirname $1) && "${EDITOR:=nvim}" "${1}"
+}
+
+
+filename=$(get_filename)
+[[ -f "${filename}" ]] && edit_file "${filename}"

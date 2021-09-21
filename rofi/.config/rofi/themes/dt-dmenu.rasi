@@ -14,7 +14,7 @@
     prompt-font:                "Ubuntu Bold 9";
     prompt-background:          #51afef;
     prompt-foreground:          #282c34;
-    prompt-padding:             2px;
+    prompt-padding:             5px;
     selected-normal-background: #ae3f3e;
     selected-normal-foreground: #ffffff;
 }
