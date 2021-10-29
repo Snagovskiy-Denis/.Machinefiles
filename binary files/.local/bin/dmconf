@@ -8,6 +8,9 @@
 #
 # i3-wm example:
 #   bindcode $mod+Shift+f exec $terminal -e dmconf
+#
+# qtile example:
+#   lazy.spawn(f'{TERMINAL} -e dmconf')
 
 get_filename() {
     bmfiles="${HOME}/.config/shell/bm-files"

@@ -1,0 +1,30 @@
+{
+    "colors": {
+        "black": "#111111",
+        "grey0": "#333333",
+        "grey1": "#555555",
+        "grey2": "#777777",
+        "grey3": "#999999",
+        "grey4": "#bbbbbb",
+        "grey5": "#dddddd",
+        "white": "#ffffff",
+
+        "red": "#ff0000",
+        "green": "#2ecc40",
+        "blue": "#3300ff",
+        "cyan": "#7fdbff",
+        "magenta": "#b10dc9",
+        "yellow": "#ffdc00",
+        "pink": "#ff0099",
+
+        "bright-green": "#33ff00",
+        "bright-blue": "#0066ff",
+
+        "dark-magenta": "#85144b"
+    },
+    "font": {
+        "name": "Hack Nerd Font",
+        "size": 12,
+        "family": ""
+    }
+}
