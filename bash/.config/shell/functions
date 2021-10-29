@@ -4,9 +4,9 @@ is_x_session () {
     [[ $(xhost >& /dev/null) ]] && return 0 || return 1
 }
 
-aur () {
-    # Download and upgrade given AUR package (yay AUR helper by default)
-    package_name=${1:-yay}
+AUR () {
+    # Download or upgrade given AUR package (aura pacman wrapper by default)
+    package_name=${1:-aura-bin}
     download_path=/tmp/${package_name}
 
     # Ensure the base-devel package group is instulled

@@ -32,9 +32,12 @@ $if mode=vi
     "\e[B": history-search-forward
     j: history-search-forward
     k: history-search-backward
+
     # better history search for vi-insert mode
     set keymap vi-insert
     "\e[A": history-search-backward
     "\e[B": history-search-forward
+    Control-j: history-search-forward
+    Control-k: history-search-backward
+    Control-l: clear-screen
 $endif
-

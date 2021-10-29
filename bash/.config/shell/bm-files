@@ -1,11 +1,16 @@
 alacritty  cfa   $HOME/.config/alacritty/alacritty.yml
 aliasrc    cfs   $HOME/.config/shell/aliases
 bashrc     cfb   $HOME/.bashrc
-bm-dirs    bmd   $HOME/.config/shell/bm-dirs
-bm-files   bmf   $HOME/.config/shell/bm-files
-i3blocks   cfib  $HOME/.config/i3/i3blocks.conf
 i3         cfi   $HOME/.config/i3/config
-nvim       cfv   $HOME/.config/nvim/init.vim
+i3blocks   cfib  $HOME/.config/i3/i3blocks.conf
+newsboat   url   $HOME/.config/newsboat/urls
+newsboat   cfn   $HOME/.config/newsboat/config
+nvim       cfv   $HOME/.config/nvim/init.lua
 profile    cfp   $HOME/.bash_profile
 qtile      cfq   $HOME/.config/qtile/config.py
 task       cft   $HOME/.config/taskrc
+
+log-qtile  lqt   $HOME/.local/share/qtile/qtile.log
+autostart  aut   $HOME/.config/shell/autostart.sh
+bm-dirs    bmd   $HOME/.config/shell/bm-dirs
+bm-files   bmf   $HOME/.config/shell/bm-files

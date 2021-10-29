@@ -1,15 +1,18 @@
 #!/bin/sh
 
-# without x session
+# without x session \ inside TTY
+
 if [ -z "${DISPLAY}" ]; then
     # switch ESC and CapsLock
     filename=/tmp/.keystrings
-    #printf "keycode 1 = Caps_Lock\nkeycode 58 = Escape\n" > ${filename}
-    #loadkeys $filename 
-    #rm $filename
+    printf "keycode 1 = Caps_Lock\nkeycode 58 = Escape\n" > ${filename}
+    # visudo NOPASSWD: /urs/bin/loadkeys /tmp/.keystrings
+    sudo loadkeys $filename
+    rm $filename
 else
     # x session
-    # layouts and switch btn
+
+    # layouts and layout switch button
     setxkbmap us,ru -option grp:menu_toggle
 
     # compose key
@@ -20,9 +23,9 @@ else
     setxkbmap -option ctrl:nocaps
     xcape -e 'Control_L=Escape'
 
-    # alone <Space> sends <Escape>
+    # alone <Space> sends <Space>
     # <Space> plus another_key sends <Super-another_key>
-    xmodmap $HOME/.config/.Xmodmap
+    [[ -f "$HOME/.config/.Xmodmap" ]] && xmodmap $HOME/.config/.Xmodmap
 
     spare_modifier="Hyper_L"
     xmodmap -e "keycode 65 = $spare_modifier"

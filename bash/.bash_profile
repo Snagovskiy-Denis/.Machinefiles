@@ -14,20 +14,21 @@ export BROWSER=vivaldi-stable
 
 # XDG Base Directories:
 export XDG_CONFIG_HOME="${HOME}/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CACHE_HOME="$HOME/.cache"
-user_dirs="$XDG_CONFIG_HOME/user-dirs.dirs" 
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_CACHE_HOME="${HOME}/.cache"
+user_dirs="${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs" 
 [[ -f "${user_dirs}" ]] && source "${user_dirs}"
 
 # ~/ Clean-up:
-export CARGO_HOME="${XDG_DATA_HOME}/cargo"
-export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
-export INPUTRC="${XDG_CONFIG_HOME}/readline/inputrc"
-export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="${XDG_CONFIG_HOME}/java"
-export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
-export TASKRC="${XDG_CONFIG_HOME}/taskrc"
-export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
-export XINITRC="${XDG_CONFIG_HOME}/X11/xinitrc"
+export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
+export GTK2_RC_FILES="${XDG_CONFIG_HOME:-$HOME/.config}/gtk-2.0/gtkrc"
+export INPUTRC="${XDG_CONFIG_HOME:-$HOME/.config}/readline/inputrc"
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="${XDG_CONFIG_HOME:-$HOME/.config}/java"
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc"
+export TASKRC="${XDG_CONFIG_HOME:-$HOME/.config}/taskrc"
+export WGETRC="${XDG_CONFIG_HOME:-$HOME/.config}/wgetrc"
+export XINITRC="${XDG_CONFIG_HOME:-$HOME/.config}/X11/xinitrc"
+export STACK_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/stack"
 
 # Other program settings:
 export LESS='-R --use-color -Dd+r$Du+b'
