@@ -52,6 +52,10 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     " Между курсором и концом экрана 7 строк, иначе двигай экран
     set scrolloff=7 
 
+    " Понимание фигурных скобок в переменных среды для gf
+    " Теперь $HOME/.config == ${HOME}/.config
+    set isfname+={,}
+
 "
 
     " Поддержка русского языка
@@ -88,6 +92,25 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
 
 "
 
+    " LSP
+    nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+    nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
+    nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+    nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+    nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
+    nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+    nnoremap <silent> <C-p> <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+    nnoremap <silent> <C-n> <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+
+    " autoformat
+    autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
+    autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
+
+"
+
+
+
+
 "=============================================================================
 " Plugins settings
 "   ______ _             _                      _   _   _                 
@@ -120,6 +143,26 @@ autocmd BufEnter *.config/nvim/init.vim setlocal foldmethod=indent
     let g:airline#extensions#tabline#buffer_min_count = 4
     let g:airline#extensions#term#enabled = 0
     
+"
+
+    " LSP config
+    set completeopt=menuone,noselect
+
+    luafile ~/.config/nvim/lua/plugins/compe-config.lua
+
+    luafile ~/.config/nvim/lua/lsp/bash-ls.lua
+    luafile ~/.config/nvim/lua/lsp/javascript-ls.lua
+    "luafile ~/.config/nvim/lua/lsp/json-ls.lua
+    luafile ~/.config/nvim/lua/lsp/python-ls.lua
+    luafile ~/.config/nvim/lua/lsp/lua-ls.lua
+
+    " plugins/compe
+    inoremap <silent><expr> <C-Space> compe#complete()
+    inoremap <silent><expr> <CR>      compe#confirm({ 'keys': '<CR>', 'select': v:true })
+    inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+    inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+    inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+
 "=============================================================================
 " Functions
 "                 ______                _   _                 
@@ -290,7 +333,7 @@ let g:mapleader = ","
 "
 
     " nerdtree
-    nmap <C-N> :NERDTreeToggle<CR>
+    "nmap <C-N> :NERDTreeToggle<CR>
 
 "
 
@@ -406,6 +449,11 @@ let g:mapleader = ","
 
             call minpac#add('tyru/open-browser.vim')
 
+                " LSP
+            call minpac#add('neovim/nvim-lspconfig')
+            call minpac#add('hrsh7th/nvim-compe')
+
+            
             "call minpac#add('sakhnik/nvim-gdb')
         endif
     endfunction
