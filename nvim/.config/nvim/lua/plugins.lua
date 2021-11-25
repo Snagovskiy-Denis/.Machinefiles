@@ -81,7 +81,7 @@ return {
 
     -- Status Line and Bufferline
     {
-      'shadmansaleh/lualine.nvim',
+      'nvim-lualine/lualine.nvim',
       config = [[require 'plugin.lualine']],
     },
     {

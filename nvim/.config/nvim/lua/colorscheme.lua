@@ -1,4 +1,4 @@
-local catppuccino = require('catppuccino')
+local catppuccino = require('catppuccin')
 
 catppuccino.setup(
     {
@@ -59,4 +59,4 @@ catppuccino.setup(
 
 
 -- base16-colors base16-isotope base16-atelier-seaside base16-google-dark
-vim.cmd[[colorscheme catppuccino]]
+vim.cmd[[colorscheme catppuccin]]

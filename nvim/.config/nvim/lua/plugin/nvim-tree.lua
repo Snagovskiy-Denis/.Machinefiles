@@ -6,7 +6,6 @@ require 'nvim-tree'.setup {
         enable = true,
         update_cwd = true,
     },
-    lsp_diagnostics = true,
 }
 
 

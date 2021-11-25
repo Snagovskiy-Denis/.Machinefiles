@@ -21,6 +21,10 @@ require 'telescope'.setup {
                 ['<C-k>'] = actions.cycle_history_prev,
             },
         },
+
+        file_ignore_patterns = {
+            'venv',
+        },
     },
 
     pickers = {

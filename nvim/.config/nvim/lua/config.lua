@@ -53,6 +53,7 @@ function M:load_vanilla_options ()
         tabstop = 4, -- <Tab> counts as 4 spaces
         termguicolors = true, -- enable terminal gui colors
         wrap = false, -- display lines as one long line
+        spelllang = 'ru,en,la', -- check spelling of given languages
     }
 
     local append_options = {
@@ -98,13 +99,13 @@ function M:load_commands ()
         },
 
         _git = {
-            { 'FileType', 'gitcommit',  'setlocal wrap' },
+            { 'FileType', 'gitcommit', ' setlocal wrap' },
             { 'FileType', 'gitcommit', 'setlocal spell' },
         },
 
         _markdown = {
-            { 'FileType', 'markdown', 'setlocal wrap' },
-            --{ 'FileType', 'markdown', 'setlocal spell' },
+            { 'FileType', 'markdown', ' setlocal wrap' },
+            { 'FileType', 'markdown', 'setlocal spell' },
         },
 
         _autocompile = {

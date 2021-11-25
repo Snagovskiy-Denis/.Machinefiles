@@ -20,5 +20,3 @@ vim.fn.sign_define('DapStopped', {
 })
 
 dap.defaults.fallback.terminal_win_cmd = '50vsplit new'
-
-vim.g.dap_virtual_text = true

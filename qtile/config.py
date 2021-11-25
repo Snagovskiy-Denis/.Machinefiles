@@ -82,6 +82,7 @@ keys = [
     Key([mod], 'w', lazy.spawn(BROWSER), desc='Web browser'),
     Key([mod], 'e', lazy.spawn(cli_app(EDITOR)), desc='Text editor'),
     Key([mod], 'r', lazy.spawn(cli_app('ranger')), desc='File browser'),
+    Key([mod], 'u', lazy.spawn('alacritty -e ranger'), desc='test'), # TODO
     # TODO: rewrite note bash function as a separate file?
     Key([mod, shift], 'n', 
         lazy.spawncmd(prompt='note', 
@@ -210,7 +211,7 @@ groups = [
               label='', position=8,
         ),
 
-        Group('9',
+        Group('9', layout='max',
               matches=[Match(wm_class=['gnome-pomodoro', 'anki'])],
               label='9', position=9,
         ),
