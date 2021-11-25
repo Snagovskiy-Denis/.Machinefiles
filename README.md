@@ -4,6 +4,7 @@
 3. Optional dry run: `$ stow */ --target=$HOME --simulate --verbose=1`
 4. all: `$ stow */ --target=$HOME`; only one:`$ stow nvim --target=$HOME`
 
+
 ## Programs
 Create\update .pacman.list file:
 `$ pacman -Qeq > .pacman.list`
@@ -11,13 +12,18 @@ Create\update .pacman.list file:
 Install .pacman.list file:
 `# pacman -S - < .pacman.list`
 
-It might be better to use aur helper (like yay) for synchronization
+It might be better to use aur helper (like aura) for synchronization
+
 
 ## Keymap
+
 File on path `/etc/vconsole.conf` should contain this string: `KEYMAP=<path to personal.map>`
 
+
 ## bin
+
 Scripts are in `binary files` folder
+
 
 ## TODO
 1. Add stow targets for each directory individually (add --ignore option or create .stow-local-ignore)
