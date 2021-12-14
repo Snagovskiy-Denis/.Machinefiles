@@ -38,7 +38,5 @@ autopairs.add_rules({
 )
 
 
-require'cmp'.setup()
-
 
 --require 'nvim-treesitter.configs'.setup { autopairs = { enable = true } }

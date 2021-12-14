@@ -47,7 +47,7 @@ return {
     {
       'windwp/nvim-autopairs',
       -- event = 'InsertEnter',
-      after = 'nvim-cmp',
+      -- after = 'nvim-cmp',
       config = [[require 'plugin.autopairs']],
     },
 
@@ -68,7 +68,7 @@ return {
 
     -- Comments
     {
-      'terrortylor/nvim-comment',
+      'numToStr/Comment.nvim',
       event = 'BufRead',
       config = [[require 'plugin.comment']],
     },

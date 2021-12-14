@@ -43,11 +43,11 @@ local vopts = {
 }
 
 local vmappings = {
-    ['/'] = { ':CommentToggle<CR>', 'Comment' },
+    ['/'] = { '<esc><cmd>lua require "Comment.api".gc(vim.fn.visualmode())<CR>', 'Comment' },
 }
 
 local mappings = {
-    ['/'] = { '<cmd>CommentToggle<CR>', 'Comment' },
+    ['/'] = { '<cmd>lua require "Comment".toggle ()<CR>', 'Comment' },
     ['f'] = { '<cmd>Telescope find_files<CR>', 'Find File' },
     ['h'] = { '<cmd>:set hlsearch!<CR>', 'Toggle highlight' },
     ['S'] = { '<cmd>:set spell!<CR>', 'Toggle Spell checking' },

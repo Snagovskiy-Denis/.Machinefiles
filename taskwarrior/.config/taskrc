@@ -49,7 +49,7 @@ context.undefined=tags.none: project:
 report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
 
 # Urgency coefficients
-#urgency.user.project.Employment.coefficient=2.0
+urgency.user.project.Employment.coefficient=3.0
 #urgency.user.project.Employment.Portfolio.coefficient=6.0  # temp priority
 
 urgency.user.project.Flesh.coefficient=-3.0
