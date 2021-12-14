@@ -8,6 +8,7 @@ bash-language-server
 bison
 calc
 calibre
+chrony
 cmatrix
 cmus
 deno
@@ -88,7 +89,6 @@ picom
 pkgconf
 plank
 playerctl
-postgresql
 postman-bin
 powerline
 powerline-fonts

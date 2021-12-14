@@ -1,30 +1,39 @@
 ## Installing
 
-1. `# pacman -S git stow`
-2. `$ git clone git@github.com:Di0nisBloody/.Machinefiles.git`
-3. Optional dry run: `$ stow */ --target=$HOME --simulate --verbose=1`
-4. all: `$ stow */ --target=$HOME`; only one:`$ stow nvim --target=$HOME`
+1. Pre-requirements (*run as root*)
+
+`pacman -S git stow`
+
+2. Clone repository and cd into it
+
+3. Optional dry run 
+
+`stow */ --target=$HOME --simulate --verbose=1`
+
+4. Installation itself
+
+All packages: `stow */ --target=$HOME`
+
+Only one package: `stow nvim --target=$HOME`
 
 
 ## Programs
 
 Create\update .pacman.list file:
-`$ pacman -Qeq > .pacman.list`
 
-Install .pacman.list file:
-`# pacman -S - < .pacman.list`
-
-It might be better to use aur helper (like aura) for synchronization
+`pacman -Qeq > .pacman.list`
 
 
-## Keymap
+Install .pacman.list file *as root*:
 
-File on path `/etc/vconsole.conf` should contain this string: `KEYMAP=<path to personal.map>`
+`pacman -S - < .pacman.list`
+
+It might be better to use AUR helper (such as aura) for synchronization
 
 
 ## bin
 
-Scripts are in `binary files` folder
+Runnable scripts are stored in `binary files` folder
 
 
 ## TODO
