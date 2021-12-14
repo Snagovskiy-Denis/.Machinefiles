@@ -14,7 +14,7 @@
     prompt-font:                "Ubuntu Bold 9";
     prompt-background:          #51afef;
     prompt-foreground:          #282c34;
-    prompt-padding:             5px;
+    prompt-padding:             2px;
     selected-normal-background: #ae3f3e;
     selected-normal-foreground: #ffffff;
 }
@@ -51,3 +51,17 @@
     background-color: @selected-normal-background;
     text-color:       @selected-normal-foreground;
 }
+
+element-text {
+    background-color: inherit;
+    text-color:       inherit;
+}
+
+/* Not actually relevant for this configuration, but it might
+be useful to someone having issues with their icons' background color
+
+element-icon {
+    background-color: inherit;
+}
+*/
+
