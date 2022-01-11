@@ -69,6 +69,8 @@ function M:load_vanilla_options ()
     for k, v in pairs(options) do
         vim.opt[k] = v
     end
+
+    vim.opt['iminsert'] = options['iminsert']  -- fix this option separately
 end
 
 -- vim.cmd commands

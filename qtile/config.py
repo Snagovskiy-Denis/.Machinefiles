@@ -21,9 +21,7 @@ from libqtile.utils import guess_terminal
 
 
 def cli_app(app: 'Name of $PATH located application') -> str:
-    '''Quick fix of https://github.com/qtile/qtile/issues/2167 bug'''
-    fix_environment = 'export -n LINES; export -n COLUMNS; sleep 0.1 &&'
-    return f'{TERMINAL} -t {app.capitalize()} -e sh -c "{fix_environment} {app}"'
+    return f'{TERMINAL} -t {app.capitalize()} -e {app}'
 
 
 TERMINAL = getenv('TERMINAL', guess_terminal())
@@ -82,7 +80,6 @@ keys = [
     Key([mod], 'w', lazy.spawn(BROWSER), desc='Web browser'),
     Key([mod], 'e', lazy.spawn(cli_app(EDITOR)), desc='Text editor'),
     Key([mod], 'r', lazy.spawn(cli_app('ranger')), desc='File browser'),
-    Key([mod], 'u', lazy.spawn('alacritty -e ranger'), desc='test'), # TODO
     # TODO: rewrite note bash function as a separate file?
     Key([mod, shift], 'n', 
         lazy.spawncmd(prompt='note', 
@@ -117,6 +114,7 @@ keys = [
         Key([], 'p', lazy.spawn(cli_app('ipython'))),
         Key([], 'h', lazy.spawn(cli_app('htop'))),
         Key([], 'n', lazy.spawn(cli_app('newsboat')), desc='RSS feed'),
+        Key([], 'a', lazy.spawn('passmenu'), desc='Frontend for pass'),
 
         # Binaries & Scripts
         Key([], 'j', lazy.spawn(cli_app('oj'))),
@@ -228,8 +226,8 @@ dgroups_app_rules = []
 for group in groups:
     name = group.name
     keys.extend([
-        Key([mod], name, lazy.group[name].toscreen()),
-        Key([mod,shift], name, lazy.window.togroup(name, switch_group=True)),
+        Key([mod], name, lazy.group[name].toscreen(toggle=True)),
+        Key([mod, shift], name, lazy.window.togroup(name, switch_group=True)),
         Key([mod, ctrl], name, lazy.group.switch_groups(name)),
     ])
 

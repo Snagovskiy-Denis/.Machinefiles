@@ -45,7 +45,7 @@ function M.setup ()
 
     M.rise_ui ()
 
-    require 'lsp.null-ls'.setup ()
+    require 'lsp.null-ls'
 
     local lsp_settings_status_ok, lsp_settings = pcall(require, 'nlspsettings')
     if lsp_settings_status_ok then

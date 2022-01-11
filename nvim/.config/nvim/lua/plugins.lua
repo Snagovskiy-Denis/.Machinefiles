@@ -104,6 +104,7 @@ return {
         'ChristianChiarulli/dashboard-nvim',
         event = 'BufWinEnter',
         config = [[require 'plugin.dashboard']],
+        disable = true,
     },
 
     -- Terminal
@@ -140,10 +141,10 @@ return {
     { 'kyazdani42/nvim-web-devicons' },  -- Icons for other plugins
 
     -- Themes and aesthetics
-    { 'Pocco81/Catppuccino.nvim' },
+    { 'Pocco81/Catppuccino.nvim', disable = true },
+    { 'folke/tokyonight.nvim' },
     { 'dracula/vim' },
     { 'marko-cerovac/material.nvim' },
-    { 'bignimbus/pop-punk.vim', disable = true },
 
 
     -- Maybe later

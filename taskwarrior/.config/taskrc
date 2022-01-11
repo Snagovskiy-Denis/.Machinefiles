@@ -50,9 +50,6 @@ report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur
 
 # Urgency coefficients
 urgency.user.project.Employment.coefficient=3.0
-#urgency.user.project.Employment.Portfolio.coefficient=6.0  # temp priority
-
-urgency.user.project.Flesh.coefficient=-3.0
 
 urgency.user.tag.someday.coefficient=-6.0
 urgency.user.tag.Terminal.coefficient=-4.0  # terminal task = end of project
