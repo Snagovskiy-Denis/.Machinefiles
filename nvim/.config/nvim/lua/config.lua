@@ -110,6 +110,16 @@ function M:load_commands ()
             { 'FileType', 'markdown', 'setlocal spell' },
         },
 
+        _text = {
+            { 'FileType', 'text', ' setlocal wrap' },
+            { 'FileType', 'text', 'setlocal spell' },
+        },
+
+        _javascript = {
+            { 'FileType', 'javascript', 'setlocal ts=2 sts=2 sw=2' },
+            { 'FileType', 'html', 'setlocal ts=2 sts=2 sw=2' },
+        },
+
         _autocompile = {
             --{ 'BufWritePost', 'plugins.lua', ':luafile $MYVIMRC | PackerCompile' },
         },

@@ -21,6 +21,8 @@ alias n="newsboat"
 alias p="pacman"
 alias a="aura"
 alias e="${EDITOR:-nvim}"
+alias se="s e"
+alias o="xdg-open"
 alias f="dmconf"
 
 alias ll="ls -Al"
@@ -58,6 +60,7 @@ alias vc="python -m venv ./venv"
 alias va="source ./venv/bin/activate"
 alias vv="vc && va && pip install -r requirements.txt || echo 'error'"
 
+alias no="note -o"
 note () {
     help_note="How to use:
         No arguments = print file
@@ -68,7 +71,7 @@ note () {
         -o = open note in editor specified by EDITOR
         -c = put\paste clipboard to file
         --clear-file = clear file"
-    filepath="${HOME}/.notes"
+    filepath="${HOME}/.notes.md"
 
     # if file doesn't exist, create it
     if [[ ! -f $filepath ]]; then

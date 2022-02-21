@@ -26,6 +26,9 @@ return {
       },
     },
 
+    -- lsp-server installer
+    { 'williamboman/nvim-lsp-installer' },
+
     -- Navigation
     {
       'nvim-telescope/telescope.nvim',
@@ -51,10 +54,9 @@ return {
       config = [[require 'plugin.autopairs']],
     },
 
-    -- Treesitter / NB: remove after neovim 0.6 release
+    -- Treesitter
     {
       'nvim-treesitter/nvim-treesitter',
-      branch = '0.5-compat',
       config = [[require 'plugin.treesitter']],
     },
 
@@ -144,7 +146,7 @@ return {
     { 'Pocco81/Catppuccino.nvim', disable = true },
     { 'folke/tokyonight.nvim' },
     { 'dracula/vim' },
-    { 'marko-cerovac/material.nvim' },
+    --{ 'marko-cerovac/material.nvim' },
 
 
     -- Maybe later
@@ -153,4 +155,11 @@ return {
 
     -- Smooth scroll
     { 'karb94/neoscroll.nvim', config = [[require 'neoscroll'.setup()]], disable = true },
+
+    -- JavaScript syntax highlighting
+    { 'mxw/vim-jsx' },
+    { 'pangloss/vim-javascript' },
+
+    -- cheat.sh into vim
+    { 'dbeniamine/cheat.sh-vim' },
 }

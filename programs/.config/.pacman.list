@@ -2,13 +2,16 @@ alacritty
 anki
 aura
 autoconf
+autojump
 automake
 base
 bash-language-server
 bison
+blender
 calc
 calibre
 chrony
+cht.sh-git
 cmatrix
 cmus
 deno
@@ -20,7 +23,6 @@ docker-compose
 dos2unix
 dunst
 emote
-eog
 espeak
 fakeroot
 fd
@@ -70,8 +72,10 @@ neovim
 nerd-fonts-complete
 netrw-bin
 networkmanager
+networkmanager-openvpn
 newsboat
 nitrogen
+nodejs
 ntfs-3g
 numlockx
 nvidia
@@ -80,9 +84,11 @@ nvidia-settings
 nvidia-utils
 obs-studio
 obsidian
+openvpn
 orchis-theme-git
 pacman-contrib
 pamixer
+pass-otp
 patch
 perl-rename
 picom
@@ -104,6 +110,8 @@ python-pandas
 python-pip
 python-pynvim
 python-scipy
+python-tasklib
+python2-stringcase
 qtile
 qutebrowser
 r
@@ -120,6 +128,7 @@ sshfs
 steam
 stow
 sudo
+surfraw
 sushi
 sxiv
 task

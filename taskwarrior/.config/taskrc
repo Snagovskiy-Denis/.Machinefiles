@@ -10,50 +10,62 @@
 
 # Use the command 'task show' to see all defaults and overrides
 
-# Files
+# General \ misc
 data.location=~/.config/.task
-
-# Color theme (uncomment one to use)
-#include /usr/share/doc/task/rc/light-16.theme
-#include /usr/share/doc/task/rc/light-256.theme
-#include /usr/share/doc/task/rc/dark-16.theme
+weekstart=Monday
+#include /usr/share/doc/task/rc/dark-violets-256.theme
 #include /usr/share/doc/task/rc/dark-256.theme
-#include /usr/share/doc/task/rc/dark-red-256.theme
-#include /usr/share/doc/task/rc/dark-green-256.theme
-#include /usr/share/doc/task/rc/dark-blue-256.theme
-include /usr/share/doc/task/rc/dark-violets-256.theme
-#include /usr/share/doc/task/rc/dark-yellow-green.theme
-#include /usr/share/doc/task/rc/dark-gray-256.theme
-#include /usr/share/doc/task/rc/dark-gray-blue-256.theme
-#include /usr/share/doc/task/rc/solarized-dark-256.theme
-#include /usr/share/doc/task/rc/solarized-light-256.theme
+include /usr/share/doc/task/rc/solarized-dark-256.theme
 #include /usr/share/doc/task/rc/no-color.theme
 
-# Date & Time
-weekstart=Monday
+
+# context
+context.today=scheduled < tomorrow or due < tomorrow
+context.week=scheduled < 1week or due < 1week
+context.work=project = Employment or +work
+context.easy=estimate < 2days and difficulty = E
+context.leisure=+joy or project = Art or +I
+
 
 # UDA stands for User Defined Arguments
 ## Esimate — how much time will task occupy
-uda.estimate.label=Estimate
+uda.estimate.label=Estim
 uda.estimate.type=duration
-#uda.estimate.default=1day
 
-# task context
-context.work=project:Employment or +work
-context.study=+study or +Obsidian
-context.strange=project: -study -Obsidian
-context.undefined=tags.none: project:
+## Difficulty - how much of an effort task needs
+uda.difficulty.type=string
+uda.difficulty.label=⚡
+uda.difficulty.values=,E,C,🪶,⚡  # easy, complex
+
 
 # report
-# description.count instead of desctiption
-report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
+# report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
+report.next.labels=ID,Deps,Age,P,Due,Estim,⚡,Description,Sched,Project,Tag,Urg
+report.next.columns=id,depends,entry.age,priority,due.relative,estimate,difficulty,description.count,scheduled.countdown,project,tags,urgency
+#report.next.sort=urgency-,priority+\/
+
+## needs to be 
+report.too_big.description=Pretenders to become projects
+report.too_big.columns=id,priority,due.relative,estimate,description.count,project,tags
+report.too_big.sort=estimate-
+report.too_big.filter=status = pending estimate > 2d
+
 
 # Urgency coefficients
-urgency.user.project.Employment.coefficient=3.0
+#   Due + High priority = Top Urgency
+#   Current project = Middle Urgency
+#   Time Estimate matches my free time = Low Urgency
+#   No priority, no estimate, no difficulty, etc. = is it even a task? should I keep it?
+urgency.uda.difficulty..coefficient=-0.5
+urgency.uda.estimate..coefficient=-0.8
+urgency.user.tag.ZN.coefficient=1.5
 
-urgency.user.tag.someday.coefficient=-6.0
-urgency.user.tag.Terminal.coefficient=-4.0  # terminal task = end of project
+
+# taskwarrior-tui
+uda.taskwarrior-tui.report.next.filter=status:pending or status:waiting
 
 
 # End of file
 # Below are 'task config'-setted values
+news.version=2.6.0
+context=week

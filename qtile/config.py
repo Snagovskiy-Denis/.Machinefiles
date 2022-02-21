@@ -4,11 +4,6 @@ Config debug help:
    1. check syntax with: $ python -m py_compile ~/.config/qtile/config.py
    2. chech log on path ~/.local/share/qtile/qtile.log for errors
 """
-# TODO: aesthetics
-# TODO: break config to multiple files: config, keys + mouse, groups, screens
-# TODO: look at keypirinha for missed features...
-
-
 import json
 from os import getenv
 from subprocess import run
@@ -44,6 +39,9 @@ lmb   = 'Button1'
 rmb   = 'Button3'
 
 
+# TODO: Separate "keys" variable into different variables with names
+# equal to the headings of the commented-out sections (key_groups)
+# for key_group in key_groups: keys.extend(key_group)
 keys = [
 # DISABLE ALL OTHER KEYS
     KeyChord([], 'Alt_R', 
@@ -80,18 +78,6 @@ keys = [
     Key([mod], 'w', lazy.spawn(BROWSER), desc='Web browser'),
     Key([mod], 'e', lazy.spawn(cli_app(EDITOR)), desc='Text editor'),
     Key([mod], 'r', lazy.spawn(cli_app('ranger')), desc='File browser'),
-    # TODO: rewrite note bash function as a separate file?
-    Key([mod, shift], 'n', 
-        lazy.spawncmd(prompt='note', 
-        command=f'echo "%s" >> {Path.home().joinpath(".notes")}'), 
-        ),
-        # desc='Scratch note'
-    # Key([mod], 'n', 
-        # lazy.spawncmd(prompt='note',
-        # command='bash -c "note %s"'),
-        # desc='Scratch note'
-    # ),
-    # Key([mod, shift], 'n', lazy.spawn('bash -c "note -c"'), desc='Scratch note'),
 
 
     Key([], 'XF86Calculator', lazy.spawn('rofi -modi calc -show calc')),
@@ -120,6 +106,12 @@ keys = [
         Key([], 'j', lazy.spawn(cli_app('oj'))),
         Key([], 'f', lazy.spawn(cli_app('dmconf')), desc='Edit bm-file'),
     ]),
+
+# SCREENSHOT & SCREENCAST
+
+    Key([], 'Print', lazy.spawn('flameshot gui')),
+    Key([shift], 'Print', lazy.spawn('flameshot full -c')),
+    Key([ctrl], 'Print', lazy.spawn(f'flameshot full -p {getenv("HOME")}')),
 
 # AUDIO AND CMUS
     Key([], 'XF86AudioPlay',        lazy.spawn('cmus-remote --pause')),
@@ -279,7 +271,7 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                # TODO: decorator for Cmus.get_info if output is empty
+                # TODO: decorator for Cmus.get_info func that returns default string if cmus output is empty
                 widget.Cmus(max_chars=70),
                 # TODO: hide some widgets inside boxed
                 # TODO: create task widget

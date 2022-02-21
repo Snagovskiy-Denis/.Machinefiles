@@ -62,6 +62,7 @@ window:
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background and no title bar buttons
   decorations: full
+  opacity: 0.8
 
   # Startup Mode (changes require restart)
   #
@@ -367,7 +368,7 @@ colors:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 0.8
+# background_opacity: 0.8
 
 #selection:
   # This string contains all characters that are used as separators for

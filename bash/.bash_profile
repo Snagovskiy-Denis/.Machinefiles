@@ -35,6 +35,7 @@ export LESS='-R --use-color -Dd+r$Du+b'
 
 # Autocompletion
 source ~/.config/.git-completion.bash
+#source ~/.config/bash_task_completion.bash
 
 # x session
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then

@@ -43,11 +43,11 @@ local vopts = {
 }
 
 local vmappings = {
-    ['/'] = { '<esc><cmd>lua require "Comment.api".gc(vim.fn.visualmode())<CR>', 'Comment' },
+    ['/'] = { '<esc><cmd>lua require ("Comment.api").toggle_linewise_op(vim.fn.visualmode())<CR>', 'Comment' },
 }
 
 local mappings = {
-    ['/'] = { '<cmd>lua require "Comment".toggle ()<CR>', 'Comment' },
+    ['/'] = { '<cmd>lua require("Comment.api").toggle_current_linewise()<CR>', 'Comment' },
     ['f'] = { '<cmd>Telescope find_files<CR>', 'Find File' },
     ['h'] = { '<cmd>:set hlsearch!<CR>', 'Toggle highlight' },
     ['S'] = { '<cmd>:set spell!<CR>', 'Toggle Spell checking' },
@@ -123,7 +123,7 @@ local mappings = {
     },
     n = {
         name = 'New file',
-        w = { '"byi[:e <C-r>b.md<CR>"hPG', '[[Wikilink]] file' },
+        w = { '"byi[:e <C-r>b.md<CR>"hPG', '[[Wikilink]] file (b buffer)' },
     },
     P = {
         name = 'Plugin',

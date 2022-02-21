@@ -672,6 +672,9 @@ c.TerminalInteractiveShell.prompt_includes_vi_mode = False
 ## Class used to generate Prompt token for prompt_toolkit
 #  Default: 'IPython.terminal.prompts.Prompts'
 # c.TerminalInteractiveShell.prompts_class = 'IPython.terminal.prompts.Prompts'
+# from powerline.bindings.ipython.since_5 import PowerlinePrompts
+# c.TerminalInteractiveShell.simple_prompt = False
+# c.TerminalInteractiveShell.prompts_class = PowerlinePrompts
 
 ## Deprecated since IPython 4.0 and ignored since 5.0, set
 #  TerminalInteractiveShell.prompts object directly.
@@ -703,7 +706,7 @@ c.TerminalInteractiveShell.prompt_includes_vi_mode = False
 #  This mode default to `True` if the `IPY_TEST_SIMPLE_PROMPT` environment
 #  variable is set, or the current terminal is not a tty.
 #  Default: False
-# c.TerminalInteractiveShell.simple_prompt = False
+#c.TerminalInteractiveShell.simple_prompt = False
 
 ## Number of line at the bottom of the screen to reserve for the tab completion
 #  menu, search history, ...etc, the height of these menus will at most this

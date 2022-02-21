@@ -12,13 +12,23 @@ aliases_filepath="${HOME}/.config/shell/aliases"
 [ -f ${functions_filepath} ] && source ${functions_filepath}
 [ -f ${aliases_filepath}   ] && source ${aliases_filepath}
 
+# autojump - https://wiki.archlinux.org/title/Autojump
+autojump_filepath=/etc/profile.d/autojump.sh
+[[ -s ${autojump_filepath} ]] && source ${autojump_filepath}
+
+# fzf - https://wiki.archlinux.org/title/Fzf
+fzf_key_bindings_filepath=/usr/share/fzf/key-bindings.bash
+fzf_completion_filepath=/usr/share/fzf/completion.bash
+[[ -f ${fzf_key_bindings_filepath} ]] && source ${fzf_key_bindings_filepath}
+[[ -f ${fzf_completion_filepath} ]] && source ${fzf_completion_filepath}
+
 # Auto "cd" when entering just a path
 shopt -s autocd
 
 
 # Fix if run from terminal https://github.com/qtile/qtile/issues/2167
-export -n LINES
-export -n COLUMNS
+#export -n LINES
+#export -n COLUMNS
 
 
 # ./.bash_history
