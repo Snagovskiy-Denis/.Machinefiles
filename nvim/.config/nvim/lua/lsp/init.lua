@@ -23,10 +23,6 @@ local server_configs = {
             'css',
         },
     },
-    -- zeta_note = {
-    --     cmd = (function ()
-    --     end)()
-    -- },
 }
 
 function M.rise_ui ()

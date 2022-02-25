@@ -12,6 +12,8 @@ export TERMINAL=alacritty
 export EDITOR=nvim
 export BROWSER=vivaldi-stable
 
+export ZETTELKASTEN="${HOME}/Vaults/Zettelkasten/Z-Core/"
+
 # XDG Base Directories:
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_DATA_HOME="${HOME}/.local/share"
@@ -34,8 +36,14 @@ export STACK_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/stack"
 export LESS='-R --use-color -Dd+r$Du+b'
 
 # Autocompletion
-source ~/.config/.git-completion.bash
-#source ~/.config/bash_task_completion.bash
+general_completion=/usr/share/bash-completion/bash_completion
+[[ -f "${general_completion}" ]] && source "${general_completion}"
+
+git_completion="${XDG_CONFIG_HOME:-$HOME/.config}/.git_completion.bash"
+[[ -f "${git_completion}" ]] && source "${git_completion}"
+
+task_completion="${XDG_CONFIG_HOME:-$HOME/.config}/bash_task_completion.bash"
+[[ -f "${task_completion}" ]] && source "${task_completion}"
 
 # x session
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then

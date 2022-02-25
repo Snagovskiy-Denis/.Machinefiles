@@ -1,17 +1,5 @@
 -- Contains leader key mappings
 
--- TODO: move these somethere (config.lua ?)
-local wikilink_regex = [[\[\[\([^|]*\)|\?\(.*\)\]\]o\?]]
-
-local url_g0 = [[[Hh][Tt][Tt][Pp][Ss]\?:\/\/\([Ww]\{3,3}\.\)\?]]
-local url_g1 = [[[-a-zA-Z0-9@:%._+~#=]\+]]
-local url_g2 = [[\.[a-zA-Z0-9()]\+]]
-local url_g3 = [[\/\?[-a-zA-Z0-9()@:%._+~#=?&/]*[a-zA-Z0-9]o\?]]
-
-local url_regexp = url_g0 .. url_g1 .. url_g2 .. url_g3
-local url_short_regexp =     url_g1 .. url_g2 .. url_g3
-
-
 local setup = {
     plugins = {
         spelling = { enabled = true },
@@ -53,19 +41,18 @@ local mappings = {
     ['S'] = { '<cmd>:set spell!<CR>', 'Toggle Spell checking' },
     ['t'] = { '<cmd>new term://bash<CR>', 'Open Terminal' },
     ['e'] = { '<cmd>NvimTreeToggle<CR>', 'Explore' },
-    ['z'] = { '<cmd>TZAtaraxis<CR>', 'Dzen mode' },
-    ['x'] = { '<cmd>TZAtaraxis<CR>', 'Toggle fading' },
+    ['x'] = { '<cmd>TZAtaraxis<CR>', 'Dzen mode' },
+    -- ['x'] = { '<cmd>TZAtaraxis<CR>', 'Toggle fading' },
     l = {
         name = 'LSP',
 
-        I = { '<cmd>LspInfo<CR>', 'Info' },
+        I = { '<cmd>LspInstallInfo<CR>', 'Info' },
         K = { '<cmd>lua vim.lsp.buf.hover()<CR>', 'Help pop-up' },
         d = { '<cmd>lua vim.lsp.buf.definition()<CR>', 'Definitoin' },
         D = { '<cmd>lua vim.lsp.buf.declaration()<CR>', 'Declaration' },
-        r = { '<cmd>lua vim.lsp.buf.references()<CR>', 'References' },
         i = { '<cmd>lua vim.lsp.buf.implementation()<CR>', 'Implementation' },
-        a = { '<cmd>lua vim.lsp.buf.code_action()<CR>', 'Code Action' },
-        R = { '<cmd>lua vim.lsp.buf.rename()<CR>', 'Rename' },
+        a = { "<cmd>lua require('lvim.core.telescope').code_actions()<cr>", 'Code Action' },
+        r = { '<cmd>lua vim.lsp.buf.rename()<CR>', 'Rename' },
         f = { '<cmd>lua vim.lsp.buf.formatting()<CR>', 'Format' },
 
         s = { '<cmd>Telescope lsp_document_symbols<CR>', 'Document Symbols' },
@@ -75,12 +62,12 @@ local mappings = {
         j = { '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', 'Next Diagnostics' },
         k = { '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', 'Previous Diagnostics' },
         w = { '<cmd>Telescope lsp_workspace_diagnostics<CR>', 'Workspace Diagnostics' },
-        l = { '<cmd>Telescope lsp_document_diagnostics<CR>', 'Document Diagnostics' },
+        l = { '<cmd>Telescope diagnostics<CR>', 'Document Diagnostics' },
     },
     s = {
         name = 'Search',
         f = { '<cmd>Telescope find_files<CR>', 'Find File' },
-        e = { '<cmd>Telescope file_browser<CR>', 'Browse files' },
+        -- e = { '<cmd>Telescope file_browser<CR>', 'Browse files' },
         t = { '<cmd>Telescope live_grep<CR>', 'Text' },
         b = { '<cmd>Telescope buffers<CR>', 'Buffers' },
         h = { '<cmd>Telescope help_tags<CR>', 'Find Help' },
@@ -108,30 +95,34 @@ local mappings = {
         s = { "<cmd>lua require'dap'.continue()<cr>", "Start" },
         q = { "<cmd>lua require'dap'.close()<cr>", "Quit" },
     },
-    y = {
-        name = 'Yank',
-        u = { string.format('mb/%s<CR>ygn`b:echo "\"<C-r>+\" was copied<CR>"', url_regexp), 'url' },
-        s = {
-            name = 'short',
-            u = { string.format('mb/%s<CR>ygn`b:echo "\"<C-r>+\" was copied<CR>"', url_short_regexp), 'url' },
-        },
+    z = {
+        name = 'Zettelkasten',
+        l = { '<cmd>lua NewZettelkastenLink()<CR>', 'paste [[link]]' },
+        f = { '<cmd>lua NewZettelkastenLink(true)<CR>', 'paste [[link]] and :edit File.md' },
+        o = { '<cmd>lua FollowZettelkastenLink()<CR>', 'Wiki-links in buffer' },
+        j = { '<cmd>lua FollowZettelkastenLink(1)<CR>', 'First wiki-links in buffer' },
+        k = { '<cmd>lua FollowZettelkastenLink(-1)<CR>', 'Last wiki-links in buffer' },
+        a = { '<cmd>lua FollowZettelkastenLinkAlacritty()<CR>', 'Edit alacritty hinted link' },
     },
     g = {
-        name = 'Goto File',
-        w = { string.format('mb/%s<CR>:nohl<CR>lvi[gf', wikilink_regex), 'closest [[wikilink]]' },
-        v = { '<cmd>:edit $MYVIMRC | cd %:p:h<CR>', '.vimrc' },
-    },
-    n = {
-        name = 'New file',
-        w = { '"byi[:e <C-r>b.md<CR>"hPG', '[[Wikilink]] file (b buffer)' },
+        name = 'Git',
+        o = { '<cmd>Telescope git_status<cr>", "Open changed file' },
+        b = { '<cmd>Telescope git_branches<cr>", "Checkout branch' },
+        c = { '<cmd>Telescope git_commits<cr>", "Checkout commit' },
+        C = {
+          '<cmd>Telescope git_bcommits<cr>',
+          'Checkout commit(for current file)',
+        },
     },
     P = {
         name = 'Plugin',
+        -- TODO: function instead of buffer maccros
         o = { [["byi':!xdg-open https://github.com/<C-r>b &<CR>]], 'Open link' },
         p = { [[o{ '<Esc>"+pa' },<Esc>2T/dT']], 'Paste new from "+' },
     },
     c = {
         name = 'Change',
+        -- TODO: function instead of buffer maccros
         f = { '/<++><CR>c4l', '<++> forward' },
         b = { '?<++><CR>c4l', '<++> backward' },
         t = { '/<++><CR>R', '<++> table (f)' },

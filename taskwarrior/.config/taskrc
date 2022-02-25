@@ -62,10 +62,10 @@ urgency.user.tag.ZN.coefficient=1.5
 
 
 # taskwarrior-tui
-uda.taskwarrior-tui.report.next.filter=status:pending or status:waiting
+uda.taskwarrior-tui.task-report.next.filter=status:pending
 
 
 # End of file
 # Below are 'task config'-setted values
 news.version=2.6.0
-context=week
+context=today

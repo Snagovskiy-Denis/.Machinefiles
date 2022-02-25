@@ -500,6 +500,14 @@ hints:
        key: U
        mods: Control|Shift
 
+   - regex: "\\[\\[[^\\]]+\\]\\]"
+     action: Copy
+     # command: alacritty -e nvim
+     post_processing: false
+     binding:
+       key: G
+       mods: Control|Shift
+
 # Mouse bindings
 #
 # Mouse bindings are specified as a list of objects, much like the key

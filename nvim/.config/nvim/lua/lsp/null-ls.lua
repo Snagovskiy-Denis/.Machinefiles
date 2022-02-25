@@ -1,9 +1,20 @@
-null_ls = require 'null-ls'
+local null_ls = require 'null-ls'
 
-null_ls.setup{
+local formatting = null_ls.builtins.formatting
+local diagnostic = null_ls.builtins.diagnostics
+local code_action = null_ls.builtins.code_actions
+local completion = null_ls.builtins.completion
+local hover = null_ls.builtins.hover
+
+null_ls.setup {
     sources = {
-        null_ls.builtins.formatting.yapf,      -- python
-        null_ls.builtins.formatting.prettier,  -- js, html+css, md
-        null_ls.builtins.formatting.shfmt,     -- shell
+        code_action.shellcheck,
+        -- code_action.refactoring,
+
+        diagnostic.shellcheck,
+
+        -- formatting.autopep8,  -- python
+        formatting.prettier,  -- js, html+css, md
+        formatting.shfmt,     -- shell
     }
 }

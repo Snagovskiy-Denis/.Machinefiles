@@ -5,7 +5,7 @@ return {
     { 'wbthomason/packer.nvim' },
 
     -- LSP actions & formatter
-    { 'jose-elias-alvarez/null-ls.nvim' },
+    { 'jose-elias-alvarez/null-ls.nvim', requires = { 'nvim-lua/popup.nvim' } },
 
     -- LSP autocompletion
     {
@@ -139,7 +139,6 @@ return {
     -- Dependencies for more than one plugin
     { 'neovim/nvim-lspconfig' },  -- Autoconfigure LSP client \ dependency
     { 'nvim-lua/plenary.nvim' },  -- utils like tests and dependecy for other plugins
-    { 'nvim-lua/popup.nvim' },  -- dependecy for null-ls?
     { 'kyazdani42/nvim-web-devicons' },  -- Icons for other plugins
 
     -- Themes and aesthetics
@@ -159,7 +158,4 @@ return {
     -- JavaScript syntax highlighting
     { 'mxw/vim-jsx' },
     { 'pangloss/vim-javascript' },
-
-    -- cheat.sh into vim
-    { 'dbeniamine/cheat.sh-vim' },
 }

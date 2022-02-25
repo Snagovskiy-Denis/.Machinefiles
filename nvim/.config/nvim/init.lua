@@ -8,6 +8,8 @@ require 'lsp'.setup ()
 
 require 'config':init ()
 
+require 'functions'
+
 require 'keymappings'.setup ()
 
 require 'colorscheme'
