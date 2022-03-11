@@ -41,7 +41,7 @@ uda.difficulty.values=,E,C,🪶,⚡  # easy, complex
 # report
 # report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
 report.next.labels=ID,Deps,Age,P,Due,Estim,⚡,Description,Sched,Project,Tag,Urg
-report.next.columns=id,depends,entry.age,priority,due.relative,estimate,difficulty,description.count,scheduled.countdown,project,tags,urgency
+report.next.columns=id,depends,entry.age,priority,due.relative,estimate,difficulty,description.count,scheduled.relative,project,tags,urgency
 #report.next.sort=urgency-,priority+\/
 
 ## needs to be 
@@ -58,7 +58,10 @@ report.too_big.filter=status = pending estimate > 2d
 #   No priority, no estimate, no difficulty, etc. = is it even a task? should I keep it?
 urgency.uda.difficulty..coefficient=-0.5
 urgency.uda.estimate..coefficient=-0.8
+#urgency.uda.estimate.coefficient=
 urgency.user.tag.ZN.coefficient=1.5
+urgency.blocking.coefficient=2
+urgency.blocked.coefficient=-7
 
 
 # taskwarrior-tui

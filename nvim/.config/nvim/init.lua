@@ -1,8 +1,8 @@
 -- self@machine .vimrc
 --
 
-require 'bootstrap':init ()
-require 'plugin-loader':load { require 'plugins' }
+local plugin_loader = require 'plugin-loader':init ()
+plugin_loader:load { require 'plugins' }
 
 require 'lsp'.setup ()
 

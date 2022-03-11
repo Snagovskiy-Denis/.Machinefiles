@@ -23,13 +23,13 @@ else
     setxkbmap -option ctrl:nocaps
     xcape -e 'Control_L=Escape'
 
-    # alone <Space> sends <Space>
-    # <Space> plus another_key sends <Super-another_key>
-    [[ -f "$HOME/.config/.Xmodmap" ]] && xmodmap $HOME/.config/.Xmodmap
+    # # alone <Space> sends <Space>
+    # # <Space> plus another_key sends <Super-another_key>
+    # [[ -f "$HOME/.config/.Xmodmap" ]] && xmodmap $HOME/.config/.Xmodmap
 
-    spare_modifier="Hyper_L"
-    xmodmap -e "keycode 65 = $spare_modifier"
-    xmodmap -e "add Hyper_L = $spare_modifier"
-    xmodmap -e "keycode any = space"
-    xcape -e "$spare_modifier=space"
+    # spare_modifier="Hyper_L"
+    # xmodmap -e "keycode 65 = $spare_modifier"
+    # xmodmap -e "add Hyper_L = $spare_modifier"
+    # xmodmap -e "keycode any = space"
+    # xcape -e "$spare_modifier=space"
 fi

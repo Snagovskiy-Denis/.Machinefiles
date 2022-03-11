@@ -60,6 +60,7 @@ function NewZettelkastenLink (edit_file)
             table.insert(template_lines, line)
         end
         vim.api.nvim_buf_set_lines(0, 0, vim.api.nvim_buf_line_count(0), false, template_lines)
+        vim.api.nvim_win_set_cursor(0, { #template_lines, 0 })  -- goto last line
     end
 
     local filename = vim.fn.input('File: ', '', 'file')
@@ -73,7 +74,6 @@ function NewZettelkastenLink (edit_file)
 
     local new_file_template = vim.fn.getreg('h')
     insert_template_in_current_buffer(new_file_template)
-    vim.api.nvim_win_set_cursor(0, { #template_lines, 0 })  -- goto last line
 end
 
 

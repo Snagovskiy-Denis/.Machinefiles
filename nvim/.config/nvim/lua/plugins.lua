@@ -158,4 +158,10 @@ return {
     -- JavaScript syntax highlighting
     { 'mxw/vim-jsx' },
     { 'pangloss/vim-javascript' },
+
+    -- zettelkasten
+    {
+        'renerocksai/telekasten.nvim',
+        config = [[require 'plugin.telekasten']],
+    },
 }

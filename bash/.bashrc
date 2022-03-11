@@ -27,8 +27,8 @@ shopt -s autocd
 
 
 # Fix if run from terminal https://github.com/qtile/qtile/issues/2167
-#export -n LINES
-#export -n COLUMNS
+# export -n LINES
+# export -n COLUMNS
 
 
 # ./.bash_history

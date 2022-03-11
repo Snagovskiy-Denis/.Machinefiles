@@ -1,12 +1,12 @@
 local M = {}
 
-function M:init ()
+function M:init()
     self.load_vanilla_options()
     self.load_commands()
 end
 
 -- vim.opt commands
-function M:load_vanilla_options ()
+function M:load_vanilla_options()
     local options = {
         -- Please, do not duplicate defaults (:help nvim-defaults)
         clipboard = 'unnamedplus', -- allows neovim to acces system clipboard
@@ -19,7 +19,7 @@ function M:load_vanilla_options ()
         imsearch = 0, -- on start search is in english by default
         keymap = 'russian-jcukenwin', -- add russian layout
         mouse = 'a', -- allow mouse to be used in all neovim modes
-        hidden = true,  -- allow hide unsaved but changed buffers
+        hidden = true, -- allow hide unsaved but changed buffers
         number = true, -- set numbered lines
         relativenumber = true, -- set relative numbered lines
         scrolloff = 8, -- minimal number of screen lines to keep above and below the cursor
@@ -37,9 +37,9 @@ function M:load_vanilla_options ()
     }
 
     local append_options = {
-        isfname = '{,}',  -- ${HOME}/.config now is valid path for gf
-        shortmess = 'c',  -- disable default completion messages
-        suffixesadd = '.md',  -- gf opens [[link to file]] as link\ to\ file.md now
+        isfname = '{,}', -- ${HOME}/.config now is valid path for gf
+        shortmess = 'c', -- disable default completion messages
+        suffixesadd = '.md', -- gf opens [[link to file]] as link\ to\ file.md now
     }
 
     for k, v in pairs(append_options) do
@@ -50,11 +50,11 @@ function M:load_vanilla_options ()
         vim.opt[k] = v
     end
 
-    vim.opt['iminsert'] = options['iminsert']  -- fix this option separately
+    vim.opt['iminsert'] = options['iminsert'] -- fix this option separately
 end
 
 -- vim.cmd commands
-function M:load_commands ()
+function M:load_commands()
     local cmd = vim.cmd
     local autocommands = {
         --
@@ -66,18 +66,11 @@ function M:load_commands ()
         -- },
 
         _general_settings = {
-            { 'TermOpen', '*', 'startinsert' },  -- Open insert mode on :terminal
-        },
-
-        _colorscheme = {
-            -- { 'BufEnter', '*', 'highlight normal guibg=none' }, -- Reset bg opacity
-
-            --{ 'FileType', 'sh', 'colorscheme pop-punk' },
-            --{ 'FileType', 'python', 'colorscheme base16-isotope' },
+            { 'TermOpen', '*', 'startinsert' }, -- Open insert mode on :terminal
         },
 
         _autoformat = {
-            --{ 'BufWritePre', '*', 'lua vim.lsp.buf.formatting_sync()' },
+            -- { 'BufWritePre', '*', 'lua vim.lsp.buf.formatting_sync()' },
         },
 
         _git = {

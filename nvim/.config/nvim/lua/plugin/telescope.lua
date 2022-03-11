@@ -19,6 +19,7 @@ require 'telescope'.setup {
             i = {
                 ['<C-j>'] = actions.cycle_history_next,
                 ['<C-k>'] = actions.cycle_history_prev,
+                ['<C-c>'] = actions.close,
             },
         },
 

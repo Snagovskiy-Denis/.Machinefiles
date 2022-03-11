@@ -40,7 +40,7 @@ alias ps?="ps aux | grep"
 alias reload="source ~/.bashrc"
 alias l.="ls -ld .*"
 alias pacman_sync_fzf="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
-alias pacman_remove_fzf="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
+alias pacman_remove_fzf="pacman -Qeq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
 
 # Allow sudo before other aliases
 alias sudo="sudo "

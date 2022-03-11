@@ -1,3 +1,4 @@
+! clear Lock
 clear Mod3
 clear Mod4
 add Mod3 = Hyper_L

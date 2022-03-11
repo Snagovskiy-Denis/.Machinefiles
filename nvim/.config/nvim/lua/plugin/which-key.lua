@@ -97,12 +97,24 @@ local mappings = {
     },
     z = {
         name = 'Zettelkasten',
-        l = { '<cmd>lua NewZettelkastenLink()<CR>', 'paste [[link]]' },
-        f = { '<cmd>lua NewZettelkastenLink(true)<CR>', 'paste [[link]] and :edit File.md' },
-        o = { '<cmd>lua FollowZettelkastenLink()<CR>', 'Wiki-links in buffer' },
-        j = { '<cmd>lua FollowZettelkastenLink(1)<CR>', 'First wiki-links in buffer' },
-        k = { '<cmd>lua FollowZettelkastenLink(-1)<CR>', 'Last wiki-links in buffer' },
-        a = { '<cmd>lua FollowZettelkastenLinkAlacritty()<CR>', 'Edit alacritty hinted link' },
+        -- vanilla
+        -- l = { '<cmd>lua NewZettelkastenLink()<CR>', 'Paste [[link]]' },
+        -- n = { '<cmd>lua NewZettelkastenLink(true)<CR>', 'Paste [[link]] and :edit File.md' },
+        -- o = { '<cmd>lua FollowZettelkastenLink()<CR>', 'Wiki-links in buffer' },
+        -- j = { '<cmd>lua FollowZettelkastenLink(1)<CR>', 'First wiki-links in buffer' },
+        -- k = { '<cmd>lua FollowZettelkastenLink(-1)<CR>', 'Last wiki-links in buffer' },
+        -- a = { '<cmd>lua FollowZettelkastenLinkAlacritty()<CR>', 'Edit alacritty hinted link' },
+
+        -- plugin
+        o = { '<cmd>Telekasten panel<cr>', 'Command palette' },
+        f = { '<cmd>Telekasten find_notes<cr><cmd>cd $ZETTELKASTEN<cr>', 'Find notes by title' },
+        l = { '<cmd>Telekasten insert_link<cr>', 'Paste [[link]]' },
+        n = { '<cmd>Telekasten new_note<cr>', 'New note, prompts for title' },
+        z = { '<cmd>Telekasten follow_link<cr>', 'Follow link under cursor' },
+        g = { '<cmd>Telekasten search_notes<cr>', 'grep in all notes' },
+        B = { '<cmd>Telekasten show_backlinks<cr>', 'Show all notes linking to the link under the cursor' },
+        F = { '<cmd>Telekasten find_friends<cr>', 'Show all notes linking to the link under the cursor' },
+        T = { '<cmd>Telekasten goto_today<cr>', "Open today's daily note" },
     },
     g = {
         name = 'Git',
