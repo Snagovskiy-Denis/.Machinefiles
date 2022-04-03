@@ -164,4 +164,9 @@ return {
         'renerocksai/telekasten.nvim',
         config = [[require 'plugin.telekasten']],
     },
+
+    {
+        'ColinKennedy/toggle-lsp-diagnostics.nvim',
+        config = [[require'toggle_lsp_diagnostics'.init({ underline = false, virtual_text = { prefix = "XXX", spacing = 5 }})]]
+    },
 }

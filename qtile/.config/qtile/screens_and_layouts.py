@@ -25,6 +25,7 @@ layouts = [
     # ),
     layout.MonadWide(
         ratio=0.75,
+        # border_focus='#000000',
     ),
     # layout.RatioTile(),
     # layout.Tile(),

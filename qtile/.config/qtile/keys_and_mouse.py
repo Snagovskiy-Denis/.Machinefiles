@@ -16,7 +16,6 @@ EDITOR = getenv('EDITOR',  'nvim')
 sup = 'mod3'
 shift = 'shift'
 alt = 'mod1'
-alt_r = 'Alt_R'
 ctrl = 'control'
 
 # mod = space
@@ -47,12 +46,12 @@ mouse = [
 ]
 
 
-# _disable_all_other_keys_mode = KeyChord([], 'Alt_R',
-#                                         [
-#     Key([], 'Alt_R', lazy.ungrab_chord()),
-#     Key([], 'Tab', lazy.layout.next()),
-#     Key([shift], 'Tab', lazy.layout.previous()),
-# ], mode='dzen-typing')
+_disable_all_other_keys_mode = KeyChord([], 'Alt_R',
+                                        [
+    Key([], 'Alt_R', lazy.ungrab_chord()),
+    Key([], 'Tab', lazy.layout.next()),
+    Key([shift], 'Tab', lazy.layout.previous()),
+], mode='dzen-typing')
 
 
 _system_keys = [
@@ -79,6 +78,7 @@ _application_launcher_keys = [
     Key([mod], 'w', lazy.spawn(BROWSER), desc='Web browser'),
     Key([mod], 'e', lazy.spawn(cli_app(EDITOR)), desc='Text editor'),
     Key([mod], 'r', lazy.spawn(cli_app('ranger')), desc='File browser'),
+    Key([mod], 't', lazy.spawn('torbrowser-launcher')),
 
     Key([mod], 'a', lazy.spawn('passmenu'), desc='Frontend for pass'),
     Key([mod], 's', lazy.spawn(cli_app('dmconf')), desc='Edit bm-file'),
@@ -91,7 +91,6 @@ _application_launcher_keys = [
 
     KeyChord([mod], 'd', [
         # GUI applications
-        Key([], 't', lazy.spawn('torbrowser-launcher')),
         Key([], 'o', lazy.spawn('obsidian')),
         Key([], 'z', lazy.spawn('anki')),
         Key([], 'c', lazy.spawn('gnome-pomodoro')),
@@ -155,7 +154,7 @@ _layout_keys = [
     Key([mod,  ctrl], 'k', lazy.layout.grow_up()),
     Key([mod,  ctrl], 'n', lazy.layout.normilize(), desc='Reset win sizes'),
 
-    # Toggle between different layouts as defined below
+    # Toggle between different layouts
     Key([mod], 'Tab', lazy.next_layout(), desc='Toggle between layouts'),
     Key([mod, shift], 'Tab', lazy.prev_layout(), desc='in other direction'),
 
@@ -174,6 +173,8 @@ _layout_keys = [
         lazy.layout.toggle_split(),
         desc='Toggle between split and unsplit sides of stack (Column layout)'
         ),
+
+    Key([mod, shift], 'm', lazy.hide_show_bar())
 ]
 
 

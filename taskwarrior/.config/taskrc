@@ -23,7 +23,7 @@ include /usr/share/doc/task/rc/solarized-dark-256.theme
 context.today=scheduled < tomorrow or due < tomorrow
 context.week=scheduled < 1week or due < 1week
 context.work=project = Employment or +work
-context.easy=estimate < 2days and difficulty = E
+context.easy=estimate < 4hour and difficulty = E
 context.leisure=+joy or project = Art or +I
 
 
@@ -57,8 +57,12 @@ report.too_big.filter=status = pending estimate > 2d
 #   Time Estimate matches my free time = Low Urgency
 #   No priority, no estimate, no difficulty, etc. = is it even a task? should I keep it?
 urgency.uda.difficulty..coefficient=-0.5
+
 urgency.uda.estimate..coefficient=-0.8
-#urgency.uda.estimate.coefficient=
+urgency.uda.estimate.PT30M.coefficient=3  # short tasks = more priority
+urgency.uda.estimate.PT15M.coefficient=3  # short tasks = more priority
+urgency.uda.estimate.PT5M.coefficient=3  # short tasks = more priority
+
 urgency.user.tag.ZN.coefficient=1.5
 urgency.blocking.coefficient=2
 urgency.blocked.coefficient=-7
@@ -71,4 +75,3 @@ uda.taskwarrior-tui.task-report.next.filter=status:pending
 # End of file
 # Below are 'task config'-setted values
 news.version=2.6.0
-context=today

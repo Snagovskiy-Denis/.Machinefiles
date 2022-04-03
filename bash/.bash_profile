@@ -34,6 +34,7 @@ export STACK_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/stack"
 
 # Other program settings:
 export LESS='-R --use-color -Dd+r$Du+b'
+export PYTHONBREAKPOINT=ipdb.set_trace  # python breakpoint() calls ipdb now
 
 # Autocompletion
 general_completion=/usr/share/bash-completion/bash_completion

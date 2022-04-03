@@ -2,7 +2,7 @@ from libqtile.config import Group, Match
 
 groups = [
     Group('1', layout='monadwide',
-          matches=[Match(title=['oj'])],
+          matches=[Match(title=['oj', 'Oj'])],
           label='', position=1,
           ),
 

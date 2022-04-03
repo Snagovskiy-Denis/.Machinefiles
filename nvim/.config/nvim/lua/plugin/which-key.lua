@@ -42,6 +42,7 @@ local mappings = {
     ['t'] = { '<cmd>new term://bash<CR>', 'Open Terminal' },
     ['e'] = { '<cmd>NvimTreeToggle<CR>', 'Explore' },
     ['x'] = { '<cmd>TZAtaraxis<CR>', 'Dzen mode' },
+    ['D'] = { '<cmd>ToggleDiag<CR>', 'Toggle Diagnostics' },
     -- ['x'] = { '<cmd>TZAtaraxis<CR>', 'Toggle fading' },
     l = {
         name = 'LSP',
