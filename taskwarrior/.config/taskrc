@@ -20,11 +20,17 @@ include /usr/share/doc/task/rc/solarized-dark-256.theme
 
 
 # context
-context.today=scheduled < tomorrow or due < tomorrow
-context.week=scheduled < 1week or due < 1week
-context.work=project = Employment or +work
-context.easy=estimate < 4hour and difficulty = E
-context.leisure=+joy or project = Art or +I
+context.today.read=scheduled < tomorrow or due < tomorrow
+context.today.write=scheduled:today
+
+context.week.read=scheduled < 1week or due < 1week
+
+context.work.read=project = Employment or +work
+context.work.write=+work
+
+context.easy.read=estimate < 4hour and difficulty = E
+
+context.leisure.read=+joy or project = Art or +I
 
 
 # UDA stands for User Defined Arguments
@@ -48,7 +54,7 @@ report.next.columns=id,depends,entry.age,priority,due.relative,estimate,difficul
 report.too_big.description=Pretenders to become projects
 report.too_big.columns=id,priority,due.relative,estimate,description.count,project,tags
 report.too_big.sort=estimate-
-report.too_big.filter=status = pending estimate > 2d
+report.too_big.filter=status = pending estimate > 12h
 
 
 # Urgency coefficients
@@ -57,15 +63,16 @@ report.too_big.filter=status = pending estimate > 2d
 #   Time Estimate matches my free time = Low Urgency
 #   No priority, no estimate, no difficulty, etc. = is it even a task? should I keep it?
 urgency.uda.difficulty..coefficient=-0.5
-
 urgency.uda.estimate..coefficient=-0.8
+urgency.uda.estimate.PT1H.coefficient=1  # short tasks = more priority
 urgency.uda.estimate.PT30M.coefficient=3  # short tasks = more priority
 urgency.uda.estimate.PT15M.coefficient=3  # short tasks = more priority
-urgency.uda.estimate.PT5M.coefficient=3  # short tasks = more priority
-
-urgency.user.tag.ZN.coefficient=1.5
+urgency.uda.estimate.PT5M.coefficient=7  # short tasks = more priority
+urgency.user.tag.ZN.coefficient=0.8
+urgency.uda.priority.L.coefficient=-2
 urgency.blocking.coefficient=2
 urgency.blocked.coefficient=-7
+urgency.scheduled.coefficient=10
 
 
 # taskwarrior-tui

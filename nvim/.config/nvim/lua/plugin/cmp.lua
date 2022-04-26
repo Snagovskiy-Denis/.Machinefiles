@@ -38,8 +38,10 @@ cmp.setup {
         return vim_item
       end,
     },
-    documentation = {
-      border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+    window = {
+        documentation = {
+          border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+        },
     },
     mapping = {
         ['<C-p>'] = cmp.mapping.select_prev_item(),

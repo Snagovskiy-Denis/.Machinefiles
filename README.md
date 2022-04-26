@@ -19,14 +19,14 @@ Only one package: `stow nvim --target=$HOME`
 
 ## Programs
 
-Create\update .pacman.list file:
+Create\update .paclist file:
 
-`pacman -Qeq > .pacman.list`
+`pacman -Qeq > ./programs/.config/.pacman.list`
 
 
-Install .pacman.list file *as root*:
+Install packages from .paclist file *as root*:
 
-`pacman -S - < .pacman.list`
+`pacman -S - < ./programs/.config/.pacman.list`
 
 It might be better to use AUR helper (such as aura) for synchronization
 
@@ -39,6 +39,5 @@ Runnable scripts are stored in `binary files` folder
 ## TODO
 
 1. Add stow targets for each directory individually (add --ignore option or create .stow-local-ignore)
-2. Automate installation
+2. Automate installation script (dry-run + if there are no errors, then prompt confirmation for a full installation)
 3. Cat config paths for dmconf (e.g. take target from step 1 and then add rest of a path)
-4. Ranger marks paths
