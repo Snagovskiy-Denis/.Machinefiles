@@ -104,6 +104,7 @@ _application_launcher_keys = [
 
         # Binaries & Scripts
         Key([], 'j', lazy.spawn(cli_app('oj'))),
+        Key([], 's', lazy.spawn('share')),
     ]),
 ]
 

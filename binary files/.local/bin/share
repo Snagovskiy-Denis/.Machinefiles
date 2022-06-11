@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 #
-# 
+# Loads fzf-chosen file to 0x0.st server and copy its link into clipboard
+# Use case: fastly share files without opening GUI file-picker
+# Do not use this script for sensible data
+#
+# bash example:
+#   $ share
+#
+# qtile example:
+#   lazy.spawn('share')
+#
 
-alacritty --class floating -e bash -c "curl -F \file=\@\$(find $HOME/Data -type f | fzf) 0x0.st | xsel --clipboard"
+"${TERMINAL:=alacritty}" --class floating -e bash -c \
+    "curl --form \file=\@\$(
+         find $HOME/Data -type f |
+         fzf
+     ) 0x0.st |
+     xsel --clipboard"
