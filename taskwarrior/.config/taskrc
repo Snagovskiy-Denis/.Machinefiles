@@ -24,55 +24,69 @@ context.today.read=scheduled < tomorrow or due < tomorrow
 context.today.write=scheduled:today
 
 context.week.read=scheduled < 1week or due < 1week
+context.week.write=scheduled:1week
 
-context.work.read=project = Employment or +work
+context.work.read=+work
 context.work.write=+work
 
-context.easy.read=estimate < 4hour and difficulty = E
+context.easy.read=estimate < 90min and -difficult
 
 context.leisure.read=+joy or project = Art or +I
 
 
 # UDA stands for User Defined Arguments
 ## Esimate — how much time will task occupy
-uda.estimate.label=Estim
+uda.estimate.label=⏳
 uda.estimate.type=duration
 
-## Difficulty - how much of an effort task needs
-uda.difficulty.type=string
-uda.difficulty.label=⚡
-uda.difficulty.values=,E,C,🪶,⚡  # easy, complex
+## Why - motivation to do this, e.g. why to read this paper / context
+uda.why.type=string
+uda.why.label=Why
 
 
 # report
 # report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
-report.next.labels=ID,Deps,Age,P,Due,Estim,⚡,Description,Sched,Project,Tag,Urg
-report.next.columns=id,depends,entry.age,priority,due.relative,estimate,difficulty,description.count,scheduled.relative,project,tags,urgency
+report.next.labels=ID,Age,P,Due,⏳,Description,Sched,Project,Tag,Urg
+report.next.columns=id,entry.age,priority,due.relative,estimate,description.count,scheduled.relative,project,tags,urgency
 #report.next.sort=urgency-,priority+\/
 
-## needs to be 
-report.too_big.description=Pretenders to become projects
-report.too_big.columns=id,priority,due.relative,estimate,description.count,project,tags
-report.too_big.sort=estimate-
-report.too_big.filter=status = pending estimate > 12h
+report.odd.description=Candidates for deletion or for decomposition into a project
+report.odd.columns=id,entry.age,estimate,description.count,why,project,tags
+report.odd.sort=estimate-
+report.odd.filter=status = pending and (+odd or ((estimate > 3h age < 3m) or (age < 1w why = '')))
+
+#report.even.description=Anti-odd
+#report.even.columns=id,entry.age,estimate,description.count,why,project,tags
+#report.even.sort=estimate+
+#report.even.filter=status = pending and (-odd and ((estimate age > 3m) or (age < 1w why)))
+#report.even.filter=status = pending -odd (estimate or why)
+
+
+# Colors
+color.tag.$=green
+color.tag.difficult=rgb212
+color.tag.joy=rgb505
+color.tag.I=rgb105
+
+color.blocking=none
 
 
 # Urgency coefficients
-#   Due + High priority = Top Urgency
+#   Due + scheduled + High priority = Top Urgency
 #   Current project = Middle Urgency
 #   Time Estimate matches my free time = Low Urgency
 #   No priority, no estimate, no difficulty, etc. = is it even a task? should I keep it?
-urgency.uda.difficulty..coefficient=-0.5
+urgency.uda.why..coefficient=-2
 urgency.uda.estimate..coefficient=-0.8
 urgency.uda.estimate.PT1H.coefficient=1  # short tasks = more priority
 urgency.uda.estimate.PT30M.coefficient=3  # short tasks = more priority
-urgency.uda.estimate.PT15M.coefficient=3  # short tasks = more priority
-urgency.uda.estimate.PT5M.coefficient=7  # short tasks = more priority
-urgency.user.tag.ZN.coefficient=0.8
+urgency.uda.estimate.PT15M.coefficient=3.2  # short tasks = more priority
+urgency.uda.estimate.PT5M.coefficient=9  # short tasks = more priority
+urgency.user.tag.ZN.coefficient=0.6
 urgency.uda.priority.L.coefficient=-2
 urgency.blocking.coefficient=2
-urgency.blocked.coefficient=-7
-urgency.scheduled.coefficient=10
+urgency.blocked.coefficient=-30
+urgency.annotations.coefficient=0
 
 
 # taskwarrior-tui
@@ -82,3 +96,4 @@ uda.taskwarrior-tui.task-report.next.filter=status:pending
 # End of file
 # Below are 'task config'-setted values
 news.version=2.6.0
+context=today

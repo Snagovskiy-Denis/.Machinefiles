@@ -34,6 +34,7 @@ function M:load_vanilla_options()
         termguicolors = true, -- enable terminal gui colors
         wrap = false, -- display lines as one long line
         spelllang = 'ru,en,la', -- check spelling of given languages
+        laststatus = 3, -- global statusline (one for every window splits)
     }
 
     local append_options = {

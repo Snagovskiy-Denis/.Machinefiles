@@ -31,6 +31,12 @@ export TASKRC="${XDG_CONFIG_HOME:-$HOME/.config}/taskrc"
 export WGETRC="${XDG_CONFIG_HOME:-$HOME/.config}/wgetrc"
 export XINITRC="${XDG_CONFIG_HOME:-$HOME/.config}/X11/xinitrc"
 export STACK_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/stack"
+export DOCKER_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/docker"
+export POETRY_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/poetry"
+export GRADLE_USER_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/gradle"
+export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pass"
+alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
+alias irssi='irssi --config="$XDG_CONFIG_HOME"/irssi/config --home="$XDG_DATA_HOME"/irssi'
 
 # Other program settings:
 export LESS='-R --use-color -Dd+r$Du+b'

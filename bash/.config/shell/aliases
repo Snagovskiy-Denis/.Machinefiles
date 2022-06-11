@@ -28,7 +28,7 @@ alias f="dmconf"
 
 alias ll="ls -Al"
 alias cb="xsel --clipboard"  # if piped copy to clipboard else print cb
-alias yt="youtube-dl --add-metadata --ignore-errors"
+alias yt="yt-dlp --add-metadata --ignore-errors --embed-thumbnail --sponsorblock-remove default"  # ffmpeg
 alias yta="yt --extract-audio"
 alias ytac="cb | yta --batch-file -"  # yta link from clipboard
 alias ytc=" cb | yt  --batch-file -"
@@ -42,6 +42,9 @@ alias reload="source ~/.bashrc"
 alias l.="ls -ld .*"
 alias pacman_sync_fzf="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
 alias pacman_remove_fzf="pacman -Qeq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
+
+gch() { git switch "$(git branch --all | fzf | tr -d '[:space:]')"; }
+
 
 # Allow sudo before other aliases
 alias sudo="sudo "
@@ -62,6 +65,8 @@ alias TODO="grep TODO . -Rn --exclude-dir=lib* --exclude-dir=htmlcov --color=alw
 alias vc="python -m venv ./venv"
 alias va="source ./venv/bin/activate"
 alias vv="vc && va && pip install -r requirements.txt || echo 'error'"
+alias pe="poetry run nvim"
+alias pr="poetry run"
 
 alias no="note -o"
 note () {

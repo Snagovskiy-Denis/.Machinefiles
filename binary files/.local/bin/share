@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#
+# 
+
+alacritty --class floating -e bash -c "curl -F \file=\@\$(find $HOME/Data -type f | fzf) 0x0.st | xsel --clipboard"

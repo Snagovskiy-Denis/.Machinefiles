@@ -45,6 +45,16 @@ export HISTFILE="${XDG_DATA_HOME:-${HOME}/.local/share}/bash_eternal_history"
 PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 
 
+
+ranger() {
+    if [ -z "$RANGER_LEVEL" ]; then
+        /usr/bin/ranger "$@"
+    else
+        exit
+    fi
+}
+
+
 # if powerline-daemon exists 
 # and current terminal is not nvim terminal
 # and there is X server session
