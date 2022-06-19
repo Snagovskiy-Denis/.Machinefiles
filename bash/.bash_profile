@@ -2,7 +2,7 @@
 # ~/.bash_profile
 #
 
-[[ -f ~/.bashrc ]] && . ~/.bashrc
+[[ -f ~/.bashrc ]] && source ~/.bashrc
 
 # Adds ~/.local/bin and its subdirectories to $PATH
 export PATH="${PATH}$(find "${HOME}/.local/bin" -type d -printf :%p)"
@@ -35,8 +35,9 @@ export DOCKER_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/docker"
 export POETRY_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/poetry"
 export GRADLE_USER_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/gradle"
 export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pass"
-alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
-alias irssi='irssi --config="$XDG_CONFIG_HOME"/irssi/config --home="$XDG_DATA_HOME"/irssi'
+alias yarn="yarn --use-yarnrc ${XDG_CONFIG_HOME:-$HOME/.config}/yarn/config"
+alias irssi="irssi --config=${XDG_CONFIG_HOME:-$HOME/.config}/irssi/config --home=${XDG_DATA_HOME}/irssi"
+alias wget="wget --hsts-file=${XDG_CACHE_HOME:-$HOME/.cache}/wget-hsts"
 
 # Other program settings:
 export LESS='-R --use-color -Dd+r$Du+b'

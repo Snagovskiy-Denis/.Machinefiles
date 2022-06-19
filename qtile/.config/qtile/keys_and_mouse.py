@@ -99,7 +99,7 @@ _application_launcher_keys = [
         Key([], 'u', lazy.spawn(cli_app('taskwarrior-tui'))),
         Key([], 'm', lazy.spawn(cli_app('cmus'))),
         Key([], 'p', lazy.spawn(cli_app('ipython'))),
-        Key([], 'h', lazy.spawn(cli_app('htop'))),
+        Key([], 'h', lazy.spawn(cli_app('btop'))),
         Key([], 'n', lazy.spawn(cli_app('newsboat')), desc='RSS feed'),
 
         # Binaries & Scripts

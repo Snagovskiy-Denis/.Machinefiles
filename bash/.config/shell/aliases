@@ -5,11 +5,17 @@ alias cp="cp -iv"
 alias mv="mv -iv"
 alias rm="rm -vI"
 alias mkdir="mkdir -pv"
+alias dirs="dirs -v"
 
 # Colorize
-alias ls="ls -hN --color=auto --group-directories-first"
+# alias ls="ls -hN --color=auto --group-directories-first"
+alias ls="lsd"
 alias grep="grep --color=auto"
 alias diff="diff --color=auto"
+
+# Allow sudo before other aliases
+alias sudo="sudo "
+alias s="sudo "
 
 # Abbreviate long commands
 alias py="python"
@@ -37,18 +43,10 @@ tru () { trans ru:en "$*"; }  # tru instead of tr beacuse of task completion
 d ()  { dict "${1}" | less; }
 
 # "New" commands
-alias ps?="ps aux | grep"
+alias ps\?="ps aux | grep"
 alias reload="source ~/.bashrc"
-alias l.="ls -ld .*"
-alias pacman_sync_fzf="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
 alias pacman_remove_fzf="pacman -Qeq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
-
 gch() { git switch "$(git branch --all | fzf | tr -d '[:space:]')"; }
-
-
-# Allow sudo before other aliases
-alias sudo="sudo "
-alias s="sudo "
 
 # Timer
 alias t5=" termdown $(calc  5*60) && mpv ~/Data/Music/alarm.mp3 ; exit"
@@ -61,12 +59,13 @@ alias ut="python -m unittest"
 ft () { python -m unittest "${2:-test}"/"${1:-functional_tests}"/*.py; }
 ## Print pythons TODOs in comments
 alias TODO="grep TODO . -Rn --exclude-dir=lib* --exclude-dir=htmlcov --color=always | sed -r 's/(\:.*\:).*\#/\1/'"
-
 alias vc="python -m venv ./venv"
 alias va="source ./venv/bin/activate"
 alias vv="vc && va && pip install -r requirements.txt || echo 'error'"
-alias pe="poetry run nvim"
+alias pe="poetry run ${EDITOR:-nvim}"
 alias pr="poetry run"
+alias gs="git status"
+alias gd="git diff"
 
 alias no="note -o"
 note () {
@@ -101,10 +100,21 @@ note () {
     fi
 }
 
+# zd - cd to selected directory
+zd() {
+  local dir
+  dir="$(
+    find "${1:-.}" -path '*/\.*' -prune -o -type d -print 2> /dev/null \
+      | fzf +m \
+          --preview='tree -C {} | head -n $FZF_PREVIEW_LINES' \
+          --preview-window='right:hidden:wrap' \
+          --bind=ctrl-v:toggle-preview \
+          --bind=ctrl-x:toggle-sort \
+          --header='(view:ctrl-v) (sort:ctrl-x)' \
+  )" || return
+  cd "$dir" || return
+}
+
 # Errorless experience
 alias :q="exit"
 alias :Q="exit"
-
-# ~/ Clean-up:
-alias irssi="irssi --config=${XDG_CONFIG_HOME}/irssi/config --home=${XDG_DATA_HOME}/irssi"
-alias wget="wget --hsts-file=${XDG_CACHE_HOME}/wget-hsts"
