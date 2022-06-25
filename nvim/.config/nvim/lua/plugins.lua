@@ -124,9 +124,11 @@ return {
 
     -- TODO Test runner helper
     {
-        'rcarriga/vim-ultest',
-        requires = { 'vim-test/vim-test' },
-        run = ':UpdateRemotePlugins',
+        'nvim-neotest/neotest',
+        requires = { 'antoinemadec/FixCursorHold.nvim', 'nvim-neotest/neotest-python', 'nvim-lua/plenary.nvim' },
+        config = [[require("neotest").setup({
+          adapters = { require("neotest-python") } 
+        })]]
     },
 
     -- Disctraction free

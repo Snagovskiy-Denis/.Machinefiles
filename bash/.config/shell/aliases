@@ -34,7 +34,7 @@ alias f="dmconf"
 
 alias ll="ls -Al"
 alias cb="xsel --clipboard"  # if piped copy to clipboard else print cb
-alias yt="yt-dlp --add-metadata --ignore-errors --embed-thumbnail --sponsorblock-remove default"  # ffmpeg
+alias yt="yt-dlp --add-metadata --ignore-errors --embed-thumbnail --sponsorblock-remove default"  # ffprob
 alias yta="yt --extract-audio"
 alias ytac="cb | yta --batch-file -"  # yta link from clipboard
 alias ytc=" cb | yt  --batch-file -"

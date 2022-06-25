@@ -60,8 +60,8 @@ local mappings = {
         S = { '<cmd>Telescope lsp_workspace_symbols<CR>', 'Workspace Symbols' },
 
         -- Diagnostics
-        j = { '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', 'Next Diagnostics' },
-        k = { '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', 'Previous Diagnostics' },
+        j = { '<cmd>lua vim.diagnostic.goto_next()<CR>', 'Next Diagnostics' },
+        k = { '<cmd>lua vim.diagnostic.goto_prev()<CR>', 'Previous Diagnostics' },
         w = { '<cmd>Telescope lsp_workspace_diagnostics<CR>', 'Workspace Diagnostics' },
         l = { '<cmd>Telescope diagnostics<CR>', 'Document Diagnostics' },
     },

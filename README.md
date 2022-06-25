@@ -39,5 +39,4 @@ Runnable scripts are stored in `binary files` folder
 ## TODO
 
 1. Add stow targets for each directory individually (add --ignore option or create .stow-local-ignore)
-2. Automate installation script (dry-run + if there are no errors, then prompt confirmation for a full installation)
-3. Cat config paths for dmconf (e.g. take target from step 1 and then add rest of a path)
+2. .stowrc for packages
