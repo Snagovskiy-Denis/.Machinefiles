@@ -62,8 +62,9 @@ local mappings = {
         -- Diagnostics
         j = { '<cmd>lua vim.diagnostic.goto_next()<CR>', 'Next Diagnostics' },
         k = { '<cmd>lua vim.diagnostic.goto_prev()<CR>', 'Previous Diagnostics' },
-        w = { '<cmd>Telescope lsp_workspace_diagnostics<CR>', 'Workspace Diagnostics' },
         l = { '<cmd>Telescope diagnostics<CR>', 'Document Diagnostics' },
+
+        R = { '<cmd>LspRestart<CR>', 'Refreshes the LSP' },
     },
     s = {
         name = 'Search',

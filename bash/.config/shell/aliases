@@ -12,6 +12,7 @@ alias dirs="dirs -v"
 alias ls="lsd"
 alias grep="grep --color=auto"
 alias diff="diff --color=auto"
+alias cat="bat"
 
 # Allow sudo before other aliases
 alias sudo="sudo "
@@ -66,6 +67,8 @@ alias pe="poetry run ${EDITOR:-nvim}"
 alias pr="poetry run"
 alias gs="git status"
 alias gd="git diff"
+alias gpsu="git log -1 --format=%s | cb"
+
 
 alias no="note -o"
 note () {
@@ -104,8 +107,7 @@ note () {
 zd() {
   local dir
   dir="$(
-    find "${1:-.}" -path '*/\.*' -prune -o -type d -print 2> /dev/null \
-      | fzf +m \
+    fd --type directory | fzf +m \
           --preview='tree -C {} | head -n $FZF_PREVIEW_LINES' \
           --preview-window='right:hidden:wrap' \
           --bind=ctrl-v:toggle-preview \

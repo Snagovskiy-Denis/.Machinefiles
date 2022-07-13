@@ -171,4 +171,5 @@ return {
         'ColinKennedy/toggle-lsp-diagnostics.nvim',
         config = [[require'toggle_lsp_diagnostics'.init({ underline = false, virtual_text = { prefix = "XXX", spacing = 5 }})]]
     },
+    { 'michaeljsmith/vim-indent-object' },
 }

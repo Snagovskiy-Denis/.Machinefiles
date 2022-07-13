@@ -55,6 +55,10 @@ ranger() {
 }
 
 
+# force fzf to respect .gitignore's and .fdignore's
+export FZF_DEFAULT_COMMAND='fd --type f'
+
+
 # if powerline-daemon exists 
 # and current terminal is not nvim terminal
 # and there is X server session

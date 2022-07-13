@@ -12,8 +12,10 @@ autopep8
 base
 bash-completion
 bash-language-server
+bat
 bison
 blender
+btop
 calc
 calibre
 chrony
@@ -28,6 +30,7 @@ dmenu
 docker
 docker-compose
 dos2unix
+drawio-desktop-bin
 dunst
 fakeroot
 fd
@@ -37,6 +40,7 @@ flex
 fzf
 gdal
 gimp
+git-delta
 gnome-boxes
 gnome-font-viewer
 gnome-shell-pomodoro
@@ -45,7 +49,6 @@ grub
 gstreamer0.10-base-plugins
 gtk-engine-murrine
 heroku-cli
-htop
 httpie
 inetutils
 ipython
@@ -62,6 +65,7 @@ libreoffice-still-ru
 linux
 linux-firmware
 linux-lts
+lsd
 lxappearance
 lynx
 make
@@ -72,6 +76,7 @@ mesa-demos
 mpv
 mutt-wizard-git
 myrulib-git
+ncdu
 neofetch
 neomutt
 neovim
@@ -84,6 +89,7 @@ nitrogen
 nodejs
 noto-fonts-emoji
 ntfs-3g
+ntfy
 numlockx
 nvidia
 nvidia-lts
@@ -98,6 +104,7 @@ pamixer
 patch
 perl-image-exiftool
 perl-rename
+pgcli
 picom
 pkgconf
 playerctl
