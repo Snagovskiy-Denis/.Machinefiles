@@ -89,10 +89,18 @@ urgency.blocked.coefficient=-30
 urgency.annotations.coefficient=0
 
 
-# taskwarrior-tui
+# plugins
+## taskwarrior-tui
 uda.taskwarrior-tui.task-report.next.filter=status:pending
+uda.taskwarrior-tui.shortcuts.2=/usr/bin/taskopen note
+uda.taskwarrior-tui.shortcuts.3=/usr/bin/taskopen url
+uda.taskwarrior-tui.shortcuts.1=/usr/bin/taskopen
+
+## taskopen
+alias.open=execute taskopen
+alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote 127; taskopen 127
 
 
 # End of file
 # Below are 'task config'-setted values
-news.version=2.6.0
+context=today

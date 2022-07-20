@@ -23,6 +23,7 @@ alias py="python"
 alias ipy="ipython"
 alias r="ranger"
 alias tt="taskwarrior-tui"
+alias to="taskopen"
 alias cr="cmus-remote"
 alias ka="killall"
 alias n="newsboat"
@@ -74,12 +75,14 @@ alias no="note -o"
 note () {
     help_note="How to use:
         No arguments = print file
-        If more then 1 argument = add all arguments to file
+        If more than 1 argument = add all arguments to file
         
         If first argument is one of these:
-        -h = print this help message
-        -o = open note in editor specified by EDITOR
-        -c = put\paste clipboard to file
+        -h = print this [h]elp message
+        -o = [o]pen note in editor specified by EDITOR
+        -c = put\paste [c]lipboard to file
+        -p = take [p]iped input from stdin or run cat interactivelly
+        -f = return note\' [f]ilepath
         --clear-file = clear file"
     filepath="${HOME}/.notes.md"
 
@@ -97,7 +100,11 @@ note () {
     elif [[ "$1" == "-o" ]]; then
         $EDITOR $filepath
     elif [[ "$1" == "-c" ]]; then
-        xsel -b >> $filepath
+        xsel --clipboard >> $filepath
+    elif [[ "$1" == "-p" ]]; then
+        cat >> $filepath
+    elif [[ "$1" == "-f" ]]; then
+        echo $filepath
     else
         printf "%s\n" "$*" >> $filepath
     fi

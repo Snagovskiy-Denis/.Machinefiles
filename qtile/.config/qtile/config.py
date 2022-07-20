@@ -1,9 +1,9 @@
-"""qtile config file
+'''qtile config file
 
 Config debug help:
    1. check syntax with: $ python -m py_compile ~/.config/qtile/config.py
    2. chech log on path ~/.local/share/qtile/qtile.log for errors
-"""
+'''
 from subprocess import run
 from pathlib import Path
 
@@ -23,7 +23,7 @@ cursor_warp = True
 floating_layout = layout.Floating(float_rules=[
     # Run the utility of `xprop` to see the wm class and name of an X client.
     *layout.Floating.default_float_rules,
-    Match(wm_class='floating'),  # custom
+    Match(wm_class='floating'),  # my custom scripts
     Match(wm_class='confirmreset'),  # gitk
     Match(wm_class='makebranch'),  # gitk
     Match(wm_class='maketag'),  # gitk

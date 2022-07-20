@@ -32,6 +32,7 @@ docker-compose
 dos2unix
 drawio-desktop-bin
 dunst
+entr
 fakeroot
 fd
 firefox
@@ -57,6 +58,7 @@ isync
 jdk-openjdk
 jdk16-adoptopenjdk
 jp2a
+jq
 kdeconnect
 klavaro
 languagetool
@@ -152,6 +154,7 @@ sudo
 surfraw
 sxiv
 task
+taskopen
 taskwarrior-tui
 tela-circle-icon-theme-git
 telegram-desktop

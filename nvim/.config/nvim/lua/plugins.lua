@@ -147,7 +147,7 @@ return {
     { 'Pocco81/Catppuccino.nvim', disable = true },
     { 'folke/tokyonight.nvim' },
     { 'dracula/vim' },
-    --{ 'marko-cerovac/material.nvim' },
+    { 'bignimbus/pop-punk.vim' },
 
 
     -- Maybe later

@@ -1,0 +1,24 @@
+[General]
+EDITOR = "nvim"
+path_ext = /usr/share/taskopen/scripts/
+taskbin = task
+no_annotation_hook = addnote
+# task_attributes = priority,project,tags,description
+
+[Actions]
+notes.regex = "Notes"
+notes.command = "$EDITOR $HOME/.local/tasknotes/$UUID.md"
+
+# edit.regex = ".*"
+# edit.command = "rawedit $UUID"
+# edit.filtercommand = "test ! -e $FILE"
+# delete.regex = ".*"
+# delete.command = "task $UUID denotate -- \"$ANNOTATION\""
+# delete.filtercommand = "test ! -e $FILE"
+
+url.regex = "(mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:).*"
+url.command = "xdg-open $ANNOTATION"
+
+[CLI]
+alias.note = "normal --include=notes"
+alias.url = "normal --include=url"
