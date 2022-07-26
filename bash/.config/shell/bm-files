@@ -1,8 +1,6 @@
 alacritty  $HOME/.config/alacritty/alacritty.yml
 aliasrc    $HOME/.config/shell/aliases
 bashrc     $HOME/.bashrc
-i3         $HOME/.config/i3/config
-i3blocks   $HOME/.config/i3/i3blocks.conf
 newsboat   $HOME/.config/newsboat/config
 newsboat   $HOME/.config/newsboat/urls
 notes      $HOME/.notes.md
@@ -13,5 +11,4 @@ task       $HOME/.config/taskrc
 
 log-qtile  $HOME/.local/share/qtile/qtile.log
 autostart  $HOME/.config/shell/autostart.sh
-bm-dirs    $HOME/.config/shell/bm-dirs
 bm-files   $HOME/.config/shell/bm-files

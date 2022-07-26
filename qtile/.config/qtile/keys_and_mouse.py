@@ -159,6 +159,8 @@ _layout_keys = [
     Key([mod], 'Tab', lazy.next_layout(), desc='Toggle between layouts'),
     Key([mod, shift], 'Tab', lazy.prev_layout(), desc='in other direction'),
 
+    Key([mod], 'period', lazy.next_screen(), desc='Next monitor'),
+
     # Monad layout specifics
     Key([mod], 'semicolon',
         lazy.layout.swap_main(),

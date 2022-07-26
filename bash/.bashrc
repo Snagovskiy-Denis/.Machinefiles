@@ -53,6 +53,8 @@ ranger() {
     fi
 }
 
+eval "$(fasd --init bash-hook bash-ccomp bash-ccomp-install)"
+
 
 # force fzf to respect .gitignore's and .fdignore's
 export FZF_DEFAULT_COMMAND='fd --type f'
