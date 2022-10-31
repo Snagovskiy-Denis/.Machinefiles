@@ -101,6 +101,10 @@ function M:load_commands()
         _dashboard = {
             { 'FileType', 'dashboard', 'setlocal nocursorline noswapfile nonumber norelativenumber nocursorcolumn nolist' },
         },
+
+        _ledger = {
+            { 'FileType', 'ledger', 'setlocal foldmethod=syntax' },
+        },
     }
 
     for group_name, definition in pairs(autocommands) do

@@ -22,9 +22,15 @@
 [merge]
     conflictstyle = diff3
 
+[init]
+	defaultBranch = master
+
 [diff]
     colorMoved = default
 
 [alias]
-    wip = !git add --all && git commit --all -m WIP
-    fwip = !git log --pretty=reference --grep=WIP
+    wip = !git add --all && git commit --all -m WIP  # work in progress
+    find-wip = !git log --pretty=reference --grep=WIP
+    open-origin = !xdg-open $(git remote get-url origin) &
+    backup = !git add --all && git commit --all -m $(date -I) && git push
+    diff-dev = !git diff dev... -- ':!*.json' ':!*migrations*'

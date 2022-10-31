@@ -16,7 +16,7 @@ require 'Comment'.setup {
     mappings = {
       ---operator-pending mapping
       ---Includes `gcc`, `gcb`, `gc[count]{motion}` and `gb[count]{motion}`
-      basic = true,
+      basic = false,
       ---extended mapping
       ---Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
       extra = false,

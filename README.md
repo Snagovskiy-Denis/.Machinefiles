@@ -30,6 +30,8 @@ Install packages from .paclist file *as root*:
 
 It might be better to use AUR helper (such as aura) for synchronization
 
+After fresh installation, you may need to enable some of the daemonized services.
+
 
 ## bin
 

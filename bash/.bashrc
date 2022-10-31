@@ -18,7 +18,7 @@ autojump_filepath=/etc/profile.d/autojump.sh
 # fzf - https://wiki.archlinux.org/title/Fzf
 fzf_key_bindings_filepath=/usr/share/fzf/key-bindings.bash
 fzf_completion_filepath=/usr/share/fzf/completion.bash
-[[ -f ${fzf_key_bindings_filepath} ]] && source ${fzf_key_bindings_filepath}
+# [[ -f ${fzf_key_bindings_filepath} ]] && source ${fzf_key_bindings_filepath}
 [[ -f ${fzf_completion_filepath} ]] && source ${fzf_completion_filepath}
 
 # Auto "cd" when entering just a path

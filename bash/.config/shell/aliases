@@ -33,6 +33,9 @@ alias e="${EDITOR:-nvim}"
 alias se="s e"
 alias o="xdg-open"
 alias f="dmconf"
+alias el="e ${LEDGER_FILE}"
+alias idate='date -u +"%Y-%m-%d"'
+alias idatet='date -u +"%Y-%m-%dT%H:%M:%SZ"'
 
 alias ll="ls -Al"
 alias cb="xsel --clipboard"  # if piped copy to clipboard else print cb
@@ -48,6 +51,7 @@ d ()  { dict "${1}" | less; }
 alias ps\?="ps aux | grep"
 alias reload="source ~/.bashrc"
 alias pacman_remove_fzf="pacman -Qeq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
+alias gotemp='cd $(mktemp -d)'
 
 # Timer
 alias t5=" termdown $(calc  5*60) && mpv ~/Data/Music/alarm.mp3 ; exit"
@@ -68,6 +72,8 @@ alias pr="poetry run"
 alias gs="git status"
 alias gd="git diff"
 alias gpsu="git log -1 --format=%s | cb"
+pip-add () { pip install "${1}" && pip freeze | grep "${1}" >> requirements.txt; }
+alias cru="cargo run"
 
 # Errorless experience
 alias :q="exit"

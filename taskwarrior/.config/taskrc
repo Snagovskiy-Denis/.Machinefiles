@@ -11,6 +11,8 @@
 # Use the command 'task show' to see all defaults and overrides
 
 # General \ misc
+verbose=blank,footnote,label,new-id,affected,edit,special,project,sync,unwait
+
 data.location=~/.config/.task
 weekstart=Monday
 #include /usr/share/doc/task/rc/dark-violets-256.theme
@@ -20,7 +22,7 @@ include /usr/share/doc/task/rc/solarized-dark-256.theme
 
 
 # context
-context.today.read=scheduled < tomorrow or due < tomorrow
+context.today.read=(scheduled < tomorrow or due < tomorrow) and -work
 context.today.write=scheduled:today
 
 context.week.read=scheduled < 1week or due < 1week
@@ -28,6 +30,9 @@ context.week.write=scheduled:1week
 
 context.work.read=+work
 context.work.write=+work
+
+context.todayw.read=+work and (scheduled < tomorrow or due < tomorrow)
+context.todayw.write=+work scheduled:today
 
 context.easy.read=estimate < 90min and -difficult
 
@@ -46,20 +51,19 @@ uda.why.label=Why
 
 # report
 # report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
-report.next.labels=ID,Age,P,Due,⏳,Description,Sched,Project,Tag,Urg
-report.next.columns=id,entry.age,priority,due.relative,estimate,description.count,scheduled.relative,project,tags,urgency
+report.next.labels=ID,Age,P,Sched,⏳,Description,Why,Due,Project,Tag,Urg
+report.next.columns=id,entry.age,priority,scheduled.relative,estimate,description.count,why,due.relative,project,tags,urgency
 #report.next.sort=urgency-,priority+\/
 
 report.odd.description=Candidates for deletion or for decomposition into a project
 report.odd.columns=id,entry.age,estimate,description.count,why,project,tags
 report.odd.sort=estimate-
-report.odd.filter=status = pending and (+odd or ((estimate > 3h age < 3m) or (age < 1w why = '')))
+report.odd.filter=status = pending and (+odd or (((estimate > 3h or estimate = '') entry < today-1m) or (entry < today-1w why = '')))
 
-#report.even.description=Anti-odd
-#report.even.columns=id,entry.age,estimate,description.count,why,project,tags
+report.even.description=Anti-odd
+report.even.columns=id,scheduled.relative,estimate,description.count,why,project,tags,urgency
 #report.even.sort=estimate+
-#report.even.filter=status = pending and (-odd and ((estimate age > 3m) or (age < 1w why)))
-#report.even.filter=status = pending -odd (estimate or why)
+report.even.filter=status = pending and !(+odd or (((estimate > 3h or estimate = '') entry < today-1m) or (entry < today-1w why = '')))
 
 
 # Colors
@@ -82,7 +86,7 @@ urgency.uda.estimate.PT1H.coefficient=1  # short tasks = more priority
 urgency.uda.estimate.PT30M.coefficient=3  # short tasks = more priority
 urgency.uda.estimate.PT15M.coefficient=3.2  # short tasks = more priority
 urgency.uda.estimate.PT5M.coefficient=9  # short tasks = more priority
-urgency.user.tag.ZN.coefficient=0.6
+urgency.user.tag.Z.coefficient=0.6
 urgency.uda.priority.L.coefficient=-2
 urgency.blocking.coefficient=2
 urgency.blocked.coefficient=-30
@@ -98,8 +102,9 @@ uda.taskwarrior-tui.shortcuts.1=/usr/bin/taskopen
 
 ## taskopen
 alias.open=execute taskopen
-alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote 127; taskopen 127
+alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote 127 && taskopen 127
 
 
 # End of file
 # Below are 'task config'-setted values
+context=todayw

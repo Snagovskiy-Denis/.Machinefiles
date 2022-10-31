@@ -31,11 +31,11 @@ local vopts = {
 }
 
 local vmappings = {
-    ['/'] = { '<esc><cmd>lua require ("Comment.api").toggle_linewise_op(vim.fn.visualmode())<CR>', 'Comment' },
+    ['/'] = { "<Plug>(comment_toggle_linewise_visual)", "Comment toggle linewise (visual)" },
 }
 
 local mappings = {
-    ['/'] = { '<cmd>lua require("Comment.api").toggle_current_linewise()<CR>', 'Comment' },
+    ['/'] = { "<Plug>(comment_toggle_linewise_current)", "Comment toggle current line" },
     ['f'] = { '<cmd>Telescope find_files<CR>', 'Find File' },
     ['h'] = { '<cmd>:set hlsearch!<CR>', 'Toggle highlight' },
     ['S'] = { '<cmd>:set spell!<CR>', 'Toggle Spell checking' },
@@ -43,6 +43,7 @@ local mappings = {
     ['e'] = { '<cmd>NvimTreeToggle<CR>', 'Explore' },
     ['x'] = { '<cmd>TZAtaraxis<CR>', 'Dzen mode' },
     ['D'] = { '<cmd>ToggleDiag<CR>', 'Toggle Diagnostics' },
+    ['M'] = { '<cmd>MarkdownPreviewToggle<cr>', 'Render markdown' },
     -- ['x'] = { '<cmd>TZAtaraxis<CR>', 'Toggle fading' },
     l = {
         name = 'LSP',

@@ -172,4 +172,11 @@ return {
         config = [[require'toggle_lsp_diagnostics'.init({ underline = false, virtual_text = { prefix = "XXX", spacing = 5 }})]]
     },
     { 'michaeljsmith/vim-indent-object' },
+
+
+    { 'ledger/vim-ledger' },
+    {
+        'iamcco/markdown-preview.nvim',
+        run = function() vim.fn['mkdp#util#install']() end,
+    },
 }

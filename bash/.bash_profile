@@ -44,6 +44,8 @@ alias wget="wget --hsts-file=${XDG_CACHE_HOME:-$HOME/.cache}/wget-hsts"
 export LESS='-R --use-color -Dd+r$Du+b'
 export PYTHONBREAKPOINT=ipdb.set_trace  # python breakpoint() calls ipdb now
 
+export LEDGER_FILE="${HOME}"/sync/default/me.ldg
+
 # Autocompletion
 general_completion=/usr/share/bash-completion/bash_completion
 [[ -f "${general_completion}" ]] && source "${general_completion}"
