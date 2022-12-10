@@ -34,8 +34,6 @@ alias se="s e"
 alias o="xdg-open"
 alias f="dmconf"
 alias el="e ${LEDGER_FILE}"
-alias idate='date -u +"%Y-%m-%d"'
-alias idatet='date -u +"%Y-%m-%dT%H:%M:%SZ"'
 
 alias ll="ls -Al"
 alias cb="xsel --clipboard"  # if piped copy to clipboard else print cb
@@ -62,8 +60,12 @@ tn  ()   { termdown $(calc $1*60) && mpv "${HOME}/Data/Music/alarm.mp3"; }
 # Dev stuff
 alias ut="python -m unittest"
 ft () { python -m unittest "${2:-test}"/"${1:-functional_tests}"/*.py; }
-## Print pythons TODOs in comments
-alias TODO="grep TODO . -Rn --exclude-dir=lib* --exclude-dir=htmlcov --color=always | sed -r 's/(\:.*\:).*\#/\1/'"
+
+# Print TODOs
+alias TODO="rg TODO --glob='!*.json' --glob='!*.js*' --glob='!*.css*'"
+alias TODO-git='TODO $(git ls-files -m)'
+alias TODO.txt="TODO --heading --color=always > TODO.txt"  # writes todo-summary to file
+
 alias vc="python -m venv ./venv"
 alias va="source ./venv/bin/activate"
 alias vv="vc && va && pip install -r requirements.txt || echo 'error'"
@@ -147,7 +149,6 @@ zd() {
 # example usage:
 #   mv ./file.txt `select_from_frequent_directories localtrash`
 select_from_frequent_directories() {
-    echo "$(
     fasd -dl \
         | fzf \
           --tac \
@@ -163,7 +164,7 @@ select_from_frequent_directories() {
           --bind=ctrl-v:toggle-preview \
           --bind=ctrl-x:toggle-sort \
           --header='(view:ctrl-v) (sort:ctrl-x)' \
-    )" || return
+    || return
 }
 
 
@@ -294,19 +295,4 @@ gstash() {
       git stash show -p "$sha"
     fi
   done
-}
-
-
-# fkill - kill process
-fkill() {
-  local pid
-
-  pid="$(
-    ps -ef \
-      | sed 1d \
-      | fzf -m \
-      | awk '{print $2}'
-  )" || return
-
-  kill -"${1:-9}" "$pid"
 }

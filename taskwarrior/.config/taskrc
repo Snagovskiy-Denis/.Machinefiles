@@ -34,7 +34,7 @@ context.work.write=+work
 context.todayw.read=+work and (scheduled < tomorrow or due < tomorrow)
 context.todayw.write=+work scheduled:today
 
-context.easy.read=estimate < 90min and -difficult
+context.easy.read=estimate < 90min and -difficult and -work
 
 context.leisure.read=+joy or project = Art or +I
 
@@ -89,8 +89,9 @@ urgency.uda.estimate.PT5M.coefficient=9  # short tasks = more priority
 urgency.user.tag.Z.coefficient=0.6
 urgency.uda.priority.L.coefficient=-2
 urgency.blocking.coefficient=2
-urgency.blocked.coefficient=-30
+urgency.blocked.coefficient=-12
 urgency.annotations.coefficient=0
+urgency.user.tag.refactor.coefficient=-2.3
 
 
 # plugins
@@ -107,4 +108,4 @@ alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote
 
 # End of file
 # Below are 'task config'-setted values
-context=todayw
+context=today

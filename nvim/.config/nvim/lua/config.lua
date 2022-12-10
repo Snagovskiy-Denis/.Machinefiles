@@ -105,6 +105,10 @@ function M:load_commands()
         _ledger = {
             { 'FileType', 'ledger', 'setlocal foldmethod=syntax' },
         },
+
+        -- _httpie = {
+        --     { 'BufRead', '*bash-fc.*', ':set tw=20', ':execute "normal! <cr>gqqk$<c-v>ggA \\<esc>"'},  -- TODO: function instead of buffer maccros  -- TODO: DRY validation with which-key command
+        -- },
     }
 
     for group_name, definition in pairs(autocommands) do

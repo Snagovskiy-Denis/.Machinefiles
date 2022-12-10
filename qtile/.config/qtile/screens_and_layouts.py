@@ -25,6 +25,7 @@ layouts = [
     # ),
     layout.MonadWide(
         ratio=0.75,
+        single_border_width=0,
         # border_focus='#000000',
     ),
     # layout.RatioTile(),
@@ -52,7 +53,7 @@ screens = [
                 widget.WindowName(),
                 widget.Systray(padding=5),
                 widget.Sep(),
-                widget.Notify(),
+                # widget.Notify(),
                 widget.Chord(
                     chords_colors={
                         'launch': (colors['red'], colors['white']),
