@@ -57,7 +57,7 @@ local mappings = {
         i = { '<cmd>lua vim.lsp.buf.implementation()<CR>', 'Implementation' },
         a = { "<cmd>lua require('lvim.core.telescope').code_actions()<cr>", 'Code Action' },
         r = { '<cmd>lua vim.lsp.buf.rename()<CR>', 'Rename' },
-        f = { '<cmd>lua vim.lsp.buf.formatting()<CR>', 'Format' },
+        f = { '<cmd>lua vim.lsp.buf.format { async = true }<CR>', 'Format' },
 
         s = { '<cmd>Telescope lsp_document_symbols<CR>', 'Document Symbols' },
         S = { '<cmd>Telescope lsp_workspace_symbols<CR>', 'Workspace Symbols' },

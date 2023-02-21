@@ -69,3 +69,5 @@ if [ -f $(which powerline-daemon) ] && [ -z "${MYVIMRC}" ] && [[ "${DISPLAY}" ]]
     POWERLINE_BASH_SELECT=1
     source "/usr/share/powerline/bindings/bash/powerline.sh"
 fi
+
+source /home/self/.bash_completions/cli.py.sh

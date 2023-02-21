@@ -3,7 +3,7 @@
 # backgroung utilities
 numlockx &
 nitrogen --restore &
-picom &
+# picom &
 udiskie --smart-tray &
 volumeicon &
 unclutter -idle 3 &

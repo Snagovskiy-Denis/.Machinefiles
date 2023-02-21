@@ -22,19 +22,19 @@ include /usr/share/doc/task/rc/solarized-dark-256.theme
 
 
 # context
-context.today.read=(scheduled < tomorrow or due < tomorrow) and -work
+context.today.read=(scheduled < tomorrow or due < tomorrow) and -w
 context.today.write=scheduled:today
 
 context.week.read=scheduled < 1week or due < 1week
 context.week.write=scheduled:1week
 
-context.work.read=+work
-context.work.write=+work
+context.w.read=+w
+context.w.write=+w
 
-context.todayw.read=+work and (scheduled < tomorrow or due < tomorrow)
-context.todayw.write=+work scheduled:today
+context.todayw.read=+w and (scheduled < tomorrow or due < tomorrow)
+context.todayw.write=+w scheduled:today
 
-context.easy.read=estimate < 90min and -difficult and -work
+context.easy.read=estimate < 90min and -difficult and -w
 
 context.leisure.read=+joy or project = Art or +I
 
@@ -44,26 +44,21 @@ context.leisure.read=+joy or project = Art or +I
 uda.estimate.label=⏳
 uda.estimate.type=duration
 
-## Why - motivation to do this, e.g. why to read this paper / context
-uda.why.type=string
-uda.why.label=Why
-
-
 # report
 # report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
-report.next.labels=ID,Age,P,Sched,⏳,Description,Why,Due,Project,Tag,Urg
-report.next.columns=id,entry.age,priority,scheduled.relative,estimate,description.count,why,due.relative,project,tags,urgency
+report.next.labels=ID,Age,P,Sched,⏳,Description,Due,Project,Tag,Urg
+report.next.columns=id,entry.age,priority,scheduled.relative,estimate,description.count,due.relative,project,tags,urgency
 #report.next.sort=urgency-,priority+\/
 
 report.odd.description=Candidates for deletion or for decomposition into a project
-report.odd.columns=id,entry.age,estimate,description.count,why,project,tags
+report.odd.columns=id,entry.age,estimate,description.count,project,tags
 report.odd.sort=estimate-
-report.odd.filter=status = pending and (+odd or (((estimate > 3h or estimate = '') entry < today-1m) or (entry < today-1w why = '')))
+report.odd.filter=status = pending and (+odd or (((estimate > 3h or estimate = '') entry < today-1m)))
 
 report.even.description=Anti-odd
-report.even.columns=id,scheduled.relative,estimate,description.count,why,project,tags,urgency
+report.even.columns=id,scheduled.relative,estimate,description.count,project,tags,urgency
 #report.even.sort=estimate+
-report.even.filter=status = pending and !(+odd or (((estimate > 3h or estimate = '') entry < today-1m) or (entry < today-1w why = '')))
+report.even.filter=status = pending and !(+odd or (((estimate > 3h or estimate = '') entry < today-1m)))
 
 
 # Colors
@@ -80,7 +75,7 @@ color.blocking=none
 #   Current project = Middle Urgency
 #   Time Estimate matches my free time = Low Urgency
 #   No priority, no estimate, no difficulty, etc. = is it even a task? should I keep it?
-urgency.uda.why..coefficient=-2
+# urgency.uda.why..coefficient=-2
 urgency.uda.estimate..coefficient=-0.8
 urgency.uda.estimate.PT1H.coefficient=1  # short tasks = more priority
 urgency.uda.estimate.PT30M.coefficient=3  # short tasks = more priority
@@ -108,4 +103,4 @@ alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote
 
 # End of file
 # Below are 'task config'-setted values
-context=today
+context=todayw

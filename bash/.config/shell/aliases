@@ -13,6 +13,7 @@ alias ls="lsd"
 alias grep="grep --color=auto"
 alias diff="diff --color=auto"
 alias cat="bat"
+alias diff="delta"
 
 # Allow sudo before other aliases
 alias sudo="sudo "
@@ -50,6 +51,8 @@ alias ps\?="ps aux | grep"
 alias reload="source ~/.bashrc"
 alias pacman_remove_fzf="pacman -Qeq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
 alias gotemp='cd $(mktemp -d)'
+book-temp () { pwd > "/tmp/$1"; }
+cd-book () { cd $(cat "/tmp/$1"); }
 
 # Timer
 alias t5=" termdown $(calc  5*60) && mpv ~/Data/Music/alarm.mp3 ; exit"
@@ -60,6 +63,20 @@ tn  ()   { termdown $(calc $1*60) && mpv "${HOME}/Data/Music/alarm.mp3"; }
 # Dev stuff
 alias ut="python -m unittest"
 ft () { python -m unittest "${2:-test}"/"${1:-functional_tests}"/*.py; }
+alias zip_figma='zip -r figma-$(date -I).zip *'
+
+## apk & buildozer
+apk_name () { echo -n "${PROJECT_NAME} v$(git describe --tags) от $(date -I).apk"; }
+apk_name_cb () { apk_name | cb; }
+apk_process () {
+    mv pro100qbox*arm64*.apk "$(apk_name)"
+    cp "$(apk_name)" ~
+    adb install -r "$(apk_name)"
+    notify-send "APK" "process_apk ended as expected" --app-name="Buildozer"
+}
+alias apk_build='buildozer android debug; notify-send buildozer "build stopped"'
+alias apk_log='buildozer android logcat > box.txt'
+alias apk_start='adb shell am start -n com.pro100quiz.pro100qbox/org.kivy.android.PythonActivity'
 
 # Print TODOs
 alias TODO="rg TODO --glob='!*.json' --glob='!*.js*' --glob='!*.css*'"
@@ -67,14 +84,14 @@ alias TODO-git='TODO $(git ls-files -m)'
 alias TODO.txt="TODO --heading --color=always > TODO.txt"  # writes todo-summary to file
 
 alias vc="python -m venv ./venv"
-alias va="source ./venv/bin/activate"
-alias vv="vc && va && pip install -r requirements.txt || echo 'error'"
-alias pe="poetry run ${EDITOR:-nvim}"
+alias va='source ./venv/bin/activate 2>/dev/null|| source $(poetry env info --path)/bin/activate 2>/dev/null || echo no'
+alias vv="vc && va && pip install -r requirements.txt"
+alias pe='poetry run ${EDITOR:-nvim}'
 alias pr="poetry run"
 alias gs="git status"
 alias gd="git diff"
 alias gpsu="git log -1 --format=%s | cb"
-pip-add () { pip install "${1}" && pip freeze | grep "${1}" >> requirements.txt; }
+pip-add () { pip install "${1}" && pip freeze | grep "${1}" >> requirements.txt; }  # poetry add like command
 alias cru="cargo run"
 
 # Errorless experience

@@ -20,9 +20,10 @@ layouts = [
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
-    # layout.MonadTall(
-    # ratio=0.6,
-    # ),
+    layout.MonadTall(
+        ratio=0.75,
+        single_border_width=0,
+    ),
     layout.MonadWide(
         ratio=0.75,
         single_border_width=0,

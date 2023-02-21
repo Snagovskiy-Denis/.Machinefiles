@@ -34,3 +34,4 @@
     open-origin = !xdg-open $(git remote get-url origin) &
     backup = !git add --all && git commit --all -m $(date -I) && git push
     diff-dev = !git diff dev... -- ':!*.json' ':!*migrations*'
+    apk-bump = !git commit -m 'Bump build version' && git tag $(python -c "from version import __version__; print(__version__)")
