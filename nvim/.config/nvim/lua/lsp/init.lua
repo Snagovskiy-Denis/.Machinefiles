@@ -66,14 +66,26 @@ function M.setup ()
     M.rise_ui ()
 
     -- Activate servers
-    local lsp_installer = require('nvim-lsp-installer')
-    lsp_installer.on_server_ready(function(server)
-        local opts = {}
-        if server_configs[server.name] then
-            opts = server_configs[server.name]
-        end
-        server:setup(opts)
-    end)
+    -- local lsp_installer = require('nvim-lsp-installer')
+    -- lsp_installer.on_server_ready(function(server)
+    --     local opts = {}
+    --     if server_configs[server.name] then
+    --         opts = server_configs[server.name]
+    --     end
+    --     server:setup(opts)
+    -- end)
+
+    -- Activate servers
+    require 'plugin.mason'
+
+    local lsp_setuper = require 'mason-lspconfig'
+    lsp_setuper.setup()
+    lsp_setuper.setup_handlers {
+        function (server)
+            require('lspconfig')[server].setup {}
+        end,
+    }
+    
 
     require 'lsp.null-ls'
 end

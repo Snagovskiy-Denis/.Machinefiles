@@ -1,6 +1,5 @@
 function Install_language_servers ()
     local servers = {
-        'angularls',
         'bashls',
         'cssls',
         'denols',
@@ -18,7 +17,7 @@ function Install_language_servers ()
         'sqlls',
         'sqls',
         'stylelint_lsp',
-        'sumneko_lua',
+        'lua_ls',
         'tailwindcss',
         'texlab',
         'vuels',
@@ -26,7 +25,7 @@ function Install_language_servers ()
         'zk',
     }
 
-    for _, server in pairs(servers) do
-        vim.api.nvim_command('LspInstall ' .. server)
-    end
+    -- for _, server in pairs(servers) do
+    --     vim.api.nvim_command('LspInstall ' .. server)
+    -- end
 end

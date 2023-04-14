@@ -27,7 +27,13 @@ return {
     },
 
     -- lsp-server installer
-    { 'williamboman/nvim-lsp-installer' },
+    {
+        'williamboman/mason.nvim' ,
+        config = [[require 'plugin.mason']],
+    },
+    {
+        'williamboman/mason-lspconfig.nvim',
+    },
 
     -- Navigation
     {
@@ -122,18 +128,9 @@ return {
     -- Highlight colors hex codes with corresponding ones
     { 'norcalli/nvim-colorizer.lua' },
 
-    -- TODO Test runner helper
-    {
-        'nvim-neotest/neotest',
-        requires = { 'antoinemadec/FixCursorHold.nvim', 'nvim-neotest/neotest-python', 'nvim-lua/plenary.nvim' },
-        config = [[require("neotest").setup({
-          adapters = { require("neotest-python") } 
-        })]]
-    },
-
     -- Disctraction free
     {
-        'Pocco81/TrueZen.nvim',
+        'Pocco81/true-zen.nvim',
         config = [[require 'plugin.zen']],
     },
     { 'folke/twilight.nvim' },
@@ -141,7 +138,10 @@ return {
     -- Dependencies for more than one plugin
     { 'neovim/nvim-lspconfig' },  -- Autoconfigure LSP client \ dependency
     { 'nvim-lua/plenary.nvim' },  -- utils like tests and dependecy for other plugins
-    { 'kyazdani42/nvim-web-devicons' },  -- Icons for other plugins
+
+    -- Icons for other plugins
+    { 'kyazdani42/nvim-web-devicons' },
+    { 'ChristianChiarulli/neovim-codicons' },
 
     -- Themes and aesthetics
     { 'Pocco81/Catppuccino.nvim', disable = true },
@@ -150,8 +150,9 @@ return {
     { 'bignimbus/pop-punk.vim' },
 
 
+    { 'romgrk/nvim-treesitter-context' },
+
     -- Maybe later
-    -- { 'romgrk/nvim-treesitter-context' },
     -- { 'TimUntersberger/neogit' },
 
     -- Smooth scroll

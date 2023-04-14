@@ -84,8 +84,9 @@ urgency.uda.estimate.PT5M.coefficient=9  # short tasks = more priority
 urgency.user.tag.Z.coefficient=0.6
 urgency.uda.priority.L.coefficient=-2
 urgency.blocking.coefficient=2
-urgency.blocked.coefficient=-12
+urgency.blocked.coefficient=-5
 urgency.annotations.coefficient=0
+urgency.user.tag.I.coefficient=2
 urgency.user.tag.refactor.coefficient=-2.3
 
 
@@ -103,4 +104,4 @@ alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote
 
 # End of file
 # Below are 'task config'-setted values
-context=todayw
+context=w

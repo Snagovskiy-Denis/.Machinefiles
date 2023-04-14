@@ -63,18 +63,31 @@ tn  ()   { termdown $(calc $1*60) && mpv "${HOME}/Data/Music/alarm.mp3"; }
 # Dev stuff
 alias ut="python -m unittest"
 ft () { python -m unittest "${2:-test}"/"${1:-functional_tests}"/*.py; }
+alias par='poetry run python app run'
 alias zip_figma='zip -r figma-$(date -I).zip *'
 
 ## apk & buildozer
 apk_name () { echo -n "${PROJECT_NAME} v$(git describe --tags) от $(date -I).apk"; }
-apk_name_cb () { apk_name | cb; }
 apk_process () {
-    mv pro100qbox*arm64*.apk "$(apk_name)"
-    cp "$(apk_name)" ~
-    adb install -r "$(apk_name)"
+    mv bin/pro100qbox*arm64*.apk bin/"$(apk_name)"
+    https \
+        --form \
+        --session-read-only=pro100apk \
+        pro100quiz.ru/api/apk/auto_upload/ \
+        apk@bin/"$(apk_name)" \
+        is_hidden=1
+    adb install -r bin/"$(apk_name)"
     notify-send "APK" "process_apk ended as expected" --app-name="Buildozer"
 }
-alias apk_build='buildozer android debug; notify-send buildozer "build stopped"'
+apk_build () {
+    if [ -n "${BUILD_ENV_IS_ACTIVE}" ]
+    then
+        buildozer android debug
+        notify-send buildozer "build stopped"
+    else
+        echo "build env isn't active"
+    fi
+}
 alias apk_log='buildozer android logcat > box.txt'
 alias apk_start='adb shell am start -n com.pro100quiz.pro100qbox/org.kivy.android.PythonActivity'
 
