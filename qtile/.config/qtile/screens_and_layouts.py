@@ -44,6 +44,50 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+
+from tasklib import TaskWarrior
+from libqtile.widget import base
+
+class TaskWarriorWidget(base.ThreadPoolText):
+    defaults = [
+        ('update_interval', 5, 'Update interval in seconds'),
+    ]
+
+    def __init__(self, text = 'No tasks', **config):
+        super().__init__(text, **config)
+        self.add_defaults(self.defaults)
+
+    def poll(self):
+        tasks = self.get_tasks()
+
+        if not tasks:
+            return 'No tasks'
+
+        most_urgent_task = sorted(
+            tasks,
+            key=lambda task: task.pending and task['urgency'],
+            reverse=True,
+        )[0]
+
+        return f'{most_urgent_task["id"]} {most_urgent_task["description"]}'
+
+    def get_tasks(self):
+        tw = TaskWarrior()
+        if context_filter := self.get_tw_context_filter(tw):
+            return tw.tasks.filter(context_filter, status='pending')
+        return tw.tasks.pending()
+
+    @staticmethod
+    def get_tw_context_filter(tw: TaskWarrior) -> str | None:
+        config_path = Path('~/.config/taskrc').expanduser()
+        if config_path.exists():
+            config_lines = config_path.read_text().split('\n')
+            for line in config_lines:
+                if line.startswith(prefix := 'context='):
+                    context_name = line.removeprefix(prefix)
+                    return tw.config.get(f'context.{context_name}.read')
+
+
 screens = [
     Screen(
         top=bar.Bar(
@@ -61,10 +105,10 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
+                TaskWarriorWidget(),
                 # TODO: decorator for Cmus.get_info func that returns default string if cmus output is empty
                 widget.Cmus(max_chars=70),
                 # TODO: hide some widgets inside boxed
-                # TODO: create task widget
                 # widget.CheckUpdates(),
                 # widget.Volume(
                 # emoji=True,

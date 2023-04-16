@@ -34,6 +34,8 @@ context.w.write=+w
 context.todayw.read=+w and (scheduled < tomorrow or due < tomorrow)
 context.todayw.write=+w scheduled:today
 
+context.now.read=-w
+
 context.easy.read=estimate < 90min and -difficult and -w
 
 context.leisure.read=+joy or project = Art or +I
@@ -104,4 +106,4 @@ alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote
 
 # End of file
 # Below are 'task config'-setted values
-context=w
+context=leisure
