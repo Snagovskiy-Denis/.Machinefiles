@@ -1,0 +1,203 @@
+#!/usr/bin/env bash
+
+apk_name () { echo -n "${PROJECT_NAME} v$(git describe --tags) от $(date -I).apk"; }
+
+apk_start () { adb shell am start -n "${PACKAGE_PATH:-com.pro100quiz.pro100qbox}"/org.kivy.android.PythonActivity; }
+
+apk_log () {
+    log_name="${PACKAGE_PATH:-apk}".log
+    echo "Start logging into '${log_name}'..."
+    buildozer android logcat > "${log_name}"
+    echo "End logging."
+}
+
+_apk_process_frontend_archive_if_provided() {
+  if [ -n "$1" ] && [ -f "$1" ]; then
+    FRONTEND_ARCHIVE="$1"
+
+    # Remove old front-end files, static files
+    rm -rf vue/*
+    rm -rf static
+
+    # Extract the archive and remove it, also remove favicon
+    unzip "$FRONTEND_ARCHIVE" -d vue
+    mv vue/static/box vue
+    rmdir vue/static
+
+    rm "$FRONTEND_ARCHIVE"
+    rm -f vue/favicon.ico
+
+    # Move the HTML file
+    mv vue/index.html templates/vue/index.html
+  fi
+}
+
+_apk_activate_venv () {
+  source build_environment.secret
+  source ./venv/bin/activate 2>/dev/null || source $(poetry env info --path)/bin/activate 2>/dev/null || echo no
+}
+
+apk_commit_tag_and_push () {
+  git commit -m "Bump build version"
+  git tag "$(grep --color=never -oP "(?<=__version__ = ['\"])(.*)(?=['\"])" version.py)"
+  # git push --follow-tags
+  git push && git push --tags
+}
+
+apk_prepare() {
+  # Fetch the latest changes from the remote repository
+  git fetch
+
+  # Check for unmerged changes from the dev branch
+  if [ "$(git log HEAD..origin/dev --oneline)" ]; then
+    echo "Unmerged changes from dev detected. Resolve conflicts manually before proceeding."
+    return 1
+  fi
+
+  _apk_activate_venv
+
+  _apk_process_frontend_archive_if_provided "$1"
+  python manage.py collectstatic --noinput
+
+  # Open version file to bump it or abord
+  "${EDITOR}" version.py
+
+  VERSION_FILE_STATUS_AFTER=$(git status --porcelain version.py)
+  if [ -z "$VERSION_FILE_STATUS_AFTER" ]; then
+    echo "The version.py file hasn't been modified. Aborting."
+    return 1
+  fi
+
+  # Stage front-end directories and version.py
+  git add version.py vue/ templates/vue/index.html
+
+  # Check if there are any unstaged files with M, A, R, or D status
+  UNSTAGED_FILES=$(git status --porcelain | grep -E '^( M| A| R| D)')
+  if [ -n "$UNSTAGED_FILES" ]; then
+    echo "Unstaged files detected. Please add or ignore them and after that run apk_commit_tag_and_push"
+    echo "$UNSTAGED_FILES"
+    return 1
+  fi
+
+  apk_commit_tag_and_push
+}
+
+apk_deploy_prod() {
+  https \
+    --form \
+    --session-read-only=pro100apk \
+    pro100quiz.ru/api/apk/auto_upload/ \
+    apk@bin/"$(apk_name)" \
+    is_hidden=1
+}
+
+apk_deploy_locale() {
+  adb install -r bin/"$(apk_name)"
+}
+
+_apk_build_and_deploy_display_usage() {
+    echo "Usage: apk_build_and_deploy <mode>"
+    echo "  mode:"
+    echo "    none - only build, do not deploy"
+    echo "    prod - deploy to prod, but omit adb install"
+    echo "    locl - deploy on local machine, but skip prod"
+    echo "    both - build, push to prod and local"
+}
+
+apk_build_and_deploy() {
+  mode="$1"
+  if [ -z "${mode}" ] || [ "${mode}" == "-h" ]; then
+    _apk_build_and_deploy_display_usage
+    return 1
+  fi
+
+  case "${mode}" in
+    none|prod|locl|both)
+      if [ -n "${BUILD_ENV_IS_ACTIVE}" ]
+      then
+          buildozer android debug
+          notify-send buildozer "build stopped"
+      else
+          echo "build env isn't active"
+      fi
+      mv bin/pro100qbox*arm64*.apk bin/"$(apk_name)"
+      ;;
+    *)
+      echo -e "Invalid mode provided.\n"
+      _apk_build_and_deploy_display_usage
+      return 1
+      ;;
+  esac
+
+  case "$1" in
+    "none")
+      ;;
+    "prod")
+      apk_deploy_prod
+      ;;
+    "locl")
+      apk_deploy_locale
+      apk_start
+      apk_log
+      ;;
+    "both")
+      apk_deploy_prod
+      apk_deploy_locale
+      apk_start
+      apk_log
+      ;;
+  esac
+
+  # Send a notification
+  notify-send "APK" "process_apk ended as expected" --app-name="Buildozer"
+}
+
+apk_do_it_well() {
+  if [ ! -f "buildozer.spec" ]; then
+    echo "Please run apk_do_it_well from the project root directory (containing buildozer.spec file)."
+    return 1
+  fi
+  if [ ! -f "build_environment.secret" ]; then
+    echo "Missing build environment configuration file."
+    return 1
+  fi
+
+  cat << '  EOF'
+  Let the robots do the work, not the humans...
+
+                                _     __      __       __                         
+                              /' \  /'__`\  /'__`\    /\ \                        
+      _____   _ __   ___     /\_, \/\ \/\ \/\ \/\ \   \ \ \____    ___   __  _    
+     /\ '__`\/\`'__\/ __`\   \/_/\ \ \ \ \ \ \ \ \ \   \ \ '__`\  / __`\/\ \/'\   
+     \ \ \L\ \ \ \//\ \L\ \     \ \ \ \ \_\ \ \ \_\ \   \ \ \L\ \/\ \L\ \/>  </   
+      \ \ ,__/\ \_\\ \____/      \ \_\ \____/\ \____/    \ \_,__/\ \____//\_/\_\  
+       \ \ \/  \/_/ \/___/        \/_/\/___/  \/___/      \/___/  \/___/ \//\/_/  
+        \ \_\                                                                     
+         \/_/                                                                     
+  
+  EOF
+
+  # Call apk_prepare with the second argument (if provided)
+  if [ -n "$2" ]; then
+    apk_prepare "$2" || return $?
+  else
+    apk_prepare || return $?
+  fi
+
+  prepare_result=$?
+  if [ $prepare_result -ne 0 ]; then
+    echo "apk_prepare failed with exit code $prepare_result."
+    return $prepare_result
+  fi
+
+  # Call apk_build_and_deploy with the first argument (if provided)
+  if [ -n "$1" ]; then
+    apk_build_and_deploy "$1"
+  else
+    apk_build_and_deploy
+  fi
+
+  echo -e "\nApk is ready:\n"
+  apk_name
+  echo -e "\n\nEnjoy."
+}

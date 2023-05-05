@@ -1,5 +1,6 @@
 alacritty  $HOME/.config/alacritty/alacritty.yml
 aliasrc    $HOME/.config/shell/aliases
+functions  $HOME/.config/shell/functions
 bashrc     $HOME/.bashrc
 newsboat   $HOME/.config/newsboat/config
 newsboat   $HOME/.config/newsboat/urls

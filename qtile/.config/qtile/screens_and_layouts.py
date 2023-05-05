@@ -106,6 +106,7 @@ screens = [
                     name_transform=lambda name: name.upper(),
                 ),
                 TaskWarriorWidget(),
+                widget.Sep(),
                 # TODO: decorator for Cmus.get_info func that returns default string if cmus output is empty
                 widget.Cmus(max_chars=70),
                 # TODO: hide some widgets inside boxed

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+apk_related="${HOME}/.config/shell/apk_related"
+[ -f ${apk_related} ] && source ${apk_related}
+
 is_x_session () {
     [[ $(xhost >& /dev/null) ]] && return 0 || return 1
 }
@@ -26,38 +29,242 @@ AUR () {
     sudo pacman -U $(find ${download_path} -name "${package_name}*.pkg*")
 }
 
-#extract() {
-    #local c e i
 
-    #(($#)) || return
+# fzf --preview command for file and directory
+if type bat >/dev/null 2>&1; then
+    FZF_PREVIEW_CMD='bat --color=always --plain --line-range :$FZF_PREVIEW_LINES {}'
+elif type pygmentize >/dev/null 2>&1; then
+    FZF_PREVIEW_CMD='head -n $FZF_PREVIEW_LINES {} | pygmentize -g'
+else
+    FZF_PREVIEW_CMD='head -n $FZF_PREVIEW_LINES {}'
+fi
 
-    #for i; do
-        #c=''
-        #e=1
 
-        #if [[ ! -r $i ]]; then
-            #echo "$0: file is unreadable: \`$i'" >&2
-            #continue
-        #fi
+# gstash - easier way to deal with stashes
+# type fstash to get a list of your stashes
+# enter shows you the contents of the stash
+# ctrl-d shows a diff of the stash against your current HEAD
+# ctrl-b checks the stash out as a branch, for easier merging
+gstash() {
+  local out
+  local q
+  local k
+  local sha
 
-        #case $i in
-            #*.t@(gz|lz|xz|b@(2|z?(2))|a@(z|r?(.@(Z|bz?(2)|gz|lzma|xz)))))
-                   #c=(bsdtar xvf);;
-            #*.7z)  c=(7z x);;
-            #*.Z)   c=(uncompress);;
-            #*.bz2) c=(bunzip2);;
-            #*.exe) c=(cabextract);;
-            #*.gz)  c=(gunzip);;
-            #*.rar) c=(unrar x);;
-            #*.xz)  c=(unxz);;
-            #*.zip) c=(unzip);;
-            #*.zst) c=(unzstd);;
-            #*)     echo "$0: unrecognized file extension: \`$i'" >&2
-                   #continue;;
-        #esac
+  while out="$(
+    git stash list --pretty='%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs' \
+      | fzf \
+          --ansi \
+          --no-sort \
+          --query="$q" \
+          --print-query \
+          --expect=ctrl-d,ctrl-b
+  )"; do
+    mapfile -t out <<< "$out"
+    q="${out[0]}"
+    k="${out[1]}"
+    sha="${out[-1]}"
+    sha="${sha%% *}"
+    [[ -z "$sha" ]] && continue
+    if [[ "$k" == 'ctrl-d' ]]; then
+      git diff "$sha"
+    elif [[ "$k" == 'ctrl-b' ]]; then
+      git stash branch "stash-$sha" "$sha"
+      break
+    else
+      git stash show -p "$sha"
+    fi
+  done
+}
 
-        #command "${c[@]}" "$i"
-        #((e = e || $?))
-    #done
-    #return "$e"
-#}
+
+# gch - checkout git branch
+#    - sorted by most recent commit
+#    - limit 30 last branches
+gch() {
+  local branches
+  local num_branches
+  local branch
+  local target
+
+  branches="$(
+    git for-each-ref \
+      --count=30 \
+      --sort=-committerdate \
+      refs/heads/ \
+      --format='%(HEAD) %(refname:short)'
+  )" || return
+
+  num_branches="$(wc -l <<< "$branches")"
+
+  branch="$(
+    echo "$branches" \
+      | fzf-tmux -d "$((2 + "$num_branches"))" +m
+  )" || return
+
+  target="$(
+    echo "$branch" \
+      | sed "s/.* //" \
+      | sed 's#remotes/[^/]*/##'
+  )" || return
+
+  git switch "$target"
+}
+
+
+
+# fe - open 'frecency' files in $EDITOR editor
+fe() {
+  local IFS=$'\n'
+  local files=()
+
+  files=(
+  "$(
+    fasd -fl \
+      | fzf \
+          --tac \
+          --reverse -1 \
+          --no-sort \
+          --multi \
+          --tiebreak=index \
+          --bind=ctrl-x:toggle-sort \
+          --query "$*" \
+          --preview="${FZF_PREVIEW_CMD}" \
+          --preview-window='right:hidden:wrap' \
+          --bind=ctrl-v:toggle-preview \
+          --bind=ctrl-x:toggle-sort \
+          --header='(view:ctrl-v) (sort:ctrl-x)' \
+      )"
+  ) || return
+
+  "${EDITOR:-nvim}" "${files[@]}"
+}
+
+
+
+# zst - cd into the directory from stack
+zst() {
+  local dir
+  dir="$(
+    \dirs -l \
+      | sed 's#\s#\n#g' \
+      | uniq \
+      | fzf +s +m -1 -q "$*" \
+            --preview='tree -C {} | head -n $FZF_PREVIEW_LINES' \
+            --preview-window='right:hidden:wrap' \
+            --bind=ctrl-v:toggle-preview \
+            --bind=ctrl-x:toggle-sort \
+            --header='(view:ctrl-v) (sort:ctrl-x)' \
+  )"
+  # check $dir exists for Ctrl-C interrupt
+  # or change directory to $HOME (= no value cd)
+  if [[ -d "$dir" ]]; then
+    cd "$dir" || return
+  fi
+}
+
+
+
+# z - selectable cd to frecency \ bookmarked directory
+z() {
+    local dir
+    dir="$(select_from_frequent_directories "$*")"
+    cd "${dir}" || return
+}
+
+
+
+# example usage:
+#   mv ./file.txt `select_from_frequent_directories localtrash`
+select_from_frequent_directories() {
+    fasd -dl \
+        | fzf \
+          --tac \
+          --reverse \
+          --select-1 \
+          --no-sort \
+          --no-multi \
+          --tiebreak=index \
+          --bind=ctrl-x:toggle-sort \
+          --query "$*" \
+          --preview='tree -C {} | head -n $FZF_PREVIEW_LINES' \
+          --preview-window='right:hidden:wrap' \
+          --bind=ctrl-v:toggle-preview \
+          --bind=ctrl-x:toggle-sort \
+          --header='(view:ctrl-v) (sort:ctrl-x)' \
+    || return
+}
+
+
+
+
+# zd - cd to selected directory
+zd() {
+  local dir
+  dir="$(
+    fd --type directory | fzf +m \
+          --preview='tree -C {} | head -n $FZF_PREVIEW_LINES' \
+          --preview-window='right:hidden:wrap' \
+          --bind=ctrl-v:toggle-preview \
+          --bind=ctrl-x:toggle-sort \
+          --header='(view:ctrl-v) (sort:ctrl-x)' \
+  )" || return
+  cd "$dir" || return
+}
+
+
+
+prompt () {
+    basedir="${ZETTELKASTEN}../Prompts"
+
+    if [ $# -eq 0 ]; then
+        ls "$basedir"
+    elif [ $# -eq 2 ] && [ "$1" == "-o" ]; then
+        "$EDITOR" "$basedir/$2"
+    elif [ $# -eq 1 ] && [ -f "$basedir/$1" ]; then
+        cat "$basedir/$1" | cb
+    else
+        echo "Invalid arguments provided."
+    fi
+}
+
+
+
+alias no="note -o"
+note () {
+    help_note="How to use:
+        No arguments = print file
+        If more than 1 argument = add all arguments to file
+        
+        If first argument is one of these:
+        -h = print this [h]elp message
+        -o = [o]pen note in editor specified by EDITOR
+        -c = put\paste [c]lipboard to file
+        -p = take [p]iped input from stdin or run cat interactivelly
+        -f = return note\' [f]ilepath
+        --clear-file = clear file"
+    filepath="${HOME}/.notes.md"
+
+    # if file doesn't exist, create it
+    if [[ ! -f $filepath ]]; then
+        touch $filepath
+    fi
+
+    if ! (($#)); then
+        cat $filepath
+    elif [[ "$1" == "-h" ]]; then
+        printf "${help_note}\n"
+    elif [[ "$1" == "--clear-file" ]]; then
+        printf "%s" > $filepath
+    elif [[ "$1" == "-o" ]]; then
+        $EDITOR $filepath
+    elif [[ "$1" == "-c" ]]; then
+        xsel --clipboard >> $filepath
+    elif [[ "$1" == "-p" ]]; then
+        cat >> $filepath
+    elif [[ "$1" == "-f" ]]; then
+        echo $filepath
+    else
+        printf "%s\n" "$*" >> $filepath
+    fi
+}

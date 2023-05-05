@@ -49,10 +49,11 @@ d ()  { dict "${1}" | less; }
 # "New" commands
 alias ps\?="ps aux | grep"
 alias reload="source ~/.bashrc"
-alias pacman_remove_fzf="pacman -Qeq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
 alias gotemp='cd $(mktemp -d)'
-book-temp () { pwd > "/tmp/$1"; }
-cd-book () { cd $(cat "/tmp/$1"); }
+
+alias vpn-up="sudo wg-quick up wg0"
+alias vpn-down="sudo wg-quick down wg0"
+alias vpn-ip="curl --silent https://api.country.is | jq"
 
 # Timer
 alias t5=" termdown $(calc  5*60) && mpv ~/Data/Music/alarm.mp3 ; exit"
@@ -60,269 +61,35 @@ alias t10="termdown $(calc 10*60) && mpv ~/Data/Music/alarm.mp3 ; exit"
 alias t15="termdown $(calc 15*60) && mpv ~/Data/Music/alarm.mp3 ; exit"
 tn  ()   { termdown $(calc $1*60) && mpv "${HOME}/Data/Music/alarm.mp3"; }
 
+# Errorless experience
+alias :q="exit"
+alias :Q="exit"
+
 # Dev stuff
 alias ut="python -m unittest"
 ft () { python -m unittest "${2:-test}"/"${1:-functional_tests}"/*.py; }
 alias par='poetry run python app run'
-alias zip_figma='zip -r figma-$(date -I).zip *'
 
-## apk & buildozer
-apk_name () { echo -n "${PROJECT_NAME} v$(git describe --tags) от $(date -I).apk"; }
-apk_process () {
-    mv bin/pro100qbox*arm64*.apk bin/"$(apk_name)"
-    https \
-        --form \
-        --session-read-only=pro100apk \
-        pro100quiz.ru/api/apk/auto_upload/ \
-        apk@bin/"$(apk_name)" \
-        is_hidden=1
-    adb install -r bin/"$(apk_name)"
-    notify-send "APK" "process_apk ended as expected" --app-name="Buildozer"
-}
-apk_build () {
-    if [ -n "${BUILD_ENV_IS_ACTIVE}" ]
-    then
-        buildozer android debug
-        notify-send buildozer "build stopped"
-    else
-        echo "build env isn't active"
-    fi
-}
-alias apk_log='buildozer android logcat > box.txt'
-alias apk_start='adb shell am start -n com.pro100quiz.pro100qbox/org.kivy.android.PythonActivity'
+# Archives staff
+alias zip_figma='zip -r figma-$(date -I).zip *'
+book-temp () { pwd > "/tmp/$1"; }
+cd-book () { cd $(cat "/tmp/$1"); }
 
 # Print TODOs
 alias TODO="rg TODO --glob='!*.json' --glob='!*.js*' --glob='!*.css*'"
 alias TODO-git='TODO $(git ls-files -m)'
 alias TODO.txt="TODO --heading --color=always > TODO.txt"  # writes todo-summary to file
 
+# packaging + environments
 alias vc="python -m venv ./venv"
 alias va='source ./venv/bin/activate 2>/dev/null|| source $(poetry env info --path)/bin/activate 2>/dev/null || echo no'
 alias vv="vc && va && pip install -r requirements.txt"
 alias pe='poetry run ${EDITOR:-nvim}'
 alias pr="poetry run"
+pip-add () { pip install "${1}" && pip freeze | grep "${1}" >> requirements.txt; }  # poetry add like command
+
 alias gs="git status"
 alias gd="git diff"
 alias gpsu="git log -1 --format=%s | cb"
-pip-add () { pip install "${1}" && pip freeze | grep "${1}" >> requirements.txt; }  # poetry add like command
+
 alias cru="cargo run"
-
-# Errorless experience
-alias :q="exit"
-alias :Q="exit"
-
-
-alias no="note -o"
-note () {
-    help_note="How to use:
-        No arguments = print file
-        If more than 1 argument = add all arguments to file
-        
-        If first argument is one of these:
-        -h = print this [h]elp message
-        -o = [o]pen note in editor specified by EDITOR
-        -c = put\paste [c]lipboard to file
-        -p = take [p]iped input from stdin or run cat interactivelly
-        -f = return note\' [f]ilepath
-        --clear-file = clear file"
-    filepath="${HOME}/.notes.md"
-
-    # if file doesn't exist, create it
-    if [[ ! -f $filepath ]]; then
-        touch $filepath
-    fi
-
-    if ! (($#)); then
-        cat $filepath
-    elif [[ "$1" == "-h" ]]; then
-        printf "${help_note}\n"
-    elif [[ "$1" == "--clear-file" ]]; then
-        printf "%s" > $filepath
-    elif [[ "$1" == "-o" ]]; then
-        $EDITOR $filepath
-    elif [[ "$1" == "-c" ]]; then
-        xsel --clipboard >> $filepath
-    elif [[ "$1" == "-p" ]]; then
-        cat >> $filepath
-    elif [[ "$1" == "-f" ]]; then
-        echo $filepath
-    else
-        printf "%s\n" "$*" >> $filepath
-    fi
-}
-
-# fzf --preview command for file and directory
-if type bat >/dev/null 2>&1; then
-    FZF_PREVIEW_CMD='bat --color=always --plain --line-range :$FZF_PREVIEW_LINES {}'
-elif type pygmentize >/dev/null 2>&1; then
-    FZF_PREVIEW_CMD='head -n $FZF_PREVIEW_LINES {} | pygmentize -g'
-else
-    FZF_PREVIEW_CMD='head -n $FZF_PREVIEW_LINES {}'
-fi
-
-
-# zd - cd to selected directory
-zd() {
-  local dir
-  dir="$(
-    fd --type directory | fzf +m \
-          --preview='tree -C {} | head -n $FZF_PREVIEW_LINES' \
-          --preview-window='right:hidden:wrap' \
-          --bind=ctrl-v:toggle-preview \
-          --bind=ctrl-x:toggle-sort \
-          --header='(view:ctrl-v) (sort:ctrl-x)' \
-  )" || return
-  cd "$dir" || return
-}
-
-
-# example usage:
-#   mv ./file.txt `select_from_frequent_directories localtrash`
-select_from_frequent_directories() {
-    fasd -dl \
-        | fzf \
-          --tac \
-          --reverse \
-          --select-1 \
-          --no-sort \
-          --no-multi \
-          --tiebreak=index \
-          --bind=ctrl-x:toggle-sort \
-          --query "$*" \
-          --preview='tree -C {} | head -n $FZF_PREVIEW_LINES' \
-          --preview-window='right:hidden:wrap' \
-          --bind=ctrl-v:toggle-preview \
-          --bind=ctrl-x:toggle-sort \
-          --header='(view:ctrl-v) (sort:ctrl-x)' \
-    || return
-}
-
-
-# z - selectable cd to frecency \ bookmarked directory
-z() {
-    local dir
-    dir="$(select_from_frequent_directories "$*")"
-    cd "${dir}" || return
-}
-
-
-# zst - cd into the directory from stack
-zst() {
-  local dir
-  dir="$(
-    \dirs -l \
-      | sed 's#\s#\n#g' \
-      | uniq \
-      | fzf +s +m -1 -q "$*" \
-            --preview='tree -C {} | head -n $FZF_PREVIEW_LINES' \
-            --preview-window='right:hidden:wrap' \
-            --bind=ctrl-v:toggle-preview \
-            --bind=ctrl-x:toggle-sort \
-            --header='(view:ctrl-v) (sort:ctrl-x)' \
-  )"
-  # check $dir exists for Ctrl-C interrupt
-  # or change directory to $HOME (= no value cd)
-  if [[ -d "$dir" ]]; then
-    cd "$dir" || return
-  fi
-}
-
-
-# fe - open 'frecency' files in $EDITOR editor
-fe() {
-  local IFS=$'\n'
-  local files=()
-
-  files=(
-  "$(
-    fasd -fl \
-      | fzf \
-          --tac \
-          --reverse -1 \
-          --no-sort \
-          --multi \
-          --tiebreak=index \
-          --bind=ctrl-x:toggle-sort \
-          --query "$*" \
-          --preview="${FZF_PREVIEW_CMD}" \
-          --preview-window='right:hidden:wrap' \
-          --bind=ctrl-v:toggle-preview \
-          --bind=ctrl-x:toggle-sort \
-          --header='(view:ctrl-v) (sort:ctrl-x)' \
-      )"
-  ) || return
-
-  "${EDITOR:-nvim}" "${files[@]}"
-}
-
-
-# gch - checkout git branch
-#    - sorted by most recent commit
-#    - limit 30 last branches
-gch() {
-  local branches
-  local num_branches
-  local branch
-  local target
-
-  branches="$(
-    git for-each-ref \
-      --count=30 \
-      --sort=-committerdate \
-      refs/heads/ \
-      --format='%(HEAD) %(refname:short)'
-  )" || return
-
-  num_branches="$(wc -l <<< "$branches")"
-
-  branch="$(
-    echo "$branches" \
-      | fzf-tmux -d "$((2 + "$num_branches"))" +m
-  )" || return
-
-  target="$(
-    echo "$branch" \
-      | sed "s/.* //" \
-      | sed "s#remotes/[^/]*/##"
-  )" || return
-
-  git switch "$target"
-}
-
-
-# gstash - easier way to deal with stashes
-# type fstash to get a list of your stashes
-# enter shows you the contents of the stash
-# ctrl-d shows a diff of the stash against your current HEAD
-# ctrl-b checks the stash out as a branch, for easier merging
-gstash() {
-  local out
-  local q
-  local k
-  local sha
-
-  while out="$(
-    git stash list --pretty='%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs' \
-      | fzf \
-          --ansi \
-          --no-sort \
-          --query="$q" \
-          --print-query \
-          --expect=ctrl-d,ctrl-b
-  )"; do
-    mapfile -t out <<< "$out"
-    q="${out[0]}"
-    k="${out[1]}"
-    sha="${out[-1]}"
-    sha="${sha%% *}"
-    [[ -z "$sha" ]] && continue
-    if [[ "$k" == 'ctrl-d' ]]; then
-      git diff "$sha"
-    elif [[ "$k" == 'ctrl-b' ]]; then
-      git stash branch "stash-$sha" "$sha"
-      break
-    else
-      git stash show -p "$sha"
-    fi
-  done
-}

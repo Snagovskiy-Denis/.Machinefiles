@@ -46,6 +46,9 @@ context.leisure.read=+joy or project = Art or +I
 uda.estimate.label=⏳
 uda.estimate.type=duration
 
+uda.dod.label=DoD
+uda.dod.type=string
+
 # report
 # report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
 report.next.labels=ID,Age,P,Sched,⏳,Description,Due,Project,Tag,Urg
@@ -83,7 +86,7 @@ urgency.uda.estimate.PT1H.coefficient=1  # short tasks = more priority
 urgency.uda.estimate.PT30M.coefficient=3  # short tasks = more priority
 urgency.uda.estimate.PT15M.coefficient=3.2  # short tasks = more priority
 urgency.uda.estimate.PT5M.coefficient=9  # short tasks = more priority
-urgency.user.tag.Z.coefficient=0.6
+urgency.user.tag.Z.coefficient=0.2
 urgency.uda.priority.L.coefficient=-2
 urgency.blocking.coefficient=2
 urgency.blocked.coefficient=-5
@@ -106,4 +109,4 @@ alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote
 
 # End of file
 # Below are 'task config'-setted values
-context=leisure
+context=w
