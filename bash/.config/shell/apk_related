@@ -129,7 +129,7 @@ apk_build_and_deploy() {
       ;;
   esac
 
-  case "$1" in
+  case "${mode}" in
     "none")
       ;;
     "prod")
@@ -152,9 +152,9 @@ apk_build_and_deploy() {
   notify-send "APK" "process_apk ended as expected" --app-name="Buildozer"
 }
 
-apk_do_it_well() {
+apk_all_inclusive() {
   if [ ! -f "buildozer.spec" ]; then
-    echo "Please run apk_do_it_well from the project root directory (containing buildozer.spec file)."
+    echo "Please run apk_all_inclusive from the project root directory (containing buildozer.spec file)."
     return 1
   fi
   if [ ! -f "build_environment.secret" ]; then
