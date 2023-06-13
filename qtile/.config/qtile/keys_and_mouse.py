@@ -80,7 +80,8 @@ _application_launcher_keys = [
     Key([mod], 'r', lazy.spawn(cli_app('ranger')), desc='File browser'),
     Key([mod], 't', lazy.spawn('torbrowser-launcher')),
 
-    Key([mod], 'a', lazy.spawn('passmenu'), desc='Frontend for pass'),
+    Key([mod], 'a', lazy.spawn('login.sh'), desc='Frontend for pass'),
+    # Key([mod], 'a', lazy.spawn('passmenu'), desc='Frontend for pass'),
     Key([mod], 's', lazy.spawn(cli_app('dmconf')), desc='Edit bm-file'),
 
     Key([], 'XF86Calculator', lazy.spawn('rofi -modi calc -show calc')),

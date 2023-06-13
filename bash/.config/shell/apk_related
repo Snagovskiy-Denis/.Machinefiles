@@ -11,6 +11,13 @@ apk_log () {
     echo "End logging."
 }
 
+apk_log_only_apk () {
+    log_name="${PACKAGE_PATH:-apk}".log
+    echo "Start logging into '${log_name}'..."
+    adb logcat --pid="$(adb shell pidof -s com.pro100quiz.pro100qbox)" > "${log_name}"
+    echo "End logging."
+}
+
 _apk_process_frontend_archive_if_provided() {
   if [ -n "$1" ] && [ -f "$1" ]; then
     FRONTEND_ARCHIVE="$1"
@@ -83,6 +90,7 @@ apk_prepare() {
 }
 
 apk_deploy_prod() {
+  echo "Start deploy to prod..."
   https \
     --form \
     --session-read-only=pro100apk \
@@ -138,13 +146,11 @@ apk_build_and_deploy() {
     "locl")
       apk_deploy_locale
       apk_start
-      apk_log
       ;;
     "both")
       apk_deploy_prod
       apk_deploy_locale
       apk_start
-      apk_log
       ;;
   esac
 

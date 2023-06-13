@@ -4,6 +4,23 @@ return {
     -- Packer can manage itself as an optional plugin
     { 'wbthomason/packer.nvim' },
 
+
+    -- {
+    --     'codota/tabnine-nvim',
+    --     run = "./dl_binaries.sh",
+    --     config = [[
+    --         require('tabnine').setup({
+    --           disable_auto_comment=true,
+    --           accept_keymap="<Tab>",
+    --           dismiss_keymap = "<C-]>",
+    --           debounce_ms = 800,
+    --           suggestion_color = {gui = "#808080", cterm = 244},
+    --           exclude_filetypes = {"TelescopePrompt"},
+    --           log_file_path = nil, -- absolute path to Tabnine log file
+    --         })
+    --     ]],
+    -- },
+
     -- LSP actions & formatter
     { 'jose-elias-alvarez/null-ls.nvim', requires = { 'nvim-lua/popup.nvim' } },
 
@@ -181,4 +198,6 @@ return {
         run = function() vim.fn['mkdp#util#install']() end,
     },
     { 'vim-scripts/AnsiEsc.vim' },
+
+    { 'mracos/mermaid.vim' },
 }

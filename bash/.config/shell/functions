@@ -222,7 +222,7 @@ prompt () {
     elif [ $# -eq 2 ] && [ "$1" == "-o" ]; then
         "$EDITOR" "$basedir/$2"
     elif [ $# -eq 1 ] && [ -f "$basedir/$1" ]; then
-        cat "$basedir/$1" | cb
+        cat "$basedir/$1" | xsel --clipboard
     else
         echo "Invalid arguments provided."
     fi

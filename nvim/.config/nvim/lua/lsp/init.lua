@@ -85,8 +85,6 @@ function M.setup ()
             require('lspconfig')[server].setup {}
         end,
     }
-    
-
     require 'lsp.null-ls'
 end
 

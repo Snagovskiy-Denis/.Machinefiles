@@ -87,6 +87,7 @@ alias vv="vc && va && pip install -r requirements.txt"
 alias pe='poetry run ${EDITOR:-nvim}'
 alias pr="poetry run"
 pip-add () { pip install "${1}" && pip freeze | grep "${1}" >> requirements.txt; }  # poetry add like command
+alias pytest-pdb="pytest --pdb --pdbcls=IPython.terminal.debugger:TerminalPdb"
 
 alias gs="git status"
 alias gd="git diff"
