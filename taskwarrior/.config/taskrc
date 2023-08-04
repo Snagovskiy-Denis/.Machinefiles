@@ -94,6 +94,8 @@ urgency.annotations.coefficient=0
 urgency.user.tag.I.coefficient=2
 urgency.user.tag.refactor.coefficient=-2.3
 
+urgency.user.tag.MT.coefficient=1  # temporary priority
+
 
 # plugins
 ## taskwarrior-tui
@@ -109,4 +111,4 @@ alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote
 
 # End of file
 # Below are 'task config'-setted values
-context=w
+context=todayw

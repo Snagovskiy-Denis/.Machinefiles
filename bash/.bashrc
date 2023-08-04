@@ -71,3 +71,7 @@ if [ -f $(which powerline-daemon) ] && [ -z "${MYVIMRC}" ] && [[ "${DISPLAY}" ]]
 fi
 
 source /home/self/.bash_completions/cli.py.sh
+
+source /home/self/.bash_completions/typer.sh
+
+source /home/self/.bash_completions/templates-factory.sh
