@@ -36,6 +36,7 @@ local vmappings = {
 
 local mappings = {
     ['/'] = { "<Plug>(comment_toggle_linewise_current)", "Comment toggle current line" },
+    ['a'] = { ':lua require("harpoon"):list():append()<cr>', 'Harpoon this' },
     ['f'] = { '<cmd>Telescope find_files<CR>', 'Find File' },
     ['h'] = { '<cmd>:set hlsearch!<CR>', 'Toggle highlight' },
     ['A'] = { '<cmd>:AnsiEsc<CR>', 'Toggle ANSI ecapie sequences look' },
@@ -143,6 +144,8 @@ local mappings = {
         f = { '/<++><CR>c4l', '<++> forward' },
         b = { '?<++><CR>c4l', '<++> backward' },
         t = { '/<++><CR>R', '<++> table (f)' },
+        C = { ':OpenInScim<CR>', 'Edit in sc-im' },
+        c = { '<cmd>terminal sc-im "%"', 'Open current in sc-im' },
     },
 }
 

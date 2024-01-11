@@ -20,6 +20,7 @@ require 'telescope'.setup {
                 ['<C-j>'] = actions.cycle_history_next,
                 ['<C-k>'] = actions.cycle_history_prev,
                 ['<C-c>'] = actions.close,
+                ['<C-f>'] = { '<C-^>', type = 'command' },
             },
         },
 

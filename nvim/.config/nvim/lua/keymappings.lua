@@ -54,6 +54,18 @@ local keymaps = {
 
         -- Switch layout
         ['<C-f>'] = 'a<C-^><Esc>',
+
+        -- Harpoon
+        ['<C-e>'] = ':lua require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())<CR>',
+        -- ['<C-e>'] = ':lua require("plugin.harpoon"):toggle_telescope(require("harpoon"):list())<CR>',
+
+        ['<C-n>'] = ':lua require("harpoon"):list():select(1)<CR>',
+        ['<C-m>'] = ':lua require("harpoon"):list():select(2)<CR>',
+        ['<C-s>'] = ':lua require("harpoon"):list():select(3)<CR>',
+        ['<C-i>'] = ':lua require("harpoon"):list():select(4)<CR>',
+
+        ['<C-S-P'] = ':lua require("harpoon"):list():prev()<CR>',
+        ['<C-S-N'] = ':lua require("harpoon"):list():next()<CR>',
     },
     visual_mode = {
         -- Move text

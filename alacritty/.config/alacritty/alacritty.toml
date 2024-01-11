@@ -1,0 +1,90 @@
+[[colors.indexed_colors]]
+color = "0xff9900"
+index = 16
+
+[[colors.indexed_colors]]
+color = "0x3300ff"
+index = 17
+
+[[colors.indexed_colors]]
+color = "0x404040"
+index = 18
+
+[[colors.indexed_colors]]
+color = "0x606060"
+index = 19
+
+[[colors.indexed_colors]]
+color = "0xc0c0c0"
+index = 20
+
+[[colors.indexed_colors]]
+color = "0xe0e0e0"
+index = 21
+
+[colors.bright]
+black = "0x808080"
+blue = "0x0066ff"
+cyan = "0x00ffff"
+green = "0x33ff00"
+magenta = "0xcc00ff"
+red = "0xff0000"
+white = "0xffffff"
+yellow = "0xffdc00"
+
+[colors.normal]
+black = "0x000000"
+blue = "0x3300ff"
+cyan = "0x7fdbff"
+green = "0x2ecc40"
+magenta = "0xb10dc9"
+red = "0xff0000"
+white = "0xffffff"
+yellow = "0xffdc00"
+
+[colors.primary]
+background = "0x000000"
+foreground = "0xd0d0d0"
+
+[font]
+size = 13
+
+[font.normal]
+family = "Hack Nerd Font"
+
+[[hints.enabled]]
+command = "xdg-open"
+post_processing = true
+regex = "(mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
+
+[hints.enabled.binding]
+key = "U"
+mods = "Control|Shift"
+
+[hints.enabled.mouse]
+enabled = true
+mods = "None"
+
+[[hints.enabled]]
+action = "Copy"
+post_processing = false
+regex = '\[\[[^\]]+\]\]'
+
+[hints.enabled.binding]
+key = "G"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "ToggleViMode"
+key = "Space"
+mode = "~Search"
+mods = "Shift|Control"
+
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "Return"
+mods = "Control|Shift"
+
+[window]
+decorations = "full"
+opacity = 0.8

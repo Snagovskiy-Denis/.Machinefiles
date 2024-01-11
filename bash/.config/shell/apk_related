@@ -169,7 +169,7 @@ apk_all_inclusive() {
   fi
 
   cat << '  EOF'
-  Let the robots do the work, not the humans...
+  Let robots do the work, not humans...
 
                                 _     __      __       __                         
                               /' \  /'__`\  /'__`\    /\ \                        

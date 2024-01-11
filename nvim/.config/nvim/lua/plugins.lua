@@ -124,14 +124,6 @@ return {
     { 'theHamsta/nvim-dap-virtual-text' },
     { 'Pocco81/DAPInstall.nvim' },
 
-    -- Dashboard
-    {
-        'ChristianChiarulli/dashboard-nvim',
-        event = 'BufWinEnter',
-        config = [[require 'plugin.dashboard']],
-        disable = true,
-    },
-
     -- Terminal
     {
         'akinsho/toggleterm.nvim',
@@ -161,8 +153,9 @@ return {
     { 'ChristianChiarulli/neovim-codicons' },
 
     -- Themes and aesthetics
-    { 'Pocco81/Catppuccino.nvim', disable = true },
     { 'folke/tokyonight.nvim' },
+    { 'catppuccin/nvim' },
+    { 'EdenEast/nightfox.nvim' },
     { 'dracula/vim' },
     { 'bignimbus/pop-punk.vim' },
 
@@ -200,4 +193,14 @@ return {
     { 'vim-scripts/AnsiEsc.vim' },
 
     { 'mracos/mermaid.vim' },
+
+    { 'mipmip/vim-scimark' },
+
+
+    { 
+        'ThePrimeagen/harpoon',
+        branch = 'harpoon2',
+        requires = { { 'nvim-lua/plenary.nvim' } },
+        config = [[require 'plugin.harpoon']]
+    },
 }

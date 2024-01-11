@@ -39,6 +39,12 @@ AUR () {
     sudo pacman -U $(find ${download_path} -name "${package_name}*.pkg*")
 }
 
+setup-wireguard() {
+    sudo mv -f download/*-wg.conf /etc/wireguard/wg0.conf
+    sudo wg-quick up wg0
+    curl --silent https://api.country.is | jq
+}
+
 
 # fzf --preview command for file and directory
 if type bat >/dev/null 2>&1; then
@@ -232,7 +238,7 @@ prompt () {
     elif [ $# -eq 2 ] && [ "$1" == "-o" ]; then
         "$EDITOR" "$basedir/$2"
     elif [ $# -eq 1 ] && [ -f "$basedir/$1" ]; then
-        cat "$basedir/$1" | xsel --clipboard
+        cat "$basedir/$1" | tee /dev/tty |  xsel --clipboard
     else
         echo "Invalid arguments provided."
     fi

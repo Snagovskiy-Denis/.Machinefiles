@@ -95,6 +95,8 @@ _application_launcher_keys = [
         Key([], 'o', lazy.spawn('obsidian')),
         Key([], 'z', lazy.spawn('anki')),
         Key([], 'c', lazy.spawn('gnome-pomodoro')),
+        Key([], 'v', lazy.spawn('telegram-desktop')),
+        Key([], 'x', lazy.spawn('discord')),
 
         # CLI & TUI applications
         Key([], 'u', lazy.spawn(cli_app('taskwarrior-tui'))),
