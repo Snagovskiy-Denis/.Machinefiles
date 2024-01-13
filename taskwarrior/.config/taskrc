@@ -86,11 +86,11 @@ color.blocking=none
 #   No priority, no estimate, no difficulty, etc. = is it even a task? should I keep it?
 # urgency.uda.why..coefficient=-2
 urgency.uda.estimate..coefficient=-1
-urgency.uda.estimate.PT1H.coefficient=-0.5  # short tasks = more priority
-urgency.uda.estimate.PT30M.coefficient=2.5  # short tasks = more priority
-urgency.uda.estimate.PT15M.coefficient=3.2  # short tasks = more priority
-urgency.uda.estimate.PT10M.coefficient=4.5  # short tasks = more priority
-urgency.uda.estimate.PT5M.coefficient=9  # short tasks = more priority
+urgency.uda.estimate.PT1H.coefficient=-0.2  # short tasks = more priority
+urgency.uda.estimate.PT30M.coefficient=1.3  # short tasks = more priority
+urgency.uda.estimate.PT15M.coefficient=2.2  # short tasks = more priority
+urgency.uda.estimate.PT10M.coefficient=3  # short tasks = more priority
+urgency.uda.estimate.PT5M.coefficient=5  # short tasks = more priority
 urgency.uda.priority.L.coefficient=-2
 urgency.blocking.coefficient=2
 urgency.blocked.coefficient=-5

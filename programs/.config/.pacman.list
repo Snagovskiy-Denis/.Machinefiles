@@ -4,6 +4,9 @@ android-file-transfer
 android-x86-system-image-28
 anki
 anydesk-bin
+arduino
+arduino-avr-core
+arduino-cli
 aura
 autoconf
 automake
@@ -25,6 +28,7 @@ cht.sh-git
 cmatrix
 cmus
 cpio
+cronie
 deno
 dictd
 discord
@@ -44,10 +48,10 @@ firefox
 flameshot
 flex
 fzf
+gcc-fortran
 gdal
 gimp
 git-delta
-gitlab-runner
 gnome-boxes
 gnome-font-viewer
 gnome-shell-pomodoro
@@ -67,7 +71,6 @@ ipython
 irssi
 isync
 jdk-openjdk
-jdk16-adoptopenjdk
 jp2a
 jq
 kdeconnect
@@ -94,7 +97,7 @@ mermaid-cli
 mesa-demos
 mongodb44-bin
 mpv
-mutt-wizard-git
+mutt-wizard
 myrulib-git
 ncdu
 ncurses5-compat-libs
@@ -106,6 +109,7 @@ netrw-bin
 networkmanager
 networkmanager-openvpn
 newsboat
+nginx-mainline
 ngrok
 nitrogen
 nodejs
@@ -119,11 +123,13 @@ nvidia-settings
 nvidia-utils
 obs-studio
 obsidian
+openblas
 openvpn
 openvpn3
 orchis-theme-git
 pacman-contrib
 pamixer
+pass-otp
 patch
 peek
 perl-image-exiftool
@@ -133,10 +139,13 @@ picom
 pkgconf
 playerctl
 plocate
+postgis
+postgis-old-upgrade
 postgresql
 postgresql-old-upgrade
 powerline
 powerline-fonts
+pptpclient
 protontricks
 pulseaudio
 pulseaudio-alsa
@@ -162,6 +171,7 @@ qtile
 qutebrowser
 r
 ranger
+realvnc-vnc-viewer
 redis
 repo
 ripgrep
@@ -201,6 +211,7 @@ tldr
 tmux
 tor
 torbrowser-launcher
+traceroute
 translate-shell
 transmission-cli
 transmission-gtk
@@ -219,6 +230,7 @@ w3m
 wget
 which
 windscribe-cli
+wireshark-cli
 woeusb
 wrk
 xcape
@@ -262,7 +274,6 @@ xorg-xwayland
 xorg-xwd
 xorg-xwud
 xsel
-yggdrasil
 yt-dlp
 zathura
 zathura-pdf-poppler
