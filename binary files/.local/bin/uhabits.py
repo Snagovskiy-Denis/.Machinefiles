@@ -40,7 +40,7 @@ for handler in syslog_handler, stream_handler:
 class Habit:
     id: int
     external_id: int
-    value_cleaner: str | None = None
+    value_cleaner: str | None
 
     @classmethod
     def factory(cls, _, row):
@@ -123,7 +123,7 @@ if __name__ == "__main__":
         vault_db = vault / VAULT_DB_NAME
 
     if len(sys.argv) < 2:
-        logging.debug("Missing backup file path.")
+        logging.error("Missing backup file path.")
         exit(1)
 
     outer_db = Path(sys.argv[1])
