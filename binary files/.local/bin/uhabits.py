@@ -47,9 +47,7 @@ class Habit:
         return cls(*row)
 
 
-def main(*, outer_db: Path, vault_db: Path) -> None:
-    logging.info(f"start processing '{outer_db}'")
-
+def main(*, outer_db: Path, vault_db: Path) -> int:
     connection = sqlite3.connect(vault_db)
     cursor = connection.cursor()
 
@@ -77,14 +75,16 @@ def main(*, outer_db: Path, vault_db: Path) -> None:
             value_cleaners.append(f"WHEN habit = {external_id} THEN {corrector}")
     if not value_cleaners:
         value_cleaners.append("WHEN true THEN value")
-    value_correctors_sql = "\n".join(stmt for stmt in value_cleaners)
+    value_cleaner_sql = "\n".join(stmt for stmt in value_cleaners)
 
-    select_query = f"""
+    query = f"""
+        INSERT OR IGNORE INTO
+            habits_repetitions (habit_id, timestamp, value, notes)
         SELECT
             vault_habits.id AS habit_id,
             timestamp,
             CASE
-                {value_correctors_sql}
+                {value_cleaner_sql}
                 ELSE value
             END AS value,
             notes
@@ -93,16 +93,11 @@ def main(*, outer_db: Path, vault_db: Path) -> None:
             INNER JOIN habits AS vault_habits
             ON habit = vault_habits.external_id
     """
-    insert_query = """
-        INSERT OR IGNORE INTO habits_repetitions (habit_id, timestamp, value, notes)
-    """
-
-    query = f"{insert_query}\n{select_query}"
 
     try:
         cursor.execute(query)
     except sqlite3.OperationalError:
-        logging.exception("Error during data transfer")
+        logging.exception("error during data transfer")
         raise
 
     connection.commit()
@@ -110,7 +105,7 @@ def main(*, outer_db: Path, vault_db: Path) -> None:
     cursor.execute("DETACH DATABASE outer_db")
     connection.close()
 
-    logging.info(f"{inserted_rows = } from '{outer_db}'")
+    return inserted_rows
 
 
 if __name__ == "__main__":
@@ -132,7 +127,10 @@ if __name__ == "__main__":
         exit(0)
 
     try:
-        main(outer_db=outer_db, vault_db=vault_db)
+        logging.info(f"start processing '{outer_db}'")
+        inserted_rows = main(outer_db=outer_db, vault_db=vault_db)
     except Exception:
         logging.exception("cannot import backup data")
         raise
+    else:
+        logging.info(f"{inserted_rows = } from '{outer_db}'")

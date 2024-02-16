@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """
 Imports daylio data into locale db
+
+Accepts path to csv as a first argument.
 """
 
 import os
@@ -32,9 +34,7 @@ for handler in syslog_handler, stream_handler:
     logging.root.addHandler(handler)
 
 
-def main(*, outer_csv: Path, vault_db: Path) -> None:
-    logging.info(f"start processing '{outer_csv}'")
-
+def main(*, outer_csv: Path, vault_db: Path) -> int:
     connection = sqlite3.connect(vault_db)
     cursor = connection.cursor()
     moods = cursor.execute("SELECT id, name FROM moods").fetchall()
@@ -67,9 +67,7 @@ def main(*, outer_csv: Path, vault_db: Path) -> None:
     inserted_rows = cursor.rowcount
     connection.close()
 
-    outer_csv.unlink()
-
-    logging.info(f"{inserted_rows = } from '{outer_csv}'")
+    return inserted_rows
 
 
 if __name__ == "__main__":
@@ -91,7 +89,11 @@ if __name__ == "__main__":
         exit(0)
 
     try:
-        main(outer_csv=outer_csv, vault_db=vault_db)
+        logging.info(f"start processing '{outer_csv}'")
+        inserted_rows = main(outer_csv=outer_csv, vault_db=vault_db)
     except Exception:
         logging.exception("cannot import data")
         raise
+    else:
+        outer_csv.unlink()
+        logging.info(f"{inserted_rows = } from '{outer_csv}'")

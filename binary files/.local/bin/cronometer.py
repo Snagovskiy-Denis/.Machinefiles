@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """
 Imports cronometer data into locale db
+
+Accepts path to csv as a first argument.
 """
 
 import os
@@ -34,10 +36,7 @@ for handler in syslog_handler, stream_handler:
     logging.root.addHandler(handler)
 
 
-def main(*, outer_csv: Path, vault_db: Path) -> None:
-    logging.info(f"start processing '{outer_csv}'")
-
-    columns_raw = None
+def main(*, outer_csv: Path, vault_db: Path) -> int:
     days = defaultdict(list)
     with open(outer_csv) as csvfile:
         reader = csv.reader(csvfile)
@@ -71,29 +70,24 @@ def main(*, outer_csv: Path, vault_db: Path) -> None:
             days_to_import[day] = food_tracks
             continue
 
-        calories_index = 3
-        kcal_sum_in_csv = sum(float(track[calories_index]) for track in food_tracks)
-        if kcal_sum_in_csv > kcal_sums_in_db[day]:
+        CALORIES_INDEX = 3
+        kcal_sum_in_csv = sum(float(track[CALORIES_INDEX]) for track in food_tracks)
+        if kcal_sum_in_csv > kcal_sums_in_db[day]:  # overwrite existing food_tracks
             days_to_import[day] = food_tracks
 
     if not days_to_import.values():
-        logging.info(f"nothing new to import from {outer_csv}")
-        return
+        return 0
 
     delete_days = ",".join(str(timestamp) for timestamp in days_to_import)
     delete_query = f"DELETE FROM food_tracks WHERE timestamp IN ({delete_days})"
     cursor.execute(delete_query)
 
-    columns_list = []
+    columns_list = ["timestamp"]
+    columns_raw.pop(0)
     for column in columns_raw:
-        if column == "Day":
-            columns_list.append("timestamp")
-            continue
-        column = column.lower()
-        replaces = (" ", "_"), ("(", "_"), (")", ""), ("-", "_")
-        for old_and_new in replaces:
+        for old_and_new in (" ", "_"), ("(", "_"), (")", ""), ("-", "_"):
             column = column.replace(*old_and_new)
-        columns_list.append(column)
+        columns_list.append(column.lower())
     columns = ",".join(column for column in columns_list)
 
     entries = list(chain.from_iterable(days_to_import.values()))
@@ -113,9 +107,7 @@ def main(*, outer_csv: Path, vault_db: Path) -> None:
     inserted_rows = cursor.rowcount
     connection.close()
 
-    outer_csv.unlink()
-
-    logging.info(f"{inserted_rows = } from '{outer_csv}'")
+    return inserted_rows
 
 
 if __name__ == "__main__":
@@ -137,7 +129,11 @@ if __name__ == "__main__":
         exit(0)
 
     try:
-        main(outer_csv=outer_csv, vault_db=vault_db)
+        logging.info(f"start processing '{outer_csv}'")
+        inserted_rows = main(outer_csv=outer_csv, vault_db=vault_db)
     except Exception:
         logging.exception("cannot import data")
         raise
+    else:
+        outer_csv.unlink()
+        logging.info(f"{inserted_rows = } from '{outer_csv}'")
