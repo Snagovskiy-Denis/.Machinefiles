@@ -56,6 +56,8 @@ class TaskWarriorWidget(base.ThreadPoolText):
     def __init__(self, text = 'No tasks', **config):
         super().__init__(text, **config)
         self.add_defaults(self.defaults)
+        # TODO: add callbacks - dmprompt to task done
+        # TODO: look at cmus widget for callbacks examples 
 
     def poll(self):
         tasks = self.get_tasks()

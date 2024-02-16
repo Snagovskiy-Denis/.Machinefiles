@@ -203,4 +203,6 @@ return {
         requires = { { 'nvim-lua/plenary.nvim' } },
         config = [[require 'plugin.harpoon']]
     },
+
+    { 'mbbill/undotree' },
 }

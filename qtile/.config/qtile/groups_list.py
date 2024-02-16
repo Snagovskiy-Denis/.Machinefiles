@@ -1,7 +1,7 @@
 from libqtile.config import Group, Match
 
 groups = [
-    Group('1', layout='monadwide',
+    Group('1', layout='monadtall',
           matches=[Match(title=['oj', 'Oj'])],
           label='', position=1,
           ),
@@ -28,7 +28,7 @@ groups = [
           label='', position=8,
           ),
 
-    Group('9', layout='max',
+    Group('9', layout='monadwide',
           matches=[Match(wm_class=['gnome-pomodoro', 'anki'])],
           label='9', position=9,
           ),

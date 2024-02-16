@@ -144,8 +144,10 @@ local mappings = {
         f = { '/<++><CR>c4l', '<++> forward' },
         b = { '?<++><CR>c4l', '<++> backward' },
         t = { '/<++><CR>R', '<++> table (f)' },
+
         C = { ':OpenInScim<CR>', 'Edit in sc-im' },
         c = { '<cmd>terminal sc-im "%"', 'Open current in sc-im' },
+        x = { '<cmd>UndotreeToggle<cr>', 'Undo tree' },
     },
 }
 

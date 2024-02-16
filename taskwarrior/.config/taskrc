@@ -22,26 +22,26 @@ include /usr/share/doc/task/rc/solarized-dark-256.theme
 
 
 # context
-## no-wowrk
-context.today.read=(scheduled < tomorrow or due < tomorrow) and -w
-context.today.write=scheduled:today
+## no-work
+context.nw.read=-w
 
-context.week.read=(scheduled < 1week or due < 1week) and -w
-context.week.write=scheduled:6days
+context.t.read=(scheduled < tomorrow or due < tomorrow) and -w
+context.t.write=scheduled:today
 
-context.now.read=-w
+# context.week.read=(scheduled < 1week or due < 1week) and -w
+# context.week.write=scheduled:6days
 
 ## work
 context.w.read=+w
 context.w.write=+w
 
-context.todayw.read=+w and (scheduled < tomorrow or due < tomorrow)
-context.todayw.write=+w scheduled:today
+context.tw.read=+w and (scheduled < tomorrow or due < tomorrow)
+context.tw.write=+w scheduled:today
 
 ## misc
-context.easy.read=estimate < 90min and -difficult and -w
+#context.easy.read=estimate < 90min and -difficult and -w
 
-context.leisure.read=+joy or project = Art or +I
+#context.leisure.read=+joy or project = Art or +I
 
 
 # UDA stands for User Defined Arguments
@@ -75,6 +75,7 @@ color.tag.difficult=rgb212
 color.tag.joy=rgb505
 color.tag.I=rgb105
 color.tag.notes=color14
+color.keyword.Notes=color14
 
 color.blocking=none
 
@@ -121,4 +122,4 @@ alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote
 
 # End of file
 # Below are 'task config'-setted values
-context=now
+context=nw
