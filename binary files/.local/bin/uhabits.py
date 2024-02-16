@@ -61,8 +61,7 @@ def main(*, outer_db: Path, vault_db: Path) -> None:
     habits: list[Habit] = cursor_habits.fetchall()
     cursor_habits.close()
 
-    # generate dynamic sql statement parts
-    internal_habits_ids = ",".join([str(h.id) for h in habits])
+    # generate dynamic sql statement parts for data cleaning
     value_cleaners = []
     for habit in habits:
         if habit.external_id and habit.value_cleaner:
@@ -73,30 +72,22 @@ def main(*, outer_db: Path, vault_db: Path) -> None:
     value_correctors_sql = "\n".join(stmt for stmt in value_cleaners)
 
     select_query = f"""
-    SELECT
-        h.id AS habit_id,
-        timestamp,
-        CASE
-            {value_correctors_sql}
-            ELSE value
-        END AS value,
-        notes
-    FROM
-        outer_db.Repetitions
-        JOIN habits AS h ON habit = h.external_id
-    WHERE
-        (h.id, timestamp) NOT IN (
-            SELECT
-                habit_id,
-                timestamp
-            FROM
-                habits_repetitions
-            WHERE
-                habit_id IN ({internal_habits_ids})
-        )
+        SELECT
+            vault_habit.id AS habit_id,
+            timestamp,
+            CASE
+                {value_correctors_sql}
+                ELSE value
+            END AS value,
+            notes
+        FROM
+            outer_db.Repetitions
+            LEFT JOIN habits AS vault_habit ON habit = vault_habit.external_id
+        WHERE
+            habit_id IS NOT NULL
     """
     insert_query = """
-    INSERT OR IGNORE INTO habits_repetitions (habit_id, timestamp, value, notes)
+        INSERT OR IGNORE INTO habits_repetitions (habit_id, timestamp, value, notes)
     """
 
     query = f"{insert_query}\n{select_query}"
