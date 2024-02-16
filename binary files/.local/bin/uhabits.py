@@ -24,9 +24,9 @@ VAULT_DB_NAME = "../db.sqlite3"
 __appname__ = f"parsers/{Path(__file__).name}"
 
 syslog_handler = logging.handlers.SysLogHandler(address="/dev/log")
-syslog_handler.setLevel(logging.INFO)
 formatter = logging.Formatter(f"{__appname__} - %(levelname)s - %(message)s")
 syslog_handler.setFormatter(formatter)
+syslog_handler.setLevel(logging.INFO)
 
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.DEBUG)
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     try:
         vault = Path(os.environ[VAULT_ENV])
     except KeyError:
-        logging.error(f"Improper system configuration. Missing {VAULT_ENV=}")
+        logging.critical(f"Improper configuration. Missing {VAULT_ENV=}")
         exit(1)
     else:
         vault_db = vault / VAULT_DB_NAME
