@@ -5,7 +5,9 @@
 [[ -f ~/.bashrc ]] && source ~/.bashrc
 
 # Adds ~/.local/bin and its subdirectories to $PATH
-export PATH="${PATH}$(find "${HOME}/.local/bin" -type d -printf :%p)"
+append_executables="$(find "${HOME}/.local/bin" -type d -printf :%p)"
+export PATH="${PATH}$append_executables"
+export PYTHONPATH="${PYTHONPATH}$append_executables"
 
 # Default programs
 export TERMINAL=alacritty

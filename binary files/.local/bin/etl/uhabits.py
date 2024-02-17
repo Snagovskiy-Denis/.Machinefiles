@@ -2,38 +2,19 @@
 """
 Parses org.isoron.uhabits app backup for requested habits
 
-Accepts path to backup as a first argument.
-
 You shall describe habits you want to transfer in the vault db, providing an
 external_id that matches id of a habit in the Loop backup.
 """
 
-import os
-import sys
 import sqlite3
 import logging
-import logging.handlers
 
 from pathlib import Path
 from dataclasses import dataclass
 
 
-VAULT_ENV = "ZETTELKASTEN"
-VAULT_DB_NAME = "../db.sqlite3"
-
-__appname__ = f"parsers/{Path(__file__).name}"
-
-syslog_handler = logging.handlers.SysLogHandler(address="/dev/log")
-formatter = logging.Formatter(f"{__appname__} - %(levelname)s - %(message)s")
-syslog_handler.setFormatter(formatter)
-syslog_handler.setLevel(logging.INFO)
-
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.DEBUG)
-
-logging.root.setLevel(logging.DEBUG)
-for handler in syslog_handler, stream_handler:
-    logging.root.addHandler(handler)
+# logger = logging.getLogger(Path(__file__).name)
+logger = logging.root
 
 
 @dataclass(frozen=True, slots=True)
@@ -48,7 +29,7 @@ class Habit:
 
 
 def main(*, outer_db: Path, vault_db: Path) -> int:
-    connection = sqlite3.connect(vault_db)
+    connection = sqlite3.connect(vault_db, timeout=10)
     cursor = connection.cursor()
 
     cursor.execute(f"ATTACH DATABASE '{outer_db}' AS outer_db")
@@ -97,7 +78,7 @@ def main(*, outer_db: Path, vault_db: Path) -> int:
     try:
         cursor.execute(query)
     except sqlite3.OperationalError:
-        logging.exception("error during data transfer")
+        logger.exception("error during data transfer")
         raise
 
     connection.commit()
@@ -106,31 +87,3 @@ def main(*, outer_db: Path, vault_db: Path) -> int:
     connection.close()
 
     return inserted_rows
-
-
-if __name__ == "__main__":
-    try:
-        vault = Path(os.environ[VAULT_ENV])
-    except KeyError:
-        logging.critical(f"Improper configuration. Missing {VAULT_ENV=}")
-        exit(1)
-    else:
-        vault_db = vault / VAULT_DB_NAME
-
-    if len(sys.argv) < 2:
-        logging.error("Missing backup file path.")
-        exit(1)
-
-    outer_db = Path(sys.argv[1])
-    if outer_db.suffix != ".db":
-        logging.debug(f"Skipping non sqlite file {outer_db}")
-        exit(0)
-
-    try:
-        logging.info(f"start processing '{outer_db}'")
-        inserted_rows = main(outer_db=outer_db, vault_db=vault_db)
-    except Exception:
-        logging.exception("cannot import backup data")
-        raise
-    else:
-        logging.info(f"{inserted_rows = } from '{outer_db}'")

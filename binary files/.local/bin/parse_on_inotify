@@ -1,0 +1,10 @@
+#!/bin/bash
+# 
+# Listen close_write inotify events on path $2 and run $1 command on files that triggered it
+# 
+
+inotifywait --quiet --monitor --event close_write --format "%f" "$2" |\
+    while read -r new_file
+    do
+        $1 "$2$new_file"
+    done
