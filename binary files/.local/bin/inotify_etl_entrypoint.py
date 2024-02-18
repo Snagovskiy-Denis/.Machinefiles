@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 """
-Sets ETL scripts as handler on filesystem events.
+Sets ETL script as handler on filesystem events.
 
 System-level requirements:
     - typer - CLI parser
-    - inotify_simple - python wrapper around inotify
+    - inotify_simple - python wrapper for inotify
 """
 
 import re
@@ -16,12 +16,11 @@ import signal
 
 from contextlib import suppress
 from pathlib import Path
-from functools import partial
 from types import ModuleType
-from typing import Annotated, Any, Callable
+from typing import Annotated
 
 try:
-    from typer import Typer, Argument, Option, BadParameter, CallbackParam
+    from typer import Typer, Argument, Option, BadParameter
     from inotify_simple import INotify, flags
 except ImportError as e:
     print(f"Missing dependency: {e.name}")
@@ -30,7 +29,7 @@ except ImportError as e:
 
 app = Typer(
     name="Inotify Parser Entrypoint",
-    help="Sets ETL scripts as handler on filesystem events",
+    help="Sets ETL script as handler on filesystem events",
 )
 
 
@@ -62,14 +61,19 @@ def setup_logging(etl_module: ModuleType):
         logging.root.addHandler(handler)
 
 
-def listen_events_forever(watch_directory: Path):
+def listen_events_forever(directory_to_watch: Path, filename_pattern: re.Pattern):
     inotify = INotify()
     watch_flags = flags.ATTRIB
-    inotify.add_watch(watch_directory, watch_flags)
+    inotify.add_watch(directory_to_watch, watch_flags)
     killer = GracefulKiller()
-    logging.info(f"start listening inotify events for '{watch_directory}'")
+    logging.info(f"start listening inotify events for '{directory_to_watch}'")
     while not killer.kill_now:
-        yield from inotify.read(timeout=1)
+        for event in inotify.read(timeout=1):
+            if re.match(filename_pattern, event.name):
+                yield directory_to_watch / event.name
+            else:
+                logging.debug(f"skip '{event.name}'")
+    inotify.close()
 
 
 class GracefulKiller:
@@ -81,80 +85,12 @@ class GracefulKiller:
 
     def exit_gracefully(self, signum, frame):
         self.kill_now = True
+        logging.warning("SIGTERM received, exiting")
 
 
-def envvar_is_set(param: CallbackParam, value: Any):
-    if not value:
-        raise BadParameter(f"Improper system configuration. Missing {param.envvar=}")
-    return value
-
-
-def re_compile_parser(value: str) -> Callable:
-    if not value:
-        return lambda _: True
-    try:
-        pattern = re.compile(value)
-    except re.error as e:
-        raise BadParameter(str(e)) from e
-    else:
-        return partial(re.match, pattern)
-
-
-@app.command()
-def main(
-    etl_module: Annotated[
-        str,
-        Argument(
-            metavar="MODULE",
-            show_default=False,
-            help="ETL script to set as inotify event handlers",
-        ),
-    ],
-    watch_directory: Annotated[
-        Path,
-        Argument(
-            exists=True,
-            dir_okay=True,
-            file_okay=False,
-            resolve_path=True,
-            show_default=False,
-            help="Watch inotify events for this directory",
-        ),
-    ],
-    filename_filter: Annotated[
-        str,
-        Argument(
-            help="Skip files that doesn't match this regex expression",
-            metavar="PY_REGEX",
-            show_default=False,
-            parser=re_compile_parser,
-        ),
-    ],
-    unlink_processed_file: Annotated[
-        bool,
-        Option(
-            "--no-unlink/",
-            help="Unlink file after ETL completion",
-        ),
-    ] = True,
-    vault_path: Annotated[
-        Path,
-        Option(
-            envvar="ZETTELKASTEN",
-            exists=True,
-            dir_okay=True,
-            file_okay=False,
-            resolve_path=True,
-            show_default=False,
-            callback=envvar_is_set,
-        ),
-    ] = None,  # pyright: ignore
-    db_name: Annotated[Path, Option(dir_okay=False)] = Path("../db.sqlite3"),
-) -> None:
-    "Sets ETL scripts as handler on filesystem events"
-    vault_db = vault_path / db_name
-    if not (vault_db.exists() and vault_db.is_file()):
-        raise BadParameter(f"db is not a file or does not exist '{vault_db}'")
+def py_module(etl_module: str) -> ModuleType:
+    if etl_module.endswith(".py"):
+        raise BadParameter("Expects python module name, not a path to python file")
 
     try:
         etl = importlib.import_module(etl_module)
@@ -167,26 +103,81 @@ def main(
         raise BadParameter(f"{etl_module}.main shall return number of inserted rows")
 
     setup_logging(etl)
+    return etl
 
-    for event in listen_events_forever(watch_directory):
-        if not filename_filter(event.name):
-            logging.debug(f"skip {event.name}")
-            continue
 
-        outer_file: Path = watch_directory / event.name
+def py_regex(value: str) -> re.Pattern:
+    try:
+        return re.compile(value)
+    except re.error as e:
+        raise BadParameter(str(e)) from e
 
+
+@app.command()
+def main(
+    etl: Annotated[
+        ModuleType,
+        Argument(
+            show_default=False,
+            parser=py_module,
+            help="ETL script to set as inotify event handlers",
+        ),
+    ],
+    directory_to_watch: Annotated[
+        Path,
+        Argument(
+            exists=True,
+            file_okay=False,
+            resolve_path=True,
+            show_default=False,
+            metavar="DIRECTORY",
+            help="Watch inotify events for this directory",
+        ),
+    ],
+    filename_regex: Annotated[
+        re.Pattern,
+        Argument(
+            show_default=False,
+            parser=py_regex,
+            help="Skip files that doesn't match this regex expression",
+        ),
+    ],
+    *,
+    unlink_processed_file: Annotated[
+        bool,
+        Option(
+            "--unlink/--no-unlink",
+            help="Unlink file after ETL completion",
+        ),
+    ] = True,
+    vault_db: Annotated[
+        Path,
+        Option(
+            envvar="ZETTELKASTEN_DB",
+            exists=True,
+            dir_okay=False,
+            readable=True,
+            resolve_path=True,
+            show_default=False,
+            is_eager=True,
+            help="Vault database file path",
+        ),
+    ],
+) -> None:
+    "Sets ETL script as handler on filesystem events"
+
+    for path in listen_events_forever(directory_to_watch, filename_regex):
         try:
-            logging.info(f"start processing '{outer_file}'")
-            inserted_rows = etl.main(vault_db, outer_file)
-        except Exception as e:
-            logging.exception(f"cannot import data from '{outer_file}'")
+            logging.info(f"start processing '{path}'")
+            inserted_rows = etl.main(vault_db, path)
+        except Exception:
+            logging.exception(f"cannot import data from '{path}'")
         else:
             if unlink_processed_file:
                 with suppress(PermissionError):
-                    outer_file.unlink()
-            logging.info(f"{inserted_rows = } from '{outer_file}'")
-
-    logging.warn("SIGTERM received, exiting")
+                    path.unlink()
+            level = logging.WARNING if inserted_rows else logging.INFO
+            logging.log(level, f"{inserted_rows = } from '{path}'")
 
 
 if __name__ == "__main__":

@@ -35,6 +35,7 @@ alias se="s e"
 alias o="xdg-open"
 alias f="dmconf"
 alias el="e ${LEDGER_FILE}"
+alias ztl="cd ${ZETTELKASTEN}"
 
 alias ll="ls -Al"
 alias cb="xsel --clipboard"  # if piped copy to clipboard else print cb

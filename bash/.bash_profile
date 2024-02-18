@@ -15,6 +15,7 @@ export EDITOR=nvim
 export BROWSER=vivaldi-stable
 
 export ZETTELKASTEN="${HOME}/Vaults/Zettelkasten/Z-Core/"
+export ZETTELKASTEN_DB="${ZETTELKASTEN}../db.sqlite3"
 
 # XDG Base Directories:
 export XDG_CONFIG_HOME="${HOME}/.config"
