@@ -7,6 +7,10 @@ from pathlib import Path
 from datetime import datetime
 
 
+__datasource__ = "net.daylio"
+__datasourcetype__ = "android:package"
+
+
 # logger = logging.getLogger(Path(__file__).name)
 logger = logging.root
 

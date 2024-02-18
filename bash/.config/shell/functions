@@ -129,35 +129,6 @@ gch() {
 
 
 
-# fe - open 'frecency' files in $EDITOR editor
-fe() {
-  local IFS=$'\n'
-  local files=()
-
-  files=(
-  "$(
-    fasd -fl \
-      | fzf \
-          --tac \
-          --reverse -1 \
-          --no-sort \
-          --multi \
-          --tiebreak=index \
-          --bind=ctrl-x:toggle-sort \
-          --query "$*" \
-          --preview="${FZF_PREVIEW_CMD}" \
-          --preview-window='right:hidden:wrap' \
-          --bind=ctrl-v:toggle-preview \
-          --bind=ctrl-x:toggle-sort \
-          --header='(view:ctrl-v) (sort:ctrl-x)' \
-      )"
-  ) || return
-
-  "${EDITOR:-nvim}" "${files[@]}"
-}
-
-
-
 # zst - cd into the directory from stack
 zst() {
   local dir
@@ -177,38 +148,6 @@ zst() {
   if [[ -d "$dir" ]]; then
     cd "$dir" || return
   fi
-}
-
-
-
-# z - selectable cd to frecency \ bookmarked directory
-z() {
-    local dir
-    dir="$(select_from_frequent_directories "$*")"
-    cd "${dir}" || return
-}
-
-
-
-# example usage:
-#   mv ./file.txt `select_from_frequent_directories localtrash`
-select_from_frequent_directories() {
-    fasd -dl \
-        | fzf \
-          --tac \
-          --reverse \
-          --select-1 \
-          --no-sort \
-          --no-multi \
-          --tiebreak=index \
-          --bind=ctrl-x:toggle-sort \
-          --query "$*" \
-          --preview='tree -C {} | head -n $FZF_PREVIEW_LINES' \
-          --preview-window='right:hidden:wrap' \
-          --bind=ctrl-v:toggle-preview \
-          --bind=ctrl-x:toggle-sort \
-          --header='(view:ctrl-v) (sort:ctrl-x)' \
-    || return
 }
 
 

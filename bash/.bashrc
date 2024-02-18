@@ -5,29 +5,18 @@
 [[ $- != *i* ]] && return
 
 
-# load aliases and functions if existent
-functions_filepath="${HOME}/.config/shell/functions" 
-aliases_filepath="${HOME}/.config/shell/aliases" 
-[ -f ${functions_filepath} ] && source ${functions_filepath}
-[ -f ${aliases_filepath}   ] && source ${aliases_filepath}
-
-# autojump - https://wiki.archlinux.org/title/Autojump
-autojump_filepath=/etc/profile.d/autojump.sh
-[[ -s ${autojump_filepath} ]] && source ${autojump_filepath}
-
-# fzf - https://wiki.archlinux.org/title/Fzf
-fzf_key_bindings_filepath=/usr/share/fzf/key-bindings.bash
-fzf_completion_filepath=/usr/share/fzf/completion.bash
-# [[ -f ${fzf_key_bindings_filepath} ]] && source ${fzf_key_bindings_filepath}
-[[ -f ${fzf_completion_filepath} ]] && source ${fzf_completion_filepath}
+scripts=(
+    "${XDG_CONFIG_HOME}/shell/functions" 
+    "${XDG_CONFIG_HOME}/shell/aliases" 
+    /usr/share/fzf/completion.bash  # fzf - https://wiki.archlinux.org/title/Fzf
+)
+for script in "${scripts[@]}"
+do
+    test -r "$script" && . "$script"
+done
 
 # Auto "cd" when entering just a path
 shopt -s autocd
-
-
-# Fix if run from terminal https://github.com/qtile/qtile/issues/2167
-# export -n LINES
-# export -n COLUMNS
 
 
 # ./.bash_history
@@ -44,7 +33,6 @@ export HISTFILE="${XDG_DATA_HOME:-${HOME}/.local/share}/bash_eternal_history"
 PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 
 
-
 ranger() {
     if [ -z "$RANGER_LEVEL" ]; then
         /usr/bin/ranger "$@"
@@ -53,7 +41,9 @@ ranger() {
     fi
 }
 
-eval "$(fasd --init bash-hook bash-ccomp bash-ccomp-install)"
+
+# setups zoxide https://github.com/ajeetdsouza/zoxide?tab=readme-ov-file
+eval "$(zoxide init bash)"
 
 
 # force fzf to respect .gitignore's and .fdignore's
@@ -70,8 +60,8 @@ if [ -f $(which powerline-daemon) ] && [ -z "${MYVIMRC}" ] && [[ "${DISPLAY}" ]]
     source "/usr/share/powerline/bindings/bash/powerline.sh"
 fi
 
+
+# appended by other apps
 source /home/self/.bash_completions/cli.py.sh
-
 source /home/self/.bash_completions/typer.sh
-
 source /home/self/.bash_completions/templates-factory.sh

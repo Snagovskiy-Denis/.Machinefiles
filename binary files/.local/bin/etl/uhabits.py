@@ -15,8 +15,12 @@ import logging
 from pathlib import Path
 
 
+__datasource__ = "org.isoron.uhabits"
+__datasourcetype__ = "android:package"
+
+
 ANOMALY_TYPE = 1
-ANOMALY_MULTIPLICATION = 1000
+ANOMALY_MULTIPLIER = 1000
 
 
 # logger = logging.getLogger(Path(__file__).name)
@@ -34,10 +38,10 @@ def main(vault_db: Path, outer_db: Path) -> int:
             habits_repetitions (habit_id, timestamp, value, notes)
         SELECT
             vault_habits.id AS habit_id,
-            timestamp / {ANOMALY_MULTIPLICATION},
+            timestamp / {ANOMALY_MULTIPLIER},
             CASE
                 WHEN outer_habits.type != {ANOMALY_TYPE} THEN value
-                ELSE value / {ANOMALY_MULTIPLICATION}
+                ELSE value / {ANOMALY_MULTIPLIER}
             END AS value,
             notes
         FROM

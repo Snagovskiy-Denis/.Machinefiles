@@ -14,9 +14,6 @@ export TERMINAL=alacritty
 export EDITOR=nvim
 export BROWSER=vivaldi-stable
 
-export ZETTELKASTEN="${HOME}/Vaults/Zettelkasten/Z-Core/"
-export ZETTELKASTEN_DB="${ZETTELKASTEN}../db.sqlite3"
-
 # XDG Base Directories:
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_DATA_HOME="${HOME}/.local/share"
@@ -49,15 +46,22 @@ export PYTHONBREAKPOINT=ipdb.set_trace  # python breakpoint() calls ipdb now
 
 export LEDGER_FILE="${HOME}"/sync/default/me.ldg
 
-# Autocompletion
-general_completion=/usr/share/bash-completion/bash_completion
-[[ -f "${general_completion}" ]] && source "${general_completion}"
+# User directories
+export ZETTELKASTEN="${HOME}/Vaults/Zettelkasten/Z-Core/"
+export ZETTELKASTEN_DB="${ZETTELKASTEN}../db.sqlite3"
+export USER_ICONS="${XDG_DATA_HOME}/icons/self/"
 
-git_completion="${XDG_CONFIG_HOME:-$HOME/.config}/.git_completion.bash"
-[[ -f "${git_completion}" ]] && source "${git_completion}"
 
-task_completion="${XDG_CONFIG_HOME:-$HOME/.config}/bash_task_completion.bash"
-[[ -f "${task_completion}" ]] && source "${task_completion}"
+autocompletions=(
+    /usr/share/bash-completion/bash_completion
+    "${XDG_CONFIG_HOME:-$HOME/.config}/.git_completion.bash"
+    "${XDG_CONFIG_HOME:-$HOME/.config}/bash_task_completion.bash"
+)
+for autocompletion in "${autocompletions[@]}"
+do
+    test -r "$autocompletion" && . "$autocompletion"
+done
+
 
 # x session
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then

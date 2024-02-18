@@ -9,6 +9,10 @@ from collections import defaultdict
 from itertools import chain
 
 
+__datasource__ = "com.cronometer.android.gold"
+__datasourcetype__ = "android:package"
+
+
 # logger = logging.getLogger(Path(__file__).name)
 logger = logging.root
 
