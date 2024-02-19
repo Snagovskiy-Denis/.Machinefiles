@@ -1,8 +1,4 @@
-#
-# ~/.bash_profile
-#
-
-[[ -f ~/.bashrc ]] && source ~/.bashrc
+#!/usr/bin/env bash
 
 # Adds ~/.local/bin and its subdirectories to $PATH
 append_executables="$(find "${HOME}/.local/bin" -not -path '*/__pycache__' -type d -printf :%p)"
@@ -19,7 +15,7 @@ export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_DATA_HOME="${HOME}/.local/share"
 export XDG_CACHE_HOME="${HOME}/.cache"
 user_dirs="${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs" 
-[[ -f "${user_dirs}" ]] && source "${user_dirs}"
+test -r "${user_dirs}" && . "${user_dirs}"
 
 # ~/ Clean-up:
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
@@ -40,16 +36,16 @@ alias yarn="yarn --use-yarnrc ${XDG_CONFIG_HOME:-$HOME/.config}/yarn/config"
 alias irssi="irssi --config=${XDG_CONFIG_HOME:-$HOME/.config}/irssi/config --home=${XDG_DATA_HOME}/irssi"
 alias wget="wget --hsts-file=${XDG_CACHE_HOME:-$HOME/.cache}/wget-hsts"
 
-# Other program settings:
-export LESS='-R --use-color -Dd+r$Du+b'
-export PYTHONBREAKPOINT=ipdb.set_trace  # python breakpoint() calls ipdb now
-
-export LEDGER_FILE="${HOME}"/sync/default/me.ldg
-
 # User directories
 export ZETTELKASTEN="${HOME}/Vaults/Zettelkasten/Z-Core/"
 export ZETTELKASTEN_DB="${ZETTELKASTEN}../db.sqlite3"
 export USER_ICONS="${XDG_DATA_HOME}/icons/self/"
+
+# Other program settings:
+export LESS='-R --use-color -Dd+r$Du+b'
+export PYTHONBREAKPOINT=ipdb.set_trace  # python breakpoint() calls ipdb now
+
+export LEDGER_FILE="${ZETTELKASTEN}../me.ldg"
 
 
 autocompletions=(
@@ -61,6 +57,9 @@ for autocompletion in "${autocompletions[@]}"
 do
     test -r "$autocompletion" && . "$autocompletion"
 done
+
+
+test -r ~/.bashrc && . ~/.bashrc
 
 
 # x session

@@ -38,10 +38,12 @@ def main(vault_db: Path, outer_csv: Path) -> int:
         VALUES (?, ?, ?, ?)
     """
 
+    cursor.execute("BEGIN")
     try:
         cursor.executemany(query, records)
     except sqlite3.OperationalError:
-        logger.exception("Error during data import")
+        cursor.execute("ROLLBACK")
+        logger.error("error during insert query execution")
         raise
 
     connection.commit()

@@ -14,6 +14,7 @@ import importlib
 import subprocess
 import signal
 
+from os.path import expandvars
 from contextlib import suppress
 from pathlib import Path
 from types import ModuleType
@@ -33,13 +34,21 @@ app = Typer(
 )
 
 
-def notify_send(title: str, message: str, time=10000) -> None:
-    subprocess.run(["notify-send", title, message, f"--expire-time={time}"])
+def notify_send(title: str, message: str, time=10000, icon: str = None) -> None:
+    arguments = ["notify-send", title, message, f"--expire-time={time}"]
+    if icon:
+        icons_home = expandvars("$USER_ICONS")
+        arguments.append(f"--icon={icons_home}{icon}")
+    subprocess.run(arguments)
 
 
 class LibnotifyHandler(logging.Handler):
+    def __init__(self, level, app_name) -> None:
+        super().__init__(level)
+        self.app_name = app_name
+
     def emit(self, record: logging.LogRecord) -> None:
-        notify_send("ETL", self.formatter.format(record), time=60 * 1000)
+        notify_send(self.app_name, record.message, time=60 * 1000, icon="db.png")
 
 
 def setup_logging(etl_module: ModuleType):
@@ -54,11 +63,12 @@ def setup_logging(etl_module: ModuleType):
     stream_handler = logging.StreamHandler()
     stream_handler.setLevel(logging.DEBUG)
 
-    libnotify_handler = LibnotifyHandler(logging.WARNING)
-
-    for handler in syslog_handler, stream_handler, libnotify_handler:
+    for handler in syslog_handler, stream_handler:
         handler.setFormatter(formatter)
         logging.root.addHandler(handler)
+
+    libnotify_handler = LibnotifyHandler(logging.WARNING, __appname__)
+    logging.root.addHandler(libnotify_handler)
 
 
 def listen_events_forever(directory_to_watch: Path, filename_pattern: re.Pattern):

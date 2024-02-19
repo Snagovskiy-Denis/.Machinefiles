@@ -3,6 +3,7 @@ import csv
 import sqlite3
 import logging
 
+from typing import Iterable
 from pathlib import Path
 from datetime import datetime
 from collections import defaultdict
@@ -17,20 +18,24 @@ __datasourcetype__ = "android:package"
 logger = logging.root
 
 
+def to_SQL_list(items: Iterable) -> str:
+    comma_separated_items = ",".join(str(item) for item in items)
+    return f"({comma_separated_items})"
+
+
 def main(vault_db: Path, outer_csv: Path) -> int:
-    days = defaultdict(list)
+    csv_days = defaultdict(list)
     with open(outer_csv) as csvfile:
         reader = csv.reader(csvfile)
-        columns_raw = next(reader)
+        csv_header = next(reader)
         for row in reader:
             day = int(datetime.fromisoformat(row[0]).timestamp())
             row[0] = day
-            days[day].append(row)
+            csv_days[day].append(row)
 
     connection = sqlite3.connect(vault_db, timeout=10)
     cursor = connection.cursor()
 
-    timestamps = ",".join(str(timestamp) for timestamp in days)
     select_query = f"""
         SELECT
             timestamp AS day,
@@ -38,7 +43,7 @@ def main(vault_db: Path, outer_csv: Path) -> int:
         FROM
             food_tracks
         WHERE
-            timestamp IN ({timestamps})
+            timestamp IN {to_SQL_list(csv_days)}
         GROUP BY
             timestamp
     """
@@ -46,7 +51,7 @@ def main(vault_db: Path, outer_csv: Path) -> int:
     kcal_sums_in_db = {day: sum_ for day, sum_ in cursor.fetchall()}
 
     days_to_import = defaultdict(list)
-    for day, food_tracks in days.items():
+    for day, food_tracks in csv_days.items():
         if not kcal_sums_in_db.get(day):
             days_to_import[day] = food_tracks
             continue
@@ -59,30 +64,29 @@ def main(vault_db: Path, outer_csv: Path) -> int:
     if not days_to_import.values():
         return 0
 
-    columns_list = ["timestamp"]
-    columns_raw.pop(0)
-    for column in columns_raw:
+    headers = ["timestamp"]
+    csv_header.pop(0)
+    for header in csv_header:
         for old_and_new in (" ", "_"), ("(", "_"), (")", ""), ("-", "_"):
-            column = column.replace(*old_and_new)
-        columns_list.append(column.lower())
+            header = header.replace(*old_and_new)
+        headers.append(header.lower())
 
-    columns = ",".join(column for column in columns_list)
-    bind_str = ",".join("?" for _ in columns_raw)
     insert_query = f"""
-        INSERT OR IGNORE INTO food_tracks ({columns})
-        VALUES ({bind_str})
+        INSERT OR IGNORE INTO food_tracks {to_SQL_list(headers)}
+        VALUES {to_SQL_list(["?"] * len(headers))}
     """
 
-    delete_days = ",".join(str(timestamp) for timestamp in days_to_import)
-    delete_query = f"DELETE FROM food_tracks WHERE timestamp IN ({delete_days})"
+    delete_query = f"DELETE FROM food_tracks WHERE timestamp IN {to_SQL_list(days_to_import)}"
 
-    entries = list(chain.from_iterable(days_to_import.values()))
+    food_tracks_to_import = list(chain.from_iterable(days_to_import.values()))
 
+    cursor.execute("BEGIN")
     cursor.execute(delete_query)
     try:
-        cursor.executemany(insert_query, entries)
+        cursor.executemany(insert_query, food_tracks_to_import)
     except sqlite3.OperationalError:
-        logger.exception("Error during data import")
+        cursor.execute("ROLLBACK")
+        logger.error("error during insert query execution")
         raise
 
     connection.commit()

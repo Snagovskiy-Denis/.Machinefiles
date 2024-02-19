@@ -52,10 +52,12 @@ def main(vault_db: Path, outer_db: Path) -> int:
             ON habit = vault_habits.external_id
     """
 
+    cursor.execute("BEGIN")
     try:
         cursor.execute(query)
     except sqlite3.OperationalError:
-        logger.exception("error during data transfer")
+        cursor.execute("ROLLBACK")
+        logger.error("error during insert query execution")
         raise
 
     connection.commit()
