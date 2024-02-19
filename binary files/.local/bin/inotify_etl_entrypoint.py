@@ -14,6 +14,7 @@ import importlib
 import subprocess
 import signal
 
+from textwrap import fill
 from os.path import expandvars
 from contextlib import suppress
 from pathlib import Path
@@ -34,8 +35,8 @@ app = Typer(
 )
 
 
-def notify_send(title: str, message: str, time=10000, icon: str = None) -> None:
-    arguments = ["notify-send", title, message, f"--expire-time={time}"]
+def notify_send(title: str, message: str, time=10000, icon: str = "") -> None:
+    arguments = ["notify-send", title, fill(message), f"--expire-time={time}"]
     if icon:
         icons_home = expandvars("$USER_ICONS")
         arguments.append(f"--icon={icons_home}{icon}")
