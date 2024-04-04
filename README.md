@@ -38,6 +38,11 @@ After fresh installation, you may need to enable some of the daemonized services
 Runnable scripts are stored in `binary files` folder
 
 
+## Crontab
+
+Run `crontab ./crontab` to replace your current crontab with ./crontab contents, or use `crontab -e` to alter your crontab manually.
+
+
 ## TODO
 
 1. Add stow targets for each directory individually (add --ignore option or create .stow-local-ignore)

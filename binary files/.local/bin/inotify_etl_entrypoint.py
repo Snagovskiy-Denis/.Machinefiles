@@ -179,7 +179,7 @@ def main(
 
     for path in listen_events_forever(directory_to_watch, filename_regex):
         try:
-            logging.info(f"start processing '{path}'")
+            logging.debug(f"start processing '{path}'")
             inserted_rows = etl.main(vault_db, path)
         except Exception:
             logging.exception(f"cannot import data from '{path}'")
@@ -187,8 +187,9 @@ def main(
             if unlink_processed_file:
                 with suppress(PermissionError):
                     path.unlink()
+            logging.debug(f"done processing '{path}'")
             level = logging.WARNING if inserted_rows else logging.INFO
-            logging.log(level, f"{inserted_rows = } from '{path}'")
+            logging.log(level, f"{inserted_rows = } from '{path.name}'")
 
 
 if __name__ == "__main__":

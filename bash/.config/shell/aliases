@@ -36,6 +36,7 @@ alias o="xdg-open"
 alias f="dmconf"
 alias el="e ${LEDGER_FILE}"
 alias ztl="cd ${ZETTELKASTEN}"
+alias zdb="sqlite3 ${ZETTELKASTEN}../db.sqlite3"
 
 alias ll="ls -Al"
 alias cb="xsel --clipboard"  # if piped copy to clipboard else print cb

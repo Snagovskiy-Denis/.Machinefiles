@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+from plumbum import local
+from plumbum.cmd import cp, date, notify_send
+
+
+db = local.path(local.env["ZETTELKASTEN_DB"])
+bkp_dir = local.path(local.env["USER_BKP"]) / "ztl"
+
+bkp_dir.mkdir(parents=True, exist_ok=True)
+
+timestamp = date("+%y%m%d_%H%M%S").strip()
+bkp_path = bkp_dir / f"{timestamp}_db.sqlite3"
+
+cp(db, bkp_path)
+notify_send("--expire-time", 10 * 1000, "Database backup", "database backup complete")

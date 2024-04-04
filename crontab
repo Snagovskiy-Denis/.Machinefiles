@@ -1,0 +1,11 @@
+DBUS=unix:path=/run/user/1000/bus
+# 0 19 * * * /home/self/.local/bin/cronometer_export -s 3d -e 0d -u EMAIL -p PASSWORD -o $HOME/download/cronometer_export.csv && touch $HOME/download/cronometer_export.csv
+0 20 * * * . $HOME/.bash_profile; env DBUS_SESSION_BUS_ADDRESS=$DBUS $HOME/.local/bin/bkp_ztl_db
+30 20 * * 6 . $HOME/.bash_profile; env DBUS_SESSION_BUS_ADDRESS=$DBUS $HOME/.local/bin/cron/clean_old_bkps ztl 7
+
+# 0 20 * * * . $HOME/.bash_profile; env DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus $HOME/.local/bin/bkp_ztl_db
+# 30 20 * * 6 . $HOME/.bash_profile; env DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus $HOME/.local/bin/cron/clean_old_bkps ztl 7
+
+# root ones: `sudo env EDITOR=nvim crontab -e`
+# 5 */2 * * * /usr/bin/pacman -Syuw --noconfirm
+# * 1 * * * /usr/bin/updatedb

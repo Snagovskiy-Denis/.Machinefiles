@@ -15,6 +15,13 @@ do
     test -r "$script" && . "$script"
 done
 
+# if test -d /etc/profile.d/; then
+# 	for profile in /etc/profile.d/*.sh; do
+# 		test -r "$profile" && . "$profile"
+# 	done
+# 	unset profile
+# fi
+
 # Auto "cd" when entering just a path
 shopt -s autocd
 
@@ -65,5 +72,3 @@ fi
 source /home/self/.bash_completions/cli.py.sh
 source /home/self/.bash_completions/typer.sh
 source /home/self/.bash_completions/templates-factory.sh
-
-source /home/self/.bash_completions/biometry.py.sh

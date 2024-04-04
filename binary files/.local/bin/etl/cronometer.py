@@ -26,19 +26,26 @@ def to_SQL_list_of_strings(strings: Iterable) -> str:
     return to_SQL_list(f"'{string}'" for string in strings)
 
 
-def main(vault_db: Path, outer_csv: Path) -> int:
+def parse_csv(cronometer_csv: Path) -> tuple[dict, list]:
     csv_days = defaultdict(list)
-    with open(outer_csv) as csvfile:
+    with open(cronometer_csv) as csvfile:
         reader = csv.reader(csvfile)
         csv_header = next(reader)
         for row in reader:
             day = row[0]
             csv_days[day].append(row)
-    logging.debug(f"found {len(csv_days)} days from csv")
 
-    connection = sqlite3.connect(vault_db, timeout=10)
-    cursor = connection.cursor()
+    headers = ["timestamp"]
+    csv_header.pop(0)
+    for header in csv_header:
+        for old_and_new in (" ", "_"), ("(", "_"), (")", ""), ("-", "_"):
+            header = header.replace(*old_and_new)
+        headers.append(header.lower())
 
+    return csv_days, headers
+
+
+def import_data(csv_days: dict, headers: list, cursor: sqlite3.Cursor) -> int:
     select_query = f"""
         SELECT
             date(timestamp, 'auto') AS day,
@@ -73,13 +80,6 @@ def main(vault_db: Path, outer_csv: Path) -> int:
     if not days_to_import.values():
         return 0
 
-    headers = ["timestamp"]
-    csv_header.pop(0)
-    for header in csv_header:
-        for old_and_new in (" ", "_"), ("(", "_"), (")", ""), ("-", "_"):
-            header = header.replace(*old_and_new)
-        headers.append(header.lower())
-
     values_bind = ["unixepoch(date(?))"] + ["?"] * (len(headers) - 1)
     insert_query = f"""
         INSERT OR IGNORE INTO food_tracks {to_SQL_list(headers)}
@@ -99,13 +99,17 @@ def main(vault_db: Path, outer_csv: Path) -> int:
     cursor.execute(delete_query)
     try:
         cursor.executemany(insert_query, food_tracks_to_import)
+        return cursor.rowcount
     except sqlite3.OperationalError:
         cursor.execute("ROLLBACK")
         logger.error("error during insert query execution")
         raise
 
-    connection.commit()
-    inserted_rows = cursor.rowcount
-    connection.close()
 
-    return inserted_rows
+def main(vault_db: Path, outer_csv: Path) -> int:
+    csv_days, csv_header = parse_csv(outer_csv)
+    logging.debug(f"found {len(csv_days)} days from csv")
+    with sqlite3.connect(vault_db, timeout=10) as connection:
+        inserted_entries = import_data(csv_days, csv_header, connection.cursor())
+        connection.commit()
+    return inserted_entries

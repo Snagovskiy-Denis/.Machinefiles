@@ -1,0 +1,24 @@
+#!/bin/bash
+# time ./test_biometry.sh
+# 0.025s
+jq_cmd="jq .[0]"
+[[ -n $1 ]] && jq_cmd="$jq_cmd.$1"
+sqlite3 -readonly -cmd ".mode json" "${ZETTELKASTEN_DB}" <<EOF | $jq_cmd
+    SELECT
+        date(bio.timestamp, 'auto') AS day,
+        bio.weight,
+        bio.waist,
+        food_totals.kcal AS kcal,
+        steps.value AS steps
+    FROM
+        biometry AS bio
+    LEFT JOIN
+        habits_repetitions AS steps
+        ON steps.habit_id = 1  -- Ходьба
+        AND date(bio.timestamp, 'auto') = date(steps.timestamp, 'auto')
+    LEFT JOIN
+        food_totals
+        ON date(bio.timestamp, 'auto') = date(food_totals.timestamp, 'auto')
+    WHERE
+        date(bio.timestamp, 'auto') = date('now')
+EOF

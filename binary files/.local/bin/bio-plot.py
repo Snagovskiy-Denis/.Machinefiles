@@ -6,60 +6,29 @@ from typing import Annotated
 from itertools import chain
 from enum import Enum
 
-from typer import Argument, Typer, Option, confirm, Exit
-from rich import print, print_json
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from typer import Argument, Typer, Option
+from rich import print
 
 
-connection: sqlite3.Connection = None
-
-
-def close_connection(_):
-    if connection.in_transaction:
-        connection.commit()
-    connection.close()
-
-
-app = Typer(
-    help="Helper functions for interacting with your body data",
-    result_callback=close_connection,
-)
-
-
-def open_connection(db_path: Path):
-    global connection
-    connection = sqlite3.connect(db_path)
-    return connection.cursor()
-
-
-DB = Annotated[
-    sqlite3.Cursor,
-    Option(
-        envvar="ZETTELKASTEN_DB",
-        exists=True,
-        dir_okay=False,
-        readable=True,
-        resolve_path=True,
-        show_default=False,
-        callback=open_connection,
-        help="Vault database file path",
-    ),
-]
+app = Typer(help="Helper functions for interacting with your body data")
 
 
 class Resample(str, Enum):
-    # daily = "D"
-    weekly = "W-Mon"
+    weekly = "W"
     monthly = "M"
     quarterly = "Q"
     yearly = "Y"
 
+    def as_resample_value(self) -> str:
+        if self is not type(self).weekly:
+            return self.value
+        return f"{self.value}-{pd.Timestamp.today().day_name()[:3]}"
+
     def label(self, text: str) -> str:
         return f"{self.name.capitalize()} {text}"
-
-
-class Metric(str, Enum):
-    weight = "weight"
-    waist = "waist"
 
 
 SELECT_PROGRESS = f"""
@@ -75,15 +44,8 @@ SELECT_PROGRESS = f"""
         habits_repetitions AS steps
         ON steps.habit_id = 1  -- Ходьба
         AND date(bio.timestamp, 'auto') = date(steps.timestamp, 'auto')
-    LEFT JOIN (
-            SELECT
-                ft.timestamp,
-                SUM(ft.energy__kcal) AS kcal
-            FROM
-                food_tracks AS ft
-            GROUP BY
-                ft.timestamp
-        ) AS food_totals
+    LEFT JOIN
+        food_totals
         ON date(bio.timestamp, 'auto') = date(food_totals.timestamp, 'auto')
 """
 
@@ -101,13 +63,20 @@ def plot(
     steps: bool = True,
     daily_weight: bool = False,
     *,
-    db: DB,
+    db_path: Annotated[
+        Path,
+        Option(
+            envvar="ZETTELKASTEN_DB",
+            dir_okay=False,
+            exists=True,
+            readable=True,
+            resolve_path=True,
+            show_default=False,
+            help="Vault database file path",
+        ),
+    ],
 ):
     "Plots a graph showing trends in weight and energy balance."
-
-    # move heavy imports here to speed up cli autocompletions and other biometry commands
-    import pandas as pd
-    import matplotlib.pyplot as plt
 
     select_query = SELECT_PROGRESS
     if delta_days_from_now:
@@ -117,10 +86,13 @@ def plot(
             -- AND bio.timestamp < unixepoch(date('now'))
         """
     select_query += " ORDER BY bio.timestamp"
-    df_raw = pd.read_sql_query(select_query, db.connection)
+
+    with sqlite3.connect(f"file:{db_path}?mode=ro", uri=True) as connection:
+        df_raw = pd.read_sql_query(select_query, connection)
+
     df_raw["day"] = pd.to_datetime(df_raw["day"])
 
-    df = df_raw.resample(resample.value, on="day").mean()
+    df = df_raw.resample(resample.as_resample_value(), on="day").mean()
     df["weight_diff"] = df["weight"].diff()
     df["weight_diff_percentage"] = (df["weight_diff"] / df["weight"].shift(1))
 
@@ -181,7 +153,7 @@ def plot(
             df_raw["day"],
             df_raw["weight"],
             color=color_orange,
-            alpha=0.2,
+            alpha=0.3,
             label="Daily Weight (kg)",
         )
         # ax_weight.set_ylabel("kg", color=color_orange)
@@ -201,7 +173,7 @@ def plot(
         )
         ax_kcal.set_ylabel("kcal", color=color4, loc="bottom")
         ax_kcal.tick_params(axis="y", labelcolor=color4)
-        ax_kcal.set_ylim(bottom=1000, top=2500)
+        ax_kcal.set_ylim(bottom=1200, top=2500)
         plots.append(line_4)
 
     if energy_balance and steps:
@@ -224,46 +196,13 @@ def plot(
 
     fig.set_size_inches(9, 9)
     fig.tight_layout()
-    ax_w_diff.grid(True, axis="y")
+    ax_w_diff.grid(True, axis="both")
 
     plt.title(resample.label("Trends: Body Composition and Energy Balance"))
+
+    print(df_raw)
+    print(df)
     plt.show()
-
-
-@app.command()
-def today(db: DB):
-    "Show todays metrics"
-
-    db.execute(f"{SELECT_PROGRESS} WHERE date(bio.timestamp, 'auto') = date('now')")
-    db.row_factory = sqlite3.Row  # pyright: ignore
-    result = db.fetchone() or {}
-    print_json(data=dict(result))
-
-
-@app.command()
-def add(
-    todays_metric: float,
-    *,
-    metric: Annotated[Metric, Option("-m", prompt=True)],
-    db: DB,
-):
-    "Add todays metric to database"
-
-    today_ts = "unixepoch(date('now'))"
-    db.execute(f"SELECT {metric.name} FROM biometry WHERE timestamp >= {today_ts}")
-    if row := db.fetchone():
-        db_metric = row[0]
-        if db_metric == todays_metric:
-            print(f"{db_metric} is already set as todays {metric.name}.")
-            raise Exit()
-        confirm(f"Overwrite {metric.name} {db_metric} with {todays_metric}?", abort=True)
-
-    query_i = f"INSERT OR IGNORE INTO biometry (timestamp, {metric.name}) VALUES({today_ts},?)"
-    db.execute(query_i, [todays_metric])
-    query_u = f"UPDATE biometry SET {metric.name} = ? WHERE timestamp = {today_ts}"
-    db.execute(query_u, [todays_metric])
-    print("Done ✅\n")
-    today(db)
 
 
 if __name__ == "__main__":

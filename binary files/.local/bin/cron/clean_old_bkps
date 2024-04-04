@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+from typer import Argument, run
+from plumbum import local
+from plumbum.cmd import rm, find, notify_send
+
+
+def main(subdir_name, days_to_keep: int, user_bkp = Argument(envvar="USER_BKP")):
+    bkps_dir = local.path(user_bkp) / subdir_name
+    outdated_bkps = find(bkps_dir, "-type", "f", "-mtime", f"+{days_to_keep}").split()
+    for filepath in outdated_bkps:
+        rm(filepath)
+    if outdated_bkps:
+        notify_send(f"bkp cleanup: {subdir_name} - {len(outdated_bkps)}")
+
+
+run(main)
