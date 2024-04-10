@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+import pprint
+import subprocess
+import matplotlib.pyplot as plt
+
+# Run hledger command and capture output
+cmd = ["hledger", "balance", "date:2023", "cur:\\$", "Expenses"]
+result = subprocess.run(cmd, capture_output=True, text=True)
+output = result.stdout
+
+# Parse the output to extract data for the pie chart
+# Assume the output format is in the following example:
+#   $ 100 Assets:Bank   
+#   $ -50 Expenses:Food  
+#   $ -50 Expenses:Rent  
+#   (...)
+data = []
+for line in output.split('\n'):
+    if line.strip() != '':
+        if '-' * 7 in line:  # end of accounts part
+            break
+        _, amount, *account = line.strip().split()
+        account = " ".join(account)
+        amount = float(amount.replace('$', '').replace(',', ''))
+        if amount < 0:
+            continue
+        data.append((account, amount))
+data = list(reversed(sorted(data, key=lambda d: d[1])))
+
+# Extract labels and values for the pie chart
+# labels = [d[0] for d in data]
+values = [d[1] for d in data]
+
+# Create pie chart
+plt.figure(figsize=(8, 8))
+plt.pie(values, labels=None, autopct='%1.1f%%')
+
+total = sum(values)
+legend_labels = [
+    f'{label} ({value / total :.1%})' 
+    for label, value in sorted(data, key=lambda d: d[1], reverse=True)
+]
+# plt.legend(legend_labels, loc="lower left", bbox_to_anchor=(1, 0.5))
+plt.legend(legend_labels, loc="lower left")
+
+plt.title('Balance Pie Chart')
+
+pprint.pprint(data)
+
+plt.show()
