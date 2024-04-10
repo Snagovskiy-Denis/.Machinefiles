@@ -38,6 +38,7 @@ downgrade
 drawio-desktop-bin
 dunst
 entr
+exfat-utils
 fakeroot
 fd
 firefox
@@ -69,6 +70,7 @@ ipython
 irssi
 isync
 jdk-openjdk
+jdk17-openjdk
 jp2a
 jq
 kdeconnect
@@ -86,6 +88,7 @@ litecli
 lsd
 lxappearance
 lynx
+m3u8-downloader-go-git
 make
 man-db
 man-pages
@@ -99,6 +102,7 @@ mutt-wizard
 myrulib-git
 ncdu
 ncurses5-compat-libs
+nekoray-bin
 neofetch
 neomutt
 neovim
@@ -155,10 +159,13 @@ python-debugpy
 python-docs
 python-inotify-simple
 python-ipdb
+python-isort
+python-matplotlib
 python-mutagen
 python-pandas
 python-paramiko
 python-pip
+python-plumbum
 python-poetry
 python-pynvim
 python-scipy
@@ -229,6 +236,7 @@ virt-manager
 vivaldi
 vivaldi-ffmpeg-codecs
 volumeicon
+vscode-html-languageserver
 w3m
 wget
 which
