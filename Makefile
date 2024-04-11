@@ -10,7 +10,6 @@ install-dotfiles: check-dotfiles
 save-packages-lists:
 	echo saving native packages...
 	comm -23 <(pacman -Qqen | sort) <(pacman -Qmq | sort) > ./programs/.config/.pacman-native.list
-	echo done
 	echo saving foreign packages...
 	pacman -Qmeq > ./programs/.config/.pacman-aur.list
 	echo done
@@ -18,12 +17,12 @@ save-packages-lists:
 .PHONY: install-native
 install-native:
 	echo install native packages
-	sudo pacman -S - < ./programs/.config/.pacman-native.list
+	pacman -S --noconfirm - < ./programs/.config/.pacman-native.list
 
 .PHONY: install-foreign
 install-foreign:
 	echo install AUR packages
-	sudo aura -A - < ./programs/.config/.pacman-aur.list
+	for package in $(cat ./programs/.config/.pacman-aur.list); do aura -A --noconfirm ${package}; done
 
 .PHONY: install-all
 install-all: install-native install-foreign

@@ -1,3 +1,39 @@
+
+# Installation
+
+1. Install pre-requirements:
+
+`pacman -S git stow make`
+
+2. Clone this repository and cd into it.
+
+
+# Commands
+
+- `*-dotfiles` commands work with configurations
+
+- `install-*` commands upgrade the system
+    * `aura` pacman wrapper is required to install AUR packages
+
+- `save-packages-list` saves current packages for later installation
+
+
+# Misc
+
+## bin
+
+Runnable scripts are stored in `binary files` folder
+
+
+## Crontab
+
+Run `crontab ./crontab` to replace your current crontab with ./crontab contents, or use `crontab -e` to alter your crontab manually.
+
+
+
+OLD
+===
+
 ## Installing
 
 1. Pre-requirements (*run as root*)
@@ -36,16 +72,6 @@ Install packages from .paclist file *as root*:
 It might be better to use AUR helper (such as aura) for synchronization
 
 After fresh installation, you may need to enable some of the daemonized services.
-
-
-## bin
-
-Runnable scripts are stored in `binary files` folder
-
-
-## Crontab
-
-Run `crontab ./crontab` to replace your current crontab with ./crontab contents, or use `crontab -e` to alter your crontab manually.
 
 
 ## TODO
