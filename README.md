@@ -2,7 +2,7 @@
 
 1. Pre-requirements (*run as root*)
 
-`pacman -S git stow`
+`pacman -S git stow make`
 
 2. Clone repository and cd into it
 
@@ -21,7 +21,7 @@ Only one package: `stow nvim --target=$HOME`
 
 Create\update .paclist file:
 
-`pacman -Qeq > ./programs/.config/.pacman.list`
+<!-- `pacman -Qeq > ./programs/.config/.pacman.list` -->
 
 Native:
 `comm -23 <(pacman -Qqen | sort) <(pacman -Qmq | sort) > ./programs/.config/.pacman-native.list`
@@ -31,7 +31,7 @@ Foreign (AUR):
 
 Install packages from .paclist file *as root*:
 
-`pacman -S - < ./programs/.config/.pacman.list`
+`pacman -S - < ./programs/.config/.pacman-native.list`
 
 It might be better to use AUR helper (such as aura) for synchronization
 
