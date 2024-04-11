@@ -23,6 +23,11 @@ Create\update .paclist file:
 
 `pacman -Qeq > ./programs/.config/.pacman.list`
 
+Native:
+`comm -23 <(pacman -Qqen | sort) <(pacman -Qmq | sort) > ./programs/.config/.pacman-native.list`
+
+Foreign (AUR):
+`pacman -Qmeq > ./programs/.config/.pacman-aur.list`
 
 Install packages from .paclist file *as root*:
 
