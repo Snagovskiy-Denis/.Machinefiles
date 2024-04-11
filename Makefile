@@ -22,7 +22,7 @@ install-native:
 .PHONY: install-foreign
 install-foreign:
 	echo install AUR packages
-	for package in $(cat ./programs/.config/.pacman-aur.list); do aura -A --noconfirm ${package}; done
+	aura -A --noconfirm $(cat ./programs/.config/.pacman-aur.list)
 
 .PHONY: install-all
 install-all: install-native install-foreign

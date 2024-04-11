@@ -45,7 +45,6 @@ gnome-font-viewer
 go
 grub
 gtk-engine-murrine
-hdparm
 hledger
 hledger-ui
 hledger-web
@@ -87,7 +86,6 @@ neovim
 networkmanager
 networkmanager-openvpn
 newsboat
-nginx-mainline
 nitrogen
 nodejs
 noto-fonts-emoji
