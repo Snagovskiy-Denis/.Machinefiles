@@ -7,33 +7,26 @@
 
 2. Clone this repository and cd into it.
 
-
-# Commands
-
-- `*-dotfiles` commands work with configurations
-
-- `install-*` commands upgrade the system
-    * `aura` pacman wrapper is required to install AUR packages
-
-- `save-packages-list` saves current packages for later installation
+3. Run `make help` to get commands explanations
 
 
 # Misc
-
-## bin
-
-Runnable scripts are stored in `binary files` folder
-
 
 ## Crontab
 
 Run `crontab ./crontab` to replace your current crontab with ./crontab contents, or use `crontab -e` to alter your crontab manually.
 
 
+## bin
+
+Runnable scripts are stored in `binary files` directory.
+
+
 ## Next steps
 
 1. enable daemonized services
 2. edit system-level config files
+3. setup synchronization of passwords, tasks, music, etc. using syncthing
 
 
 # TODO

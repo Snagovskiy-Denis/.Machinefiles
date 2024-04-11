@@ -6,7 +6,7 @@ groups = [
           label='', position=1,
           ),
 
-    Group('2', label='爵', position=2,),
+    Group('2', label='', position=2,),
 
     Group('3', label='', position=3,),
 
@@ -20,7 +20,7 @@ groups = [
           matches=[Match(wm_class=['telegram-desktop', 'discord']),
                    Match(title=['irssi']),
                    ],
-          label='', position=7,
+          label='', position=7,
           ),
 
     Group('8', exclusive=False, layout='max',
@@ -35,6 +35,6 @@ groups = [
 
     Group('0',
           matches=[Match(wm_class=['Tor Browser'])],
-          label='ﴣ', position=10,
+          label='󰠥', position=10,
           ),
 ]
