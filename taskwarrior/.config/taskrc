@@ -102,7 +102,7 @@ urgency.user.tag.refactor.coefficient=-2.3
 
 # Priority goals
 urgency.user.tag.w2.coefficient=1.7
-urgency.user.tag.FL.coefficient=1.25
+urgency.user.tag.FL.coefficient=0.5  #1.25
 urgency.user.project.SH.coefficient=1.1
 urgency.user.tag.CS.coefficient=1
 urgency.user.tag.PH.coefficient=0.75

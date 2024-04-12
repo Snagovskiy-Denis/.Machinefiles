@@ -24,9 +24,9 @@ Runnable scripts are stored in `binary files` directory.
 
 ## Next steps
 
-1. enable daemonized services
-2. edit system-level config files
-3. setup synchronization of passwords, tasks, music, etc. using syncthing
+1. setup cronie and enable its service
+2. edit system-level config files on demand
+3. enable synchronization of passwords, tasks, music, etc. using syncthing
 
 
 # TODO
