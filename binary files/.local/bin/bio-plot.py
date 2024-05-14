@@ -173,7 +173,7 @@ def plot(
         )
         ax_kcal.set_ylabel("kcal", color=color4, loc="bottom")
         ax_kcal.tick_params(axis="y", labelcolor=color4)
-        ax_kcal.set_ylim(bottom=1200, top=2500)
+        ax_kcal.set_ylim(bottom=1400, top=2500)
         plots.append(line_4)
 
     if energy_balance and steps:

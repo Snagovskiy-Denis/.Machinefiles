@@ -37,6 +37,7 @@ alias f="dmconf"
 alias el="e ${LEDGER_FILE}"
 alias ztl="cd ${ZETTELKASTEN}"
 alias zdb="sqlite3 ${ZETTELKASTEN}../db.sqlite3"
+alias list-lan-clients="sudo arp-scan --localnet"
 
 alias ll="ls -Al"
 alias cb="xsel --clipboard"  # if piped copy to clipboard else print cb
@@ -49,7 +50,7 @@ tru () { trans ru:en "$*"; }  # tru instead of tr beacuse of task completion
 d ()  { dict "${1}" | less; }
 
 # "New" commands
-alias ps\?="ps aux | grep"
+alias ps\?="ps aux | rg"
 alias reload="source ~/.bashrc"
 alias gotemp='cd $(mktemp -d)'
 

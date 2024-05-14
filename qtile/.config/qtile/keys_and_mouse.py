@@ -46,30 +46,42 @@ mouse = [
 ]
 
 
-_disable_all_other_keys_mode = KeyChord([], 'Alt_R',
-                                        [
-    Key([], 'Alt_R', lazy.ungrab_chord()),
-    Key([], 'Tab', lazy.layout.next()),
-    Key([shift], 'Tab', lazy.layout.previous()),
-], mode='dzen-typing')
+_disable_all_other_keys_mode = KeyChord(
+    [],
+    'Alt_R',
+    [
+        Key([], 'Alt_R', lazy.ungrab_chord()),
+        Key([], 'Tab', lazy.layout.next()),
+        Key([shift], 'Tab', lazy.layout.previous()),
+    ],
+    name='dzen-typing',
+)
 
 
 _system_keys = [
     Key([alt], 'F2', lazy.spawncmd(), desc='Run shell command'),
-    Key([mod], 'Insert', lazy.restart(),  desc='Reload config'),
-    Key([mod, shift], 'Delete',
-        lazy.spawn('dmprompt "Are you sure you want to exit qtile?"'
-                   ' "qtile cmd-obj -o cmd -f shutdown"'),
-        desc='Shutdown Qtile'
+    Key([mod], 'Home', lazy.restart(),  desc='Reload config'),
+    Key(
+        [mod, shift],
+        'Delete',
+        lazy.spawn(
+            'dmprompt "Are you sure you want to exit qtile?"'
+            ' "qtile cmd-obj -o cmd -f shutdown"'
         ),
-    Key([mod, shift], 'End',
+        desc='Shutdown Qtile',
+    ),
+    Key(
+        [mod, shift],
+        'End',
         lazy.spawn('dmprompt "POWEROFF the PC?" "poweroff"'),
-        desc='Shutdown PC'
-        ),
-    Key([mod, shift], 'Insert',
+        desc='Shutdown PC',
+    ),
+    Key(
+        [mod, shift],
+        'Home',
         lazy.spawn('dmprompt "REBOOT the PC?" "reboot"'),
-        desc='Reboot PC'
-        ),
+        desc='Reboot PC',
+    ),
 ]
 
 _application_launcher_keys = [
@@ -125,6 +137,18 @@ _audio_and_cmus_keys = [
     Key([], 'XF86AudioMute',        lazy.spawn('pamixer --toggle-mute')),
     Key([], 'XF86AudioRaiseVolume', lazy.spawn('pamixer --increase 5')),
     Key([], 'XF86AudioLowerVolume', lazy.spawn('pamixer --decrease 5')),
+    KeyChord(
+        [mod], "m", mode=True,
+        submappings=[
+            Key([], "d", lazy.spawn("cmus-remote --pause")),
+            Key([], "s", lazy.spawn("cmus-remote --stop")),
+            Key([], "j", lazy.spawn("cmus-remote --next")),
+            Key([], "k", lazy.spawn("cmus-remote --prev")),
+            Key([], "n", lazy.spawn("pamixer --toggle-mute")),
+            Key([], "u", lazy.spawn("pamixer --decrease 5")),
+            Key([], "i", lazy.spawn("pamixer --increase 5")),
+        ],
+    )
 ]
 
 _windows_keys = [

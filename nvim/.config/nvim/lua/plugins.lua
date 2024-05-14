@@ -143,7 +143,7 @@ return {
     { 'bignimbus/pop-punk.vim' },
 
 
-    { 'romgrk/nvim-treesitter-context' },
+    -- { 'romgrk/nvim-treesitter-context' },
 
     -- Maybe later
     -- { 'TimUntersberger/neogit' },

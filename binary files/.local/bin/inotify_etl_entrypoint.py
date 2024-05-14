@@ -182,7 +182,7 @@ def main(
             logging.debug(f"start processing '{path}'")
             inserted_rows = etl.main(vault_db, path)
         except Exception:
-            logging.exception(f"cannot import data from '{path}'")
+            logging.exception(f"cannot import data from '{path}'. See systemd journal for traceback")
         else:
             if unlink_processed_file:
                 with suppress(PermissionError):

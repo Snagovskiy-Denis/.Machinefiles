@@ -1,10 +1,15 @@
+import re
+
 from libqtile.config import Group, Match
 
 groups = [
-    Group('1', layout='monadtall',
-          matches=[Match(title=['oj', 'Oj'])],
-          label='', position=1,
-          ),
+    Group(
+        '1',
+        layout='monadtall',
+        matches=[Match(title=re.compile(r"^(oj|Oj)$"))],
+        label='',
+        position=1,
+    ),
 
     Group('2', label='', position=2,),
 
@@ -16,25 +21,37 @@ groups = [
 
     Group('6', label='6', position=6),
 
-    Group('7',
-          matches=[Match(wm_class=['telegram-desktop', 'discord']),
-                   Match(title=['irssi']),
-                   ],
-          label='', position=7,
-          ),
+    Group(
+        '7',
+        matches=[
+            Match(wm_class=re.compile(r"^(telegram\-desktop|discord)$")),
+            Match(title=re.compile(r"^(irssi)$")),
+        ],
+        label='',
+        position=7,
+    ),
 
-    Group('8', exclusive=False, layout='max',
-          matches=[Match(title=['cmus'])],
-          label='', position=8,
-          ),
+    Group(
+        '8',
+        exclusive=False,
+        layout='max',
+        matches=[Match(title=re.compile(r"^(cmus)$"))],
+        label='',
+        position=8,
+    ),
 
-    Group('9', layout='monadwide',
-          matches=[Match(wm_class=['gnome-pomodoro', 'anki'])],
-          label='9', position=9,
-          ),
+    Group(
+        '9',
+        layout='monadwide',
+        matches=[Match(wm_class=re.compile(r"^(gnome\-pomodoro|anki)$"))],
+        label='9',
+        position=9,
+    ),
 
-    Group('0',
-          matches=[Match(wm_class=['Tor Browser'])],
-          label='󰠥', position=10,
-          ),
+    Group(
+        '0',
+        matches=[Match(wm_class=re.compile(r"^(Tor\ Browser)$"))],
+        label='󰠥',
+        position=10,
+    ),
 ]

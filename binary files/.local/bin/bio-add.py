@@ -14,6 +14,20 @@ class Metric(str, Enum):
     weight = "weight"
     waist = "waist"
 
+    belly = "belly"
+    neck = "neck"
+    shoulders = "shoulders"
+    chest = "chest"
+    left_biceps = "left_biceps"
+    right_biceps = "right_biceps"
+    left_forearm = "left_forearm"
+    right_forearm = "right_forearm"
+    hip = "hip"
+    left_thigh = "left_thigh"
+    right_thigh = "right_thigh"
+    left_calf = "left_calf"
+    right_calf = "right_calf"
+
 
 def add(value: float, metric: Metric, db: sqlite3.Cursor) -> None | NoReturn:
     "Add todays metric to database"

@@ -33,6 +33,8 @@ def parse_csv(cronometer_csv: Path) -> tuple[dict, list]:
         csv_header = next(reader)
         for row in reader:
             day = row[0]
+            GROUP_COLUMN_INDEX = 1
+            del row[GROUP_COLUMN_INDEX]  # skip "group" row
             csv_days[day].append(row)
 
     headers = ["timestamp"]
@@ -40,6 +42,8 @@ def parse_csv(cronometer_csv: Path) -> tuple[dict, list]:
     for header in csv_header:
         for old_and_new in (" ", "_"), ("(", "_"), (")", ""), ("-", "_"):
             header = header.replace(*old_and_new)
+        if header.lower() == "group":  # skip "group" header
+            continue
         headers.append(header.lower())
 
     return csv_days, headers
