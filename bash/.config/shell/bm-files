@@ -1,4 +1,4 @@
-alacritty  $HOME/.config/alacritty/alacritty.yml
+alacritty  $HOME/.config/alacritty/alacritty.toml
 aliasrc    $HOME/.config/shell/aliases
 functions  $HOME/.config/shell/functions
 apk        $HOME/.config/shell/apk_related

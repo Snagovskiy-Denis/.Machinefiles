@@ -23,13 +23,13 @@ include /usr/share/doc/task/rc/solarized-dark-256.theme
 
 # context
 ## no-work
-context.nw.read=-w
+context.nw.read=-w project.not:Q
 
 context.t.read=(scheduled < tomorrow or due < tomorrow) and -w
 context.t.write=scheduled:today
 
-# context.week.read=(scheduled < 1week or due < 1week) and -w
-# context.week.write=scheduled:6days
+context.week.read=(scheduled < 1week or due < 1week) and -w
+context.week.write=scheduled:6days
 
 ## work
 context.w.read=+w
@@ -37,6 +37,11 @@ context.w.write=+w
 
 context.tw.read=+w and (scheduled < tomorrow or due < tomorrow)
 context.tw.write=+w scheduled:today
+
+## queues
+### educational queue
+context.edq.read=project:Q.ED
+context.edq.write=project:Q.ED
 
 ## misc
 #context.easy.read=estimate < 90min and -difficult and -w
@@ -55,19 +60,14 @@ uda.dod.type=string
 # report
 # report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
 report.next.labels=ID,Age,P,Sched,⏳,Description,Due,Project,Tag,Urg
-report.next.columns=id,entry.age,priority,scheduled.relative,estimate,description.count,due.relative,project,tags,urgency
+report.next.columns=id,entry.age,priority,scheduled.relative,estimate,description,due.relative,project,tags,urgency
+# use description.count to replace annotations with annotations count
 #report.next.sort=urgency-,priority+\/
 
 report.odd.description=Candidates for deletion or for decomposition into a project
 report.odd.columns=id,entry.age,estimate,description.count,project,tags
 report.odd.sort=estimate-
 report.odd.filter=status = pending and (+odd or (((estimate > 3h or estimate = '') entry < today-1m)))
-
-report.even.description=Anti-odd
-report.even.columns=id,scheduled.relative,estimate,description.count,project,tags,urgency
-#report.even.sort=estimate+
-report.even.filter=status = pending and !(+odd or (((estimate > 3h or estimate = '') entry < today-1m)))
-
 
 # Colors
 color.tag.$=green

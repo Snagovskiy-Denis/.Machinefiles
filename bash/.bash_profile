@@ -37,7 +37,7 @@ alias irssi="irssi --config=${XDG_CONFIG_HOME:-$HOME/.config}/irssi/config --hom
 alias wget="wget --hsts-file=${XDG_CACHE_HOME:-$HOME/.cache}/wget-hsts"
 
 # User directories
-export ZETTELKASTEN="${HOME}/Vaults/Zettelkasten/Z-Core/"
+export ZETTELKASTEN="${HOME}/Vaults/Zettelkasten/Z/"
 export ZETTELKASTEN_DB="${ZETTELKASTEN}../db.sqlite3"
 
 export USER_ICONS="${XDG_DATA_HOME}/icons/self/"

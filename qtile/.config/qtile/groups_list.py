@@ -1,6 +1,7 @@
 import re
 
-from libqtile.config import Group, Match
+from libqtile.utils import guess_terminal
+from libqtile.config import DropDown, Group, Match, ScratchPad
 
 groups = [
     Group(
@@ -34,9 +35,9 @@ groups = [
     Group(
         '8',
         exclusive=False,
-        layout='max',
-        matches=[Match(title=re.compile(r"^(cmus)$"))],
-        label='',
+        # layout='max',
+        # label='',
+        label='8',
         position=8,
     ),
 
@@ -53,5 +54,34 @@ groups = [
         matches=[Match(wm_class=re.compile(r"^(Tor\ Browser)$"))],
         label='󰠥',
         position=10,
+    ),
+
+    ScratchPad(
+        "scratchpad",
+        [
+            DropDown(
+                "ai",
+                'firefox --new-window --class "floating" chatgpt.com',
+                width=(_browser_width := 0.3),
+                height=0.8,
+                x=1/2-_browser_width/2,
+                y=0.015,
+                on_focus_lost_hide=False,
+            ),
+            DropDown(
+                "music",
+                f'alacritty -t cmus -e sh -c "sleep 0.1 && cmus"',
+                match=Match(title=re.compile(r"^(cmus)$")),
+                width=0.5,
+                height=0.5,
+                y=0.1,
+            ),
+            DropDown(
+                "terminal",
+                guess_terminal(),  # pyright: ignore
+                height=0.8,
+                y=0.05,
+            ),
+        ],
     ),
 ]
