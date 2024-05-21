@@ -113,7 +113,7 @@ local mappings = {
 
         -- plugin
         o = { '<cmd>Telekasten panel<cr>', 'Command palette' },
-        f = { '<cmd>Telekasten find_notes<cr><cmd>cd $ZETTELKASTEN<cr>', 'Find notes by title' },
+        f = { '<cmd>Telekasten find_notes<cr><cmd>cd "${ZETTELKASTEN}Z/"<cr>', 'Find notes by title' },
         l = { '<cmd>Telekasten insert_link<cr>', 'Paste [[link]]' },
         n = { '<cmd>Telekasten new_note<cr>', 'New note, prompts for title' },
         z = { '<cmd>Telekasten follow_link<cr>', 'Follow link under cursor' },

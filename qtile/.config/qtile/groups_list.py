@@ -70,7 +70,7 @@ groups = [
             ),
             DropDown(
                 "music",
-                f'alacritty -t cmus -e sh -c "sleep 0.1 && cmus"',
+                'alacritty -t cmus -e sh -c "sleep 0.1 && cmus"',
                 match=Match(title=re.compile(r"^(cmus)$")),
                 width=0.5,
                 height=0.5,

@@ -158,23 +158,6 @@ zd() {
 }
 
 
-
-prompt () {
-    basedir="${ZETTELKASTEN}../Prompts"
-
-    if [ $# -eq 0 ]; then
-        ls "$basedir"
-    elif [ $# -eq 2 ] && [ "$1" == "-o" ]; then
-        "$EDITOR" "$basedir/$2"
-    elif [ $# -eq 1 ] && [ -f "$basedir/$1" ]; then
-        cat "$basedir/$1" | tee /dev/tty |  xsel --clipboard
-    else
-        echo "Invalid arguments provided."
-    fi
-}
-
-
-
 alias no="note -o"
 note () {
     help_note="How to use:

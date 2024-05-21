@@ -2,6 +2,8 @@ import json
 
 from pathlib import Path
 
+from tasklib import TaskWarrior, Task
+from libqtile.widget import base
 from libqtile import bar, layout, widget
 from libqtile.config import Screen
 
@@ -46,10 +48,6 @@ widget_defaults = dict(
 extension_defaults = widget_defaults.copy()
 
 
-from tasklib import TaskWarrior, Task
-from libqtile.widget import base
-
-
 class TaskWarriorWidget(base.ThreadPoolText):
     """Widget that shows the most urgent task"""
 
@@ -85,7 +83,7 @@ class TaskWarriorWidget(base.ThreadPoolText):
 
     def poll(self):
         self.task = self.next_task()
-        return str(self.task) if self.task else "No matches."
+        return str(self.task) if self.task else "No matches"
 
 
 screens = [

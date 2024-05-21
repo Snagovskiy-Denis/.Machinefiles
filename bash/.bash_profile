@@ -37,8 +37,8 @@ alias irssi="irssi --config=${XDG_CONFIG_HOME:-$HOME/.config}/irssi/config --hom
 alias wget="wget --hsts-file=${XDG_CACHE_HOME:-$HOME/.cache}/wget-hsts"
 
 # User directories
-export ZETTELKASTEN="${HOME}/Vaults/Zettelkasten/Z/"
-export ZETTELKASTEN_DB="${ZETTELKASTEN}../db.sqlite3"
+export ZETTELKASTEN="${HOME}/Vaults/Zettelkasten/"
+export ZETTELKASTEN_DB="${ZETTELKASTEN}db.sqlite3"
 
 export USER_ICONS="${XDG_DATA_HOME}/icons/self/"
 export USER_BKP="${HOME}/.local/bkp/"
@@ -47,8 +47,8 @@ export USER_BKP="${HOME}/.local/bkp/"
 export LESS='-R --use-color -Dd+r$Du+b'
 export PYTHONBREAKPOINT=ipdb.set_trace  # python breakpoint() calls ipdb now
 
-export LEDGER_FILE="${ZETTELKASTEN}../me.ldg"
-alias newsboat="newsboat --url-file=${ZETTELKASTEN}../newsboat_rss_feed_urls.txt"
+export LEDGER_FILE="${ZETTELKASTEN}me.ldg"
+alias newsboat="newsboat --url-file=${ZETTELKASTEN}newsboat_rss_feed_urls.txt"
 
 
 autocompletions=(
