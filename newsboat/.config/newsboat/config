@@ -1,11 +1,14 @@
-#show-read-feeds no
-#download-full-page yes
+# options
 auto-reload yes
 confirm-exit yes
 datetime-format "%F"
-
+# download-full-page yes
 external-url-viewer "urlscan -dc -r 'linkhandler {}'"
+# notify-program notify-send
 
+# vi-movements
+bind-key l open
+bind-key h quit
 bind-key j down
 bind-key k up
 bind-key j next articlelist
@@ -16,8 +19,7 @@ bind-key G end
 bind-key g home
 bind-key d pagedown
 bind-key u pageup
-bind-key l open
-bind-key h quit
+
 bind-key a toggle-article-read
 bind-key n next-unread
 bind-key N prev-unread
@@ -25,13 +27,9 @@ bind-key D pb-download
 bind-key U show-urls
 bind-key x pb-delete
 
-color listnormal cyan default
-color listfocus black yellow standout bold
-color listnormal_unread magenta default
-color listfocus_unread yellow default bold
-color info red black bold
-color article white default
+unbind-key ^A
 
+# macro
 browser linkhandler
 macro , open-in-browser
 macro t set browser "qndl" ; open-in-browser ; set browser linkhandler
@@ -44,7 +42,14 @@ macro C set browser "youtube-viewer --comments=%u" ; open-in-browser ; set brows
 macro p set browser "peertubetorrent %u 480" ; open-in-browser ; set browser linkhandler
 macro P set browser "peertubetorrent %u 1080" ; open-in-browser ; set browser linkhandler
 
-highlight all "---.*---" yellow
+# colorscheme - maybe place into different file and include
+color listnormal cyan default
+color listfocus black yellow standout bold
+color listnormal_unread magenta default
+color listfocus_unread yellow default bold
+color info red black bold
+color article white default
+highlight all "---.*---" yellow  # header
 highlight feedlist ".*(0/0))" black
 highlight article "(^Лента:|^Заголовок:|^Автор:).*" cyan default bold
 highlight article "(^Ссылка:|^Дата:)" cyan default default
@@ -57,5 +62,6 @@ highlight article ":.*\\(ссылка\\)$" cyan default
 highlight article ":.*\\(image\\)$" blue default
 highlight article ":.*\\(embedded flash\\)$" magenta default
 
+# ignores
 ignore-article "https://realpython.com/atom.xml" "title =~ \"Podcast\""
 ignore-article "Real Python" "title =~ \"Podcast\""

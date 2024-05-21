@@ -4,7 +4,7 @@ functions  $HOME/.config/shell/functions
 apk        $HOME/.config/shell/apk_related
 bashrc     $HOME/.bashrc
 newsboat   $HOME/.config/newsboat/config
-newsboat   $HOME/.config/newsboat/urls
+rss-feed   $ZETTELKASTEN/../newsboat_rss_feed_urls.txt
 notes      $HOME/.notes.md
 nvim       $HOME/.config/nvim/init.lua
 profile    $HOME/.bash_profile

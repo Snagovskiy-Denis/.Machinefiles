@@ -3,6 +3,7 @@ android-file-transfer
 arduino
 arduino-avr-core
 arduino-cli
+arp-scan
 autoconf
 automake
 autopep8
@@ -51,6 +52,7 @@ hledger-web
 httpie
 inetutils
 inotify-tools
+iperf
 ipset
 ipython
 irssi
@@ -69,6 +71,7 @@ libusb-compat
 linux
 linux-firmware
 linux-lts
+linux-lts-headers
 lsd
 lxappearance
 lynx
@@ -86,15 +89,12 @@ neovim
 networkmanager
 networkmanager-openvpn
 newsboat
+nfs-utils
 nitrogen
 nodejs
 noto-fonts-emoji
 ntfs-3g
 numlockx
-nvidia
-nvidia-lts
-nvidia-settings
-nvidia-utils
 obsidian
 obs-studio
 openblas
@@ -136,7 +136,6 @@ python-coverage
 python-dbus-next
 python-debugpy
 python-docs
-python-inotify-simple
 python-ipdb
 python-isort
 python-matplotlib
@@ -147,6 +146,7 @@ python-pip
 python-plumbum
 python-poetry
 python-pynvim
+python-ruff
 python-scipy
 python-tasklib
 python-typer
@@ -161,7 +161,6 @@ ripgrep
 rofi
 rofi-calc
 rofi-emoji
-rofi-pass
 rust-analyzer
 rustup
 sassc
@@ -209,6 +208,7 @@ ttf-dejavu-nerd
 ttf-envycoder-nerd
 ttf-fantasque-nerd
 ttf-firacode-nerd
+ttf-gohu-nerd
 ttf-go-nerd
 ttf-hack-nerd
 ttf-heavydata-nerd
@@ -220,6 +220,7 @@ ttf-inconsolata-nerd
 ttf-intone-nerd
 ttf-iosevka-nerd
 ttf-iosevkaterm-nerd
+ttf-iosevkatermslab-nerd
 ttf-jetbrains-mono-nerd
 ttf-lekton-nerd
 ttf-liberation-mono-nerd
@@ -235,6 +236,7 @@ ttf-nerd-fonts-symbols-mono
 ttf-noto-nerd
 ttf-profont-nerd
 ttf-proggyclean-nerd
+ttf-recursive-nerd
 ttf-roboto-mono-nerd
 ttf-sharetech-mono-nerd
 ttf-sourcecodepro-nerd
@@ -244,11 +246,13 @@ ttf-tinos-nerd
 ttf-ubuntu-mono-nerd
 ttf-ubuntu-nerd
 ttf-victor-mono-nerd
+ttf-zed-mono-nerd
 udiskie
 ueberzug
 unclutter
 unrar
 unzip
+urlscan
 usb_modeswitch
 v2ray
 vim
@@ -304,6 +308,7 @@ xorg-xwd
 xorg-xwud
 xsel
 yt-dlp
+ytfzf
 zathura
 zathura-pdf-poppler
 zoxide

@@ -26,7 +26,6 @@ rmb = "Button3"
 
 
 def terminal_with(executable: str) -> str:
-    # return f'{TERMINAL} -t {app} -e sh -c "sleep 0.1 && {app}"'  # https://github.com/qtile/qtile/issues/2167
     return f"{TERMINAL} -t {executable} -e {executable}"
 
 
@@ -96,7 +95,7 @@ _application_launcher_keys = [
         Key([], 'x', lazy.spawn('discord')),
         Key([], 't', lazy.spawn('torbrowser-launcher')),
 
-        # CLI & TUI applications
+        # TUI applications
         Key([], 'u', lazy.spawn(terminal_with('taskwarrior-tui'))),
         Key([], "m", lazy.group["scratchpad"].dropdown_toggle("music")),
         Key([], 'p', lazy.spawn(terminal_with('ipython'))),

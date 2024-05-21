@@ -187,9 +187,9 @@ def main(
             if unlink_processed_file:
                 with suppress(PermissionError):
                     path.unlink()
-            logging.debug(f"done processing '{path}'")
-            level = logging.WARNING if inserted_rows else logging.INFO
-            logging.log(level, f"{inserted_rows = } from '{path.name}'")
+            logging.info(f"{inserted_rows = } from '{path}'")
+            if inserted_rows:
+                logging.warning(f"{inserted_rows} new entries")
 
 
 if __name__ == "__main__":
