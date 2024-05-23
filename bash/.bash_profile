@@ -48,7 +48,6 @@ export LESS='-R --use-color -Dd+r$Du+b'
 export PYTHONBREAKPOINT=ipdb.set_trace  # python breakpoint() calls ipdb now
 
 export LEDGER_FILE="${ZETTELKASTEN}me.ldg"
-alias newsboat="newsboat --url-file=${ZETTELKASTEN}newsboat_rss_feed_urls.txt"
 
 
 autocompletions=(

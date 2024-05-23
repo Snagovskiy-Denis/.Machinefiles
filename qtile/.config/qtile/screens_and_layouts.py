@@ -3,15 +3,16 @@ import json
 from pathlib import Path
 
 from tasklib import TaskWarrior, Task
+from tasklib.backends import TaskWarriorException
 from libqtile.widget import base
 from libqtile import bar, layout, widget
 from libqtile.config import Screen
 
 
-with open(Path.home().joinpath(".config/aesthetics.json")) as f:
-    aesthetics = json.loads(f.read())
-    colors = aesthetics["colors"]
-    font = aesthetics["font"]
+aesthetics_file = Path.home() / ".config/aesthetics.json"
+aesthetics = json.loads(aesthetics_file.read_text())
+colors = aesthetics["colors"]
+font = aesthetics["font"]
 
 
 layouts = [
@@ -56,7 +57,7 @@ class TaskWarriorWidget(base.ThreadPoolText):
         ("max_chars", 30, "Maximum number of characters to display in widget."),
     ]
 
-    def __init__(self, text = "", **config):
+    def __init__(self, text="", **config):
         super().__init__(text, **config)
         self.add_defaults(self.defaults)
         self.add_callbacks({"Button1": self.open_annotated_urls})
@@ -82,8 +83,11 @@ class TaskWarriorWidget(base.ThreadPoolText):
             self.tw.execute_command(args, allow_failure=False)
 
     def poll(self):
-        self.task = self.next_task()
-        return str(self.task) if self.task else "No matches"
+        try:
+            self.task = self.next_task()
+            return str(self.task) if self.task else "No matches"
+        except TaskWarriorException as exc:
+            return str(exc)
 
 
 screens = [

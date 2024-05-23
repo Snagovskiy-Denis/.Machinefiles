@@ -64,4 +64,3 @@ highlight article ":.*\\(embedded flash\\)$" magenta default
 
 # ignores
 ignore-article "https://realpython.com/atom.xml" "title =~ \"Podcast\""
-ignore-article "Real Python" "title =~ \"Podcast\""

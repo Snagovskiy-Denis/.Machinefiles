@@ -25,8 +25,10 @@ try:
     from typer import Typer, Argument, Option, BadParameter
     from inotify_simple import INotify, flags
 except ImportError as e:
-    print(f"Missing dependency: {e.name}")
-    exit(1)
+    import sys
+
+    print(f"Missing dependency: {e.name}", file=sys.stderr)
+    sys.exit(1)
 
 
 app = Typer(
