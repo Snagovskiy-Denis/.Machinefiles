@@ -1,6 +1,13 @@
 from dataclasses import dataclass
 
 
+COMMON_ADVERTISEMENT_DATA_TYPES = {
+    "0x9": "Complete Local Name",
+    "0xff": "Manufacturer Specific Data",
+}
+assert len(COMMON_ADVERTISEMENT_DATA_TYPES) <= (int("0x3d", base=16) + 1)
+
+
 @dataclass(frozen=True, slots=True)
 class BluetoothAdvertisment:
     """
@@ -23,7 +30,8 @@ class BluetoothAdvertisment:
         packets = []
 
         while package:
-            length, type_ = package.pop(0), hex(package.pop(1))
+            length, type_ = package.pop(0), hex(package.pop(0))
+            type_ = COMMON_ADVERTISEMENT_DATA_TYPES.get(type_, type_)
             value_length = length - 1
             body = package[:value_length]
             del package[:value_length]
