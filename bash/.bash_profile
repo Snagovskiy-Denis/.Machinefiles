@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Adds ~/.local/bin and its subdirectories to $PATH
-append_executables="$(find "${HOME}/.local/bin" -not -path '*/__pycache__' -type d -printf :%p)"
+append_executables="$(find -L "${HOME}/.local/bin" -not -path '*/__pycache__' -type d -printf :%p)"
 export PATH="${PATH}$append_executables"
 export PYTHONPATH="${PYTHONPATH}$append_executables"
 

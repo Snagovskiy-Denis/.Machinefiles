@@ -106,6 +106,7 @@ _application_launcher_keys = [
             # Binaries & Scripts
             Key([], "j", lazy.spawn(terminal_with("oj"))),
             Key([], "s", lazy.spawn("share")),
+            Key([], "b", lazy.spawn(terminal_with("start_bluetooth_discovery"))),
         ],
     ),
 ]

@@ -1,0 +1,18 @@
+#!/bin/bash
+# Enables discovering for the default bluetooth controller
+# 
+# `bluetoothctl scan on` doesn't start discovering for some reasone
+# so I use xdotool desctop automation instead.
+
+alacritty --class floating -e bluetoothctl &
+
+sleep 1.5
+
+win_id="$(xdotool search --pid $!)"
+
+if xdotool windowfocus --sync "$win_id"
+then
+    xdotool type "scan on" && xdotool key enter
+    # wait untill bluetoothctl ends
+    tail --pid=$! -f /dev/null
+fi
