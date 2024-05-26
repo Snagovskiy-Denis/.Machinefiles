@@ -67,8 +67,6 @@ if [ -f $(which powerline-daemon) ] && [ -z "${MYVIMRC}" ] && [[ "${DISPLAY}" ]]
     source "/usr/share/powerline/bindings/bash/powerline.sh"
 fi
 
+alias sf='setfont /usr/share/kbd/consolefonts/cyr-sun16.psfu.gz -d'
 
 # appended by other apps
-source /home/self/.bash_completions/cli.py.sh
-source /home/self/.bash_completions/typer.sh
-source /home/self/.bash_completions/templates-factory.sh

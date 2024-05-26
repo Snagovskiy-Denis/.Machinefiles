@@ -6,13 +6,10 @@
 
 alacritty --class floating -e bluetoothctl &
 
-sleep 1.5
+sleep 1
 
-win_id="$(xdotool search --pid $!)"
-
-if xdotool windowfocus --sync "$win_id"
+if xdotool windowfocus --sync "$(xdotool search --pid $!)"
 then
-    xdotool type "scan on" && xdotool key enter
-    # wait untill bluetoothctl ends
-    tail --pid=$! -f /dev/null
+    xdotool type --delay 25 "scan on" && xdotool key enter
+    tail --pid=$! -f /dev/null  # wait untill bluetoothctl ends
 fi

@@ -1,0 +1,9 @@
+add Data/Music/Internal/
+pl-create internal
+player-next-album
+pl-a
+add Data/Music/External/
+add Data/Music/External/*
+pl-create external
+m
+add E

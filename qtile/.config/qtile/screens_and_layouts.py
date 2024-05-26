@@ -1,4 +1,6 @@
 import json
+import subprocess
+import re
 
 from pathlib import Path
 
@@ -91,6 +93,25 @@ class TaskWarriorWidget(base.ThreadPoolText):
 
 
 screens = [
+    Screen(
+        top=bar.Bar(
+            [
+                widget.GroupBox(),
+                widget.CurrentLayoutIcon(scale=0.6),
+                widget.Prompt(foreground=colors["dark-magenta"]),
+                widget.WindowName(),
+                # widget.Systray(padding=5),
+                widget.Sep(),
+                TaskWarriorWidget(),
+                widget.Sep(),
+                widget.Cmus(max_chars=70),
+                widget.Sep(),
+                widget.Clock(format="🗓️%Y-%m-%d ⏱%H:%M"),
+                widget.QuickExit(default_text="❎ "),
+            ],
+            24,
+        ),
+    ),
     Screen(
         top=bar.Bar(
             [

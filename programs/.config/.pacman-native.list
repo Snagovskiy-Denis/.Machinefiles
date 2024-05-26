@@ -64,7 +64,6 @@ jq
 kdeconnect
 klavaro
 languagetool
-lib32-libcurl-compat
 libreoffice-still
 libreoffice-still-ru
 libusb-compat
@@ -169,7 +168,6 @@ shfmt
 smartmontools
 speedtest-cli
 sshfs
-steam
 stow
 sudo
 surfraw

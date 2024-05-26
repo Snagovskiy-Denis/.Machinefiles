@@ -106,7 +106,7 @@ _application_launcher_keys = [
             # Binaries & Scripts
             Key([], "j", lazy.spawn(terminal_with("oj"))),
             Key([], "s", lazy.spawn("share")),
-            Key([], "b", lazy.spawn(terminal_with("start_bluetooth_discovery"))),
+            Key([], "b", lazy.spawn("start_bluetooth_discovery")),
         ],
     ),
 ]
@@ -221,7 +221,8 @@ for group in groups:
     keys.extend(
         [
             Key([mod], name, lazy.group[name].toscreen(toggle=True)),
-            Key([mod, shift], name, lazy.window.togroup(name, switch_group=True)),
+            # Key([mod, shift], name, lazy.window.togroup(name, switch_group=True)),
+            Key([mod, shift], name, lazy.window.togroup(name, switch_group=False)),
             Key([mod, ctrl], name, lazy.group.switch_groups(name)),
         ]
     )

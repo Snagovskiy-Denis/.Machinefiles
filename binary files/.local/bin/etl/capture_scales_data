@@ -1,0 +1,8 @@
+#!/bin/bash
+# a0:77:9e:6e:bc:c8 - my scales MAC and it's unlikely to change
+
+sudo tshark \
+    -i bluetooth0 \
+    -T fields -e btcommon.eir_ad.entry.data \
+    -Y "bthci_evt.bd_addr == a0:77:9e:6e:bc:c8" \
+    | lxl_2112.py store
