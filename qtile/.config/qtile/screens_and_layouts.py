@@ -92,26 +92,34 @@ class TaskWarriorWidget(base.ThreadPoolText):
             return str(exc)
 
 
+default_widgets_list = [
+    widget.GroupBox(),
+    widget.CurrentLayoutIcon(scale=0.6),
+    widget.Prompt(foreground=colors["dark-magenta"]),
+    widget.WindowName(),
+    # widget.Systray(padding=5),
+    widget.Sep(),
+    TaskWarriorWidget(),
+    widget.Sep(),
+    widget.Cmus(max_chars=70),
+    widget.Sep(),
+    widget.Clock(format="🗓️%Y-%m-%d ⏱%H:%M"),
+    widget.QuickExit(default_text="❎ "),
+]
+default_bar = bar.Bar(
+    default_widgets_list,
+    24,
+)
+
+screens = []
+xrandr = subprocess.run(["xrandr", "--listmonitors"], capture_output=True)
+monitors_count = int(xrandr.stdout.splitlines()[0].split(b":")[1].strip())
+if monitors_count == 1:
+    pass
+
+
 screens = [
-    Screen(
-        top=bar.Bar(
-            [
-                widget.GroupBox(),
-                widget.CurrentLayoutIcon(scale=0.6),
-                widget.Prompt(foreground=colors["dark-magenta"]),
-                widget.WindowName(),
-                # widget.Systray(padding=5),
-                widget.Sep(),
-                TaskWarriorWidget(),
-                widget.Sep(),
-                widget.Cmus(max_chars=70),
-                widget.Sep(),
-                widget.Clock(format="🗓️%Y-%m-%d ⏱%H:%M"),
-                widget.QuickExit(default_text="❎ "),
-            ],
-            24,
-        ),
-    ),
+    Screen(top=default_bar),
     Screen(
         top=bar.Bar(
             [
