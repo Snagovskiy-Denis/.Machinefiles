@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import sqlite3
 
-from pathlib import Path
 from typing import Annotated
 from itertools import chain
 from enum import Enum
@@ -9,8 +8,10 @@ from enum import Enum
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from typer import Argument, Typer, Option
+from typer import Argument, Typer
 from rich import print
+
+from userlib.common_types import VaultDB
 
 
 app = Typer(help="Helper functions for interacting with your body data")
@@ -18,13 +19,14 @@ app = Typer(help="Helper functions for interacting with your body data")
 
 class Resample(str, Enum):
     weekly = "W"
+    weekly_static = "Ws"
     monthly = "M"
     quarterly = "Q"
     yearly = "Y"
 
     def as_resample_value(self) -> str:
         if self is not type(self).weekly:
-            return self.value
+            return self.value.removesuffix("s")
         return f"{self.value}-{pd.Timestamp.today().day_name()[:3]}"
 
     def label(self, text: str) -> str:
@@ -63,18 +65,7 @@ def plot(
     steps: bool = True,
     daily_weight: bool = False,
     *,
-    db_path: Annotated[
-        Path,
-        Option(
-            envvar="ZETTELKASTEN_DB",
-            dir_okay=False,
-            exists=True,
-            readable=True,
-            resolve_path=True,
-            show_default=False,
-            help="Vault database file path",
-        ),
-    ],
+    db_path: VaultDB,
 ):
     "Plots a graph showing trends in weight and energy balance."
 
@@ -135,7 +126,7 @@ def plot(
         linewidth=2,
         marker="o",
     )
-    ax_waist.set_ylim(bottom=85, top=115)
+    # ax_waist.set_ylim(top=115)
     ax_waist.yaxis.set_label_position("left")
     ax_waist.set_ylabel("cm", color=color_skyblue, loc="bottom")
     ax_waist.tick_params(
@@ -188,7 +179,7 @@ def plot(
         )
         ax_steps.set_ylabel("steps", color=color5, loc="top")
         ax_steps.tick_params(axis="y", labelcolor=color5)
-        ax_steps.set_ylim(bottom=500, top=12000)
+        ax_steps.set_ylim(bottom=500, top=15000)
         plots.append(line_5)
 
     plots = list(chain.from_iterable(plots))

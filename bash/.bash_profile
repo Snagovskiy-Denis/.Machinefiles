@@ -32,6 +32,7 @@ export POETRY_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/poetry"
 export GRADLE_USER_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/gradle"
 export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pass"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
+export GOMODCACHE="${XDG_CACHE_HOME:-$HOME/.cache}"/go/mod
 alias yarn="yarn --use-yarnrc ${XDG_CONFIG_HOME:-$HOME/.config}/yarn/config"
 alias irssi="irssi --config=${XDG_CONFIG_HOME:-$HOME/.config}/irssi/config --home=${XDG_DATA_HOME}/irssi"
 alias wget="wget --hsts-file=${XDG_CACHE_HOME:-$HOME/.cache}/wget-hsts"

@@ -1,55 +1,73 @@
 #!/usr/bin/env python
 import sys
+import sqlite3
+import logging
+import enum
 
-from systemd import journal
-from enum import Enum
+from typer import run, FileText
 
-from typer import Typer
-from plumbum.cmd import notify_send
-
-
-app = Typer()
+from userlib.common_types import VaultDB
+from userlib.loggers import setup_default_logging
 
 
 __datasource__ = "A0:77:9E:6E:BC:C8"
 __datasourcetype__ = "device:scales:lxl-2112"
 
+UNIT_OR_CMD_IDX = 6
 
-class Unit(int, Enum):
+
+class CMD(int, enum.Enum):
     null_kg = 36
     null_lb = 48
 
+
+class Unit(int, enum.Enum):
     kg = 37
     lb = 49
-    # lb = 10
-    # kg = 100
-
-    @classmethod
-    def from_byte(cls, byte: int):
-        return next(filter(lambda unit: unit.value == byte, cls))
-
-    def apply_to(self, raw_weight: int) -> float:
-        divisor = {Unit.kg: 100, Unit.lb: 10}.get(self, 1)
-        return raw_weight / divisor
 
 
-def deserialize():
-    pass
+def deserialize_weight(hexidecimal: str) -> float:
+    data = bytearray.fromhex(hexidecimal)
+    raw_weight = int.from_bytes(data[:2])
+    match data[UNIT_OR_CMD_IDX]:
+        case Unit.kg:
+            return raw_weight / 100
+        case Unit.lb:
+            return (raw_weight / 10) / 2.205  # convert to kg
+        case CMD.null_kg | CMD.null_lb:
+            raise ValueError("Ignore 'display on' cmd")
+        case _ as v:
+            raise TypeError(f"Unknown cmd/unit {v} from {hexidecimal}")
 
 
-@app.command()
-def store():
-    # parse and validate stind by line,
-    # filter out empty data and insert to db if today is missing
-    # log and notify-send result
-    pass
+def store(*, stdin: FileText = sys.stdin, vault_db: VaultDB):  # type: ignore
+    for raw_data in stdin:
+        try:
+            logging.info(f"received {raw_data.strip('\n')}")
+            weight = deserialize_weight(raw_data)
+        except ValueError as e:
+            logging.debug(str(e))
+            continue
+        except TypeError as e:
+            logging.error(f"invalid scales data {e}")
+            raise
 
+        with sqlite3.connect(vault_db) as conn:
+            where_today = " WHERE timestamp = unixepoch(date('now'))"
 
-@app.command(help="print defenition of bytes in a table format")
-def legend():
-    # print reverse engineering bytes table
-    pass
+            if conn.execute(f"SELECT weight FROM biometry {where_today}").fetchone():
+                logging.debug("today's weight is already in the db")
+                continue
+
+            query_insert = "INSERT OR IGNORE INTO biometry (weight) VALUES(?)"
+            query_update = f"UPDATE biometry SET weight = ? {where_today}"
+            for query in query_insert, query_update:
+                conn.execute(query, [str(weight)])
+            conn.commit()
+
+            logging.warning(f"Today's weight is {weight}")
 
 
 if __name__ == "__main__":
-    app()
+    setup_default_logging(logging.root, "etl/lxl_2112.py")
+    run(store)

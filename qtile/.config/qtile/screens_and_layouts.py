@@ -1,8 +1,8 @@
 import json
 import subprocess
-import re
 
 from pathlib import Path
+from systemd import journal
 
 from tasklib import TaskWarrior, Task
 from tasklib.backends import TaskWarriorException
@@ -87,17 +87,18 @@ class TaskWarriorWidget(base.ThreadPoolText):
     def poll(self):
         try:
             self.task = self.next_task()
-            return str(self.task) if self.task else "No matches"
-        except TaskWarriorException as exc:
-            return str(exc)
+            return f"{self.task['id']}:{self.task}" if self.task else "No matches"
+        except TaskWarriorException as e:
+            journal.send(f"qtile - error - TaskWarriorWidget: {e}")
+            return "oops"
 
 
-default_widgets_list = [
+widgets = (
     widget.GroupBox(),
     widget.CurrentLayoutIcon(scale=0.6),
     widget.Prompt(foreground=colors["dark-magenta"]),
     widget.WindowName(),
-    # widget.Systray(padding=5),
+    widget.Systray(padding=5),
     widget.Sep(),
     TaskWarriorWidget(),
     widget.Sep(),
@@ -105,38 +106,13 @@ default_widgets_list = [
     widget.Sep(),
     widget.Clock(format="🗓️%Y-%m-%d ⏱%H:%M"),
     widget.QuickExit(default_text="❎ "),
-]
-default_bar = bar.Bar(
-    default_widgets_list,
-    24,
 )
 
 screens = []
 xrandr = subprocess.run(["xrandr", "--listmonitors"], capture_output=True)
 monitors_count = int(xrandr.stdout.splitlines()[0].split(b":")[1].strip())
-if monitors_count == 1:
-    pass
 
-
-screens = [
-    Screen(top=default_bar),
-    Screen(
-        top=bar.Bar(
-            [
-                widget.GroupBox(),
-                widget.CurrentLayoutIcon(scale=0.6),
-                widget.Prompt(foreground=colors["dark-magenta"]),
-                widget.WindowName(),
-                widget.Systray(padding=5),
-                widget.Sep(),
-                TaskWarriorWidget(),
-                widget.Sep(),
-                widget.Cmus(max_chars=70),
-                widget.Sep(),
-                widget.Clock(format="🗓️%Y-%m-%d ⏱%H:%M"),
-                widget.QuickExit(default_text="❎ "),
-            ],
-            24,
-        ),
-    ),
-]
+if monitors_count == 2:
+    # widgets_without_systray = [*widgets[:4], *widgets[5:]]
+    screens.append(Screen())
+screens.append(Screen(top=bar.Bar(list(widgets), 24)))

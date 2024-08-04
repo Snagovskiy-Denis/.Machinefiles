@@ -93,7 +93,7 @@ _application_launcher_keys = [
             # GUI
             Key([], "o", lazy.spawn("obsidian")),
             Key([], "z", lazy.spawn("anki")),
-            Key([], "c", lazy.spawn("gnome-pomodoro")),
+            Key([], "c", lazy.group["scratchpad"].dropdown_toggle("pomodoro")),
             Key([], "v", lazy.spawn("telegram-desktop")),
             Key([], "x", lazy.spawn("discord")),
             Key([], "t", lazy.spawn("torbrowser-launcher")),
@@ -128,16 +128,22 @@ _audio_and_cmus_keys = [
     KeyChord(
         [mod],
         "m",
-        mode=True,
-        submappings=[
+        [
             Key([], "f", _pause),
             Key([], "s", _stop),
-            Key([], "j", _next),
-            Key([], "k", _prev),
             Key([], "n", _mute),
+        ],
+    ),
+    KeyChord(
+        [mod, shift],
+        "m",
+        [
             Key([], "u", _voldown),
             Key([], "i", _volup),
+            Key([], "j", _next),
+            Key([], "k", _prev),
         ],
+        mode=True,
     ),
 ]
 
@@ -156,6 +162,8 @@ _windows_keys = [
         desc="Put the focused window to/from floating mode",
     ),
     Key([mod, shift], "c", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod, shift], "n", lazy.group.next_window()),
+    Key([mod, shift], "b", lazy.group.prev_window()),
 ]
 
 _layout_keys = [
@@ -197,7 +205,7 @@ _layout_keys = [
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack (Column layout)",
     ),
-    Key([mod, shift], "m", lazy.hide_show_bar()),
+    Key([mod, ctrl], "m", lazy.hide_show_bar()),
 ]
 
 

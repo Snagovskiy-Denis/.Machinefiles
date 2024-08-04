@@ -11,11 +11,8 @@ import re
 import logging
 import logging.handlers
 import importlib
-import subprocess
 import signal
 
-from textwrap import fill
-from os.path import expandvars
 from contextlib import suppress
 from pathlib import Path
 from types import ModuleType
@@ -31,47 +28,14 @@ except ImportError as e:
     sys.exit(1)
 
 
+from userlib.common_types import VaultDB
+from userlib.loggers import setup_default_logging
+
+
 app = Typer(
     name="Inotify Parser Entrypoint",
     help="Sets ETL script as handler on filesystem events",
 )
-
-
-def notify_send(title: str, message: str, time=10000, icon: str = "") -> None:
-    arguments = ["notify-send", title, fill(message), f"--expire-time={time}"]
-    if icon:
-        icons_home = expandvars("$USER_ICONS")
-        arguments.append(f"--icon={icons_home}{icon}")
-    subprocess.run(arguments)
-
-
-class LibnotifyHandler(logging.Handler):
-    def __init__(self, level, app_name) -> None:
-        super().__init__(level)
-        self.app_name = app_name
-
-    def emit(self, record: logging.LogRecord) -> None:
-        notify_send(self.app_name, record.message, time=60 * 1000, icon="db.png")
-
-
-def setup_logging(etl_module: ModuleType):
-    etl_filename = Path(etl_module.__file__).name  # pyright: ignore
-    # etl_logger = logging.getLogger(etl_filename)
-    __appname__ = f"etl/{etl_filename}"
-    formatter = logging.Formatter(f"{__appname__} - %(levelname)s - %(message)s")
-
-    syslog_handler = logging.handlers.SysLogHandler(address="/dev/log")
-    syslog_handler.setLevel(logging.INFO)
-
-    stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.DEBUG)
-
-    for handler in syslog_handler, stream_handler:
-        handler.setFormatter(formatter)
-        logging.root.addHandler(handler)
-
-    libnotify_handler = LibnotifyHandler(logging.WARNING, __appname__)
-    logging.root.addHandler(libnotify_handler)
 
 
 def listen_events_forever(directory_to_watch: Path, filename_pattern: re.Pattern):
@@ -115,7 +79,12 @@ def py_module(etl_module: str) -> ModuleType:
     if etl.main.__annotations__.get("return") is not int:
         raise BadParameter(f"{etl_module}.main shall return number of inserted rows")
 
-    setup_logging(etl)
+    etl_filename = Path(etl.__file__).name  # pyright: ignore
+    # etl_logger = logging.getLogger(etl_filename)  # separate logger
+    etl_logger = logging.root
+    __appname__ = f"etl/{etl_filename}"
+    setup_default_logging(etl_logger, __appname__)
+
     return etl
 
 
@@ -163,19 +132,7 @@ def main(
             help="Unlink file after ETL completion",
         ),
     ] = True,
-    vault_db: Annotated[
-        Path,
-        Option(
-            envvar="ZETTELKASTEN_DB",
-            exists=True,
-            dir_okay=False,
-            readable=True,
-            resolve_path=True,
-            show_default=False,
-            is_eager=True,
-            help="Vault database file path",
-        ),
-    ],
+    vault_db: VaultDB,
 ) -> None:
     "Sets ETL script as handler on filesystem events"
 
@@ -195,5 +152,4 @@ def main(
 
 
 if __name__ == "__main__":
-    logging.root.setLevel(logging.DEBUG)
     app()

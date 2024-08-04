@@ -2,12 +2,12 @@
 import sqlite3
 import subprocess
 
-from pathlib import Path
-from typing import Annotated, NoReturn
 from enum import Enum
 
-from typer import Exit, Option, confirm, run
+from typer import Exit, confirm, run
 from rich import print
+
+from userlib.common_types import VaultDB
 
 
 class Metric(str, Enum):
@@ -29,7 +29,7 @@ class Metric(str, Enum):
     right_calf = "right_calf"
 
 
-def add(value: float, metric: Metric, db: sqlite3.Cursor) -> None | NoReturn:
+def add(value: float, metric: Metric, db: sqlite3.Cursor) -> None:
     "Add todays metric to database"
 
     today_ts = "unixepoch(date('now'))"
@@ -49,22 +49,7 @@ def add(value: float, metric: Metric, db: sqlite3.Cursor) -> None | NoReturn:
         db.execute(query, [str(value)])
 
 
-def main(
-    value: float,
-    metric: Metric,
-    db_path: Annotated[
-        Path,
-        Option(
-            envvar="ZETTELKASTEN_DB",
-            dir_okay=False,
-            exists=True,
-            readable=True,
-            resolve_path=True,
-            show_default=False,
-            help="Vault database file path",
-        ),
-    ]
-):
+def main(value: float, metric: Metric, db_path: VaultDB):
     with sqlite3.connect(db_path) as connection:
         add(value, metric, connection.cursor())
         connection.commit()

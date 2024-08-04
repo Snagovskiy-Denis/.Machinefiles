@@ -4,12 +4,14 @@
 # `bluetoothctl scan on` doesn't start discovering for some reasone
 # so I use xdotool desctop automation instead.
 
-alacritty --class floating -e bluetoothctl &
+alacritty -e bluetoothctl &
+# alacritty --class floating -e bluetoothctl &
 
 sleep 1
 
 if xdotool windowfocus --sync "$(xdotool search --pid $!)"
 then
     xdotool type --delay 25 "scan on" && xdotool key enter
-    tail --pid=$! -f /dev/null  # wait untill bluetoothctl ends
+    # tail --pid=$! -f /dev/null  # wait untill bluetoothctl ends
+    wait $!
 fi

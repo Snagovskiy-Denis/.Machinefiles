@@ -38,6 +38,8 @@ alias el="e ${LEDGER_FILE}"
 alias ztl="cd ${ZETTELKASTEN}Z"
 alias zdb="sqlite3 ${ZETTELKASTEN_DB}"
 alias list-lan-clients="sudo arp-scan --localnet"
+alias seho="s e /etc/hosts"
+alias curr_power="cat /sys/class/power_supply/BAT0/capacity"
 
 alias ll="ls -Al"
 alias cb="xsel --clipboard"  # if piped copy to clipboard else print cb

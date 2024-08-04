@@ -86,7 +86,6 @@ color.blocking=none
 #   Time Estimate matches my free time = Low Urgency
 #   No priority, no estimate, no difficulty, etc. = is it even a task? should I keep it?
 # urgency.uda.why..coefficient=-2
-urgency.uda.estimate..coefficient=-1
 urgency.uda.estimate.PT1H.coefficient=-0.2  # short tasks = more priority
 urgency.uda.estimate.PT30M.coefficient=1.3  # short tasks = more priority
 urgency.uda.estimate.PT15M.coefficient=2.2  # short tasks = more priority
@@ -101,12 +100,13 @@ urgency.user.tag.I.coefficient=1
 urgency.user.tag.refactor.coefficient=-2.3
 
 # Priority goals
-urgency.user.tag.w2.coefficient=1.7
+urgency.user.tag.w2.coefficient=0.7
 urgency.user.tag.FL.coefficient=0.5  #1.25
-urgency.user.project.SH.coefficient=1.1
+urgency.user.project.SH.coefficient=0.1
 urgency.user.tag.CS.coefficient=1
 urgency.user.tag.PH.coefficient=0.75
-urgency.user.tag.MG.coefficient=0.8
+urgency.user.tag.MG.coefficient=0.2
+urgency.user.tag.LVLUP.coefficient=1.5
 
 
 # plugins
@@ -123,4 +123,4 @@ alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote
 
 # End of file
 # Below are 'task config'-setted values
-context=nw
+context=t

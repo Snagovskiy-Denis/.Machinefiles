@@ -62,5 +62,4 @@ highlight article ":.*\\(ссылка\\)$" cyan default
 highlight article ":.*\\(image\\)$" blue default
 highlight article ":.*\\(embedded flash\\)$" magenta default
 
-# ignores
-ignore-article "https://realpython.com/atom.xml" "title =~ \"Podcast\""
+# feedlist-format "%4i %n %11u %t %> %-60L"

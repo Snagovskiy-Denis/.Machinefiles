@@ -92,6 +92,15 @@ groups = [
                 height=0.8,
                 y=0.05,
             ),
+            DropDown(
+                "pomodoro",
+                guess_terminal(),  # pyright: ignore
+                width=0.3,
+                height=0.2,
+                x=0.6,
+                y=0.05,
+                on_focus_lost_hide=False,
+            ),
         ],
     ),
 ]

@@ -1,3 +1,19 @@
+add ~/Data/Music/Internal/
+clear
+add ~/Data/Music/External/
+live-filter 
+live-filter L
+add Data/Music/External/ядерный-джихад.mp3
+clear 
+refresh
+del
+reshuffle
+player-pause-playback
+add ~/DataOld/Music/Internal/
+pl-create tmp
+player-prev
+player-next
+de
 add Data/Music/Internal/
 pl-create internal
 player-next-album
