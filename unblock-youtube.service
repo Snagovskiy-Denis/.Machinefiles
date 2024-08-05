@@ -1,0 +1,18 @@
+[Unit]
+Description=Anti-DPI script to access YouTube
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+Restart=no
+TimeoutSec=30sec
+IgnoreSIGPIPE=no
+KillMode=none
+GuessMainPID=no
+RemainAfterExit=no
+ExecStart=/home/self/.local/bin/unblock_youtube.sh
+ExecStop=killall nfqws
+
+[Install]
+WantedBy=multi-user.target

@@ -23,7 +23,7 @@ include /usr/share/doc/task/rc/solarized-dark-256.theme
 
 # context
 ## no-work
-context.nw.read=-w project.not:Q
+context.nw.read=-w project != Q
 
 context.t.read=(scheduled < tomorrow or due < tomorrow) and -w
 context.t.write=scheduled:today
@@ -123,4 +123,4 @@ alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote
 
 # End of file
 # Below are 'task config'-setted values
-context=t
+context=nw
