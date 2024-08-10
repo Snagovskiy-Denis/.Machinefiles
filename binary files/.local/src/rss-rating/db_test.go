@@ -13,16 +13,16 @@ func TestGetFeedByArticleUrl(t *testing.T) {
 		want Article
 	}{
 		{
-			"https://github.com/eradman/entr/releases/tag/5.6",
-			Article{"https://github.com/eradman/entr/releases.atom", "https://github.com/eradman/entr/releases/tag/5.6"},
+			fixtureArticles[0].ArticleURL,
+			fixtureArticles[0],
 		},
 		{
-			"https://github.com/eradman/entr/releases/tag/3.3",
-			Article{"https://github.com/eradman/entr/releases.atom", "https://github.com/eradman/entr/releases/tag/3.3"},
+			fixtureArticles[1].ArticleURL,
+			fixtureArticles[1],
 		},
 		{
-			"https://go.dev/blog/go1.22",
-			Article{"https://go.dev/blog/feed.atom", "https://go.dev/blog/go1.22"},
+			fixtureArticles[2].ArticleURL,
+			fixtureArticles[2],
 		},
 	}
 
@@ -45,22 +45,22 @@ func TestGetFeedByArticleUrlThatDoesNotExist(t *testing.T) {
 }
 
 func TestGetExistingArticleScore(t *testing.T) {
-    dbs, shutdown := fixtureDbs(t)
-    defer shutdown()
+	dbs, shutdown := fixtureDbs(t)
+	defer shutdown()
 
-	article := fixtureRssItemsNewsboats[0]
-    itemZ, err := GetArticleScore(dbs.zettl, article.articleUrl)
-    if err != nil || itemZ.articleUrl != article.articleUrl {
-        t.Errorf("GetArticleScore\nexpected: %v, %v\n actual: %v %v", article, nil, itemZ, err)
-    }
+	article := fixtureArticles[0]
+	itemZ, err := GetArticleScore(dbs.Zettl, article.ArticleURL)
+	if err != nil || itemZ.ArticleURL != article.ArticleURL {
+		t.Errorf("GetArticleScore\nexpected: %v, %v\n actual: %v %v", article, nil, itemZ, err)
+	}
 }
 
 func TestGetNonExistingArticleScore(t *testing.T) {
-    dbs, shutdown := fixtureDbs(t)
-    defer shutdown()
+	dbs, shutdown := fixtureDbs(t)
+	defer shutdown()
 
-    _, err := GetArticleScore(dbs.zettl, "https://go.dev/non/existing/path")
-    if err == nil {
-        t.Errorf("Excpects error, but got %v", err)
-    }
+	_, err := GetArticleScore(dbs.Zettl, "https://go.dev/non/existing/path")
+	if err == nil {
+		t.Errorf("Excpects error, but got %v", err)
+	}
 }

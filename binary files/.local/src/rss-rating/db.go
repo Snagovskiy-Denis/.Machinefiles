@@ -6,29 +6,31 @@ import (
 )
 
 type Databases struct {
-	newsboat     *sql.DB
-	zettl *sql.DB
+	Newsboat *sql.DB
+	Zettl    *sql.DB
 }
 
 type Article struct {
-	feedUrl    string
-	articleUrl string
+	FeedURL      string
+	ArticleURL   string
+	FeedTitle    string
+	ArticleTitle string
+	PubDate      int
 }
 
 type ArticleScore struct {
-	feedUrl    string
-	articleUrl string
-	score       int
+	Score int
+	Article
 }
 
-func NewDatabases(pathNewsboat, pathZettelkasten string) (*Databases, error) {
+func NewDatabases(pathNewsboat, pathZettl string) (*Databases, error) {
 	var dbs Databases
 	var err error
-    dbs.newsboat, err = sql.Open("sqlite", pathNewsboat)
+	dbs.Newsboat, err = sql.Open("sqlite", pathNewsboat)
 	if err != nil {
 		return &dbs, err
 	}
-	dbs.zettl, err = sql.Open("sqlite", pathZettelkasten)
+	dbs.Zettl, err = sql.Open("sqlite", pathZettl)
 	if err != nil {
 		return &dbs, err
 	}
@@ -36,26 +38,58 @@ func NewDatabases(pathNewsboat, pathZettelkasten string) (*Databases, error) {
 }
 
 func (dbs *Databases) Close() {
-    dbs.newsboat.Close()
-    dbs.zettl.Close()
+	dbs.Newsboat.Close()
+	dbs.Zettl.Close()
 }
 
 func GetFeedByArticleUrl(dbNewsboat *sql.DB, url string) (Article, error) {
-	row := dbNewsboat.QueryRow(`SELECT feedurl, url FROM rss_item WHERE url = ?;`, url)
+	row := dbNewsboat.QueryRow(
+		`SELECT
+            feed.rssurl,
+            feed.title,
+            item.url,
+            item.title,
+            item.pubDate
+        FROM rss_item AS item
+        JOIN rss_feed AS feed ON item.feedurl = feed.rssurl
+        WHERE item.url = ?;`,
+		url,
+	)
+
 	var a Article
-	if err := row.Scan(&a.feedUrl, &a.articleUrl); err != nil {
-		return a, err
-	}
-	return a, nil
+	err := row.Scan(
+		&a.FeedURL,
+		&a.FeedTitle,
+		&a.ArticleURL,
+		&a.ArticleTitle,
+		&a.PubDate,
+	)
+	return a, err
 }
 
-func GetArticleScore(dbZetl *sql.DB, articleUrl string) (ArticleScore, error) {
+func GetArticleScore(dbZetl *sql.DB, articleURL string) (ArticleScore, error) {
 	row := dbZetl.QueryRow(
-		`SELECT feed_url, article_url, score FROM rss_scores WHERE article_url = ?`,
-		articleUrl,
+		`SELECT
+            feed_url,
+            feed_title,
+            article_url,
+            article_title,
+            pub_date,
+            score
+        FROM rss_scores
+        WHERE article_url = ?`,
+		articleURL,
 	)
+
 	var as ArticleScore
-	if err := row.Scan(&as.feedUrl, &as.articleUrl, &as.score); err != nil {
+	if err := row.Scan(
+		&as.Article.FeedURL,
+		&as.Article.FeedTitle,
+		&as.Article.ArticleURL,
+		&as.Article.ArticleTitle,
+		&as.Article.PubDate,
+		&as.Score,
+	); err != nil {
 		return as, err
 	}
 	return as, nil

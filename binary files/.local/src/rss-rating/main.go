@@ -8,39 +8,6 @@ import (
 	"path/filepath"
 )
 
-/*
-[x] newsboat macro - алгоритм формирования аргументов этой прилы:
-    - newsboat пайаит в dmenu url
-    - dmenu даёт на выбор score (от -2 до +2)
-    - url+score пайпятся в этот скрипт, команда передаётся как 1-ый аргумент
-
-[x] Сетап:
-    - валидация команды и аргументов
-    - валидация баз данных
-        - или вообще провести ATTACH DATABASE как в etl/uhabits.py
-
-[x] Команда оценить:
-1. Взять feed_url по article_url из newsboat_db
-2. В 1 транзакции insert or update для этой пары feed_url, article_url
-
-[ ] Команда сформировать рейтинг для ленты:
-- за последние X статей (ORDER BY + LIMIT)
-    - по умолчанию: за 2**64-2
-- за период (месяц, дата начала и дата конца)
-    - по умолчанию: за всё время
-
-[x] Команда посмотреть рейтинг статьи
-*/
-
-func help(cmd *flag.FlagSet) {
-	fmt.Print("Newsboat plugin that adds personal likes and dislikes to articles\n\n")
-	fmt.Println("Usage: rss-rating (score | report | check | help) OPTION... [ARGUMENT]...")
-	if cmd != nil {
-		fmt.Println("\nOptions:")
-		cmd.PrintDefaults()
-	}
-}
-
 func main() {
 	dbPathNewsboat := filepath.Join(os.Getenv("XDG_DATA_HOME"), "newsboat/cache.db")
 	dbPathZettelkasten, ok := os.LookupEnv("ZETTELKASTEN_DB")
@@ -68,6 +35,9 @@ func main() {
 		"",
 		"expects '%u' value from newsboat macro on feed-list page",
 	)
+	// limit := reportCmd.Int("limit", -1, "max num of articles to include in report")
+	dateStart := reportCmd.String("start-date", "", "ge pubDate filter (format: YYYY-MM-DD)")
+	dateEnd := reportCmd.String("end-date", "", "le pubDate filter (format: YYYY-MM-DD)")
 
 	checkCmd := flag.NewFlagSet("check", flag.ExitOnError)
 	articleUrl2 := checkCmd.String(
@@ -108,17 +78,27 @@ func main() {
 			log.Fatal(err)
 		}
 	case "report":
-		fmt.Println("WIP")
 		reportCmd.Parse(os.Args[2:])
 		if *feedUrl == "" {
 			log.Fatal("Missing feed-url option")
 		}
+		score := reportSubcommand(dbs, *feedUrl, *dateStart, *dateEnd)
+		fmt.Println(score)
 	case "check":
 		checkCmd.Parse(os.Args[2:])
 		if *articleUrl2 == "" {
 			log.Fatal("Missing article-url option")
 		}
-		as, _ := GetArticleScore(dbs.zettl, *articleUrl2)
-		fmt.Println(as.score)
+		as, _ := GetArticleScore(dbs.Zettl, *articleUrl2)
+		fmt.Println(as.Score)
+	}
+}
+
+func help(cmd *flag.FlagSet) {
+	fmt.Print("Newsboat plugin that adds personal likes and dislikes to articles\n\n")
+	fmt.Println("Usage: rss-rating (score | report | check | help) OPTION... [ARGUMENT]...")
+	if cmd != nil {
+		fmt.Printf("\n%v options:\n", cmd.Name())
+		cmd.PrintDefaults()
 	}
 }
