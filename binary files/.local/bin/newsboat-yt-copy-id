@@ -1,0 +1,9 @@
+#!/bin/bash
+# Copies yt-video id from filename
+#
+# Excpects such yt-dlp template:
+# %(epoch>%Y-%m-%d)s RSS | %(title)s [%(id)s].%(ext)s
+
+echo "$1" \
+    | rg --only-matching '\[(.*)\]\..+$' --replace='$1' \
+    | xsel --clipboard

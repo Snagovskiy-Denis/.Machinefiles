@@ -1,0 +1,13 @@
+#!/bin/bash
+notify-send newsboat "yt-dlp start ${1}" --icon="${USER_ICONS}rss.png"
+
+yt-dlp \
+    --add-metadata \
+    --ignore-errors \
+    --embed-thumbnail \
+    --sponsorblock-remove default \
+    --quiet \
+    "${1}" -o "${HOME}/Data/yt-q/%(epoch>%Y-%m-%d)s RSS | %(title)s [%(id)s].%(ext)s" \
+    >/dev/null 2>/dev/null
+
+notify-send downloaded "${1}" --icon="${USER_ICONS}rss.png"

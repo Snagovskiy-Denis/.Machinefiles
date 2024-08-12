@@ -82,15 +82,13 @@ func GetArticleScore(dbZetl *sql.DB, articleURL string) (ArticleScore, error) {
 	)
 
 	var as ArticleScore
-	if err := row.Scan(
-		&as.Article.FeedURL,
-		&as.Article.FeedTitle,
-		&as.Article.ArticleURL,
-		&as.Article.ArticleTitle,
-		&as.Article.PubDate,
+	err := row.Scan(
+		&as.FeedURL,
+		&as.FeedTitle,
+		&as.ArticleURL,
+		&as.ArticleTitle,
+		&as.PubDate,
 		&as.Score,
-	); err != nil {
-		return as, err
-	}
-	return as, nil
+	)
+    return as, err
 }

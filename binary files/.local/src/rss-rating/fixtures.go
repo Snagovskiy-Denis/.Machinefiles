@@ -98,7 +98,7 @@ func fixtureZettelkastenDb(t *testing.T) (*sql.DB, func()) {
             article_title TEXT NOT NULL,
             pub_date INTEGER NOT NULL,
             score INTEGER NOT NULL,
-            scored_at INTEGER DEFAULT (unixepoch(date('now'))),
+            scored_at INTEGER DEFAULT (unixepoch()),
             -- UNIQUE(feed_url, article_url)
             PRIMARY KEY (feed_url, article_url)
         )

@@ -101,6 +101,7 @@ _application_launcher_keys = [
             Key([], "u", lazy.spawn(terminal_with("taskwarrior-tui"))),
             Key([], "m", lazy.group["scratchpad"].dropdown_toggle("music")),
             Key([], "p", lazy.spawn(terminal_with("ipython"))),
+            Key([], "g", lazy.spawn(terminal_with("yaegi"))),
             Key([], "h", lazy.spawn(terminal_with("btop"))),
             Key([], "n", lazy.spawn(terminal_with("newsboat")), desc="RSS feed"),
             # Binaries & Scripts

@@ -41,7 +41,7 @@ alias list-lan-clients="sudo arp-scan --localnet"
 alias seho="s e /etc/hosts"
 alias curr_power="cat /sys/class/power_supply/BAT0/capacity"
 
-alias ll="ls -Al"
+alias ll="ls -Al --group-directories-first"
 alias cb="xsel --clipboard"  # if piped copy to clipboard else print cb
 alias yt="yt-dlp --add-metadata --ignore-errors --embed-thumbnail --sponsorblock-remove default"  # ffprob
 alias yta="yt --extract-audio"

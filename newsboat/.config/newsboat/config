@@ -38,12 +38,24 @@ macro , open-in-browser
 macro v set browser "setsid -f mpv" ; open-in-browser ; set browser linkhandler
 macro w set browser "lynx" ; open-in-browser ; set browser linkhandler
 #macro d set browser "dmenuhandler" ; open-in-browser ; set browser linkhandler
-macro c set browser "echo %u | xclip -r -sel c" ; open-in-browser ; set browser linkhandler
 #macro C set browser "youtube-viewer --comments=%u" ; open-in-browser ; set browser linkhandler
 #macro p set browser "peertubetorrent %u 480" ; open-in-browser ; set browser linkhandler
 #macro P set browser "peertubetorrent %u 1080" ; open-in-browser ; set browser linkhandler
+macro c set browser "echo %u | xclip -r -sel c" ; open-in-browser ; set browser linkhandler
+macro y set browser "newsboat-yt-bg-download %u &" ; open-in-browser ; set browser linkhandler
+
+# rss-rating plugin
+## dislike
+macro - set browser \
+    "rss-rating score --article-url=%u --score=-1" ; \
+    open-in-browser ; set browser linkhandler
+## like
+macro + set browser \
+    "rss-rating score --article-url=%u --score=1" ; \
+    open-in-browser ; set browser linkhandler
+## custom/super like/dislike
 macro s set browser \
-    "rss-rating score --article-url=%u --score=$(echo -e '2\n1\n0\n-1\n-2' | rofi -dmenu)" ; \
+    "rss-rating score --article-url=%u --score=$(echo -e '2\n-2\n0' | rofi -dmenu)" ; \
     open-in-browser ; set browser linkhandler
 
 # colorscheme - maybe place into different file and include

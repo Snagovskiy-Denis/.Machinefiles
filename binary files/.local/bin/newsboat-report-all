@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for feedURL in $(bat ~/.config/newsboat/urls | rg -o '^https[^ ]*')
+do
+    score=$(rss-rating report --feed-url "$feedURL")
+    echo "$feedURL $score"
+done
+
+# newsboat-report-all | sort -k 2 --reverse | head
