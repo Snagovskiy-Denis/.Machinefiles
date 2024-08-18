@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ -n "$MINIMALISTIC" ]; then
+
+	grep --only-matching '^http[^ ]*' \
+		< ~/.config/newsboat/urls \
+        | xargs -I {} rss-rating report --feed-url {} "$@"
+
+else
+
+	while read -r -a feed; do
+		url="${feed[0]}"
+		tags="${feed[*]:1}"
+		report=$(rss-rating report --feed-url "$url" "$@")
+		test $? -eq 0 || continue
+		echo -e "$report\t[ $tags ]\t$url"
+	done < <(grep '^http[^ ]*' <~/.config/newsboat/urls)
+
+fi

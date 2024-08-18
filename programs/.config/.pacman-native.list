@@ -2,7 +2,6 @@ alacritty
 alsa-firmware
 alsa-utils
 android-file-transfer
-arduino
 arduino-avr-core
 arduino-cli
 arp-scan
@@ -12,11 +11,13 @@ base-devel
 bash-completion
 bash-language-server
 bat
+bind
 bluez
 bluez-utils
 btop
 calc
 calibre
+cbatticon
 chromium
 chrony
 cmatrix
@@ -46,6 +47,8 @@ git-delta
 gnome-boxes
 gnome-font-viewer
 go
+gopls
+go-tools
 grub
 gtk-engine-murrine
 hledger
@@ -59,6 +62,7 @@ ipset
 ipython
 irssi
 isync
+iwd
 jdk17-openjdk
 jdk-openjdk
 jp2a
@@ -132,6 +136,7 @@ pulseaudio
 pulseaudio-alsa
 pulseaudio-jack
 pyright
+python-black
 python-coverage
 python-dbus-next
 python-debugpy
@@ -146,6 +151,7 @@ python-pip
 python-plumbum
 python-poetry
 python-pynvim
+python-pytest
 python-ruff
 python-scipy
 python-tasklib
@@ -256,6 +262,7 @@ unzip
 urlscan
 usb_modeswitch
 v2ray
+vi
 vim
 vimb
 virt-manager
@@ -310,6 +317,7 @@ xorg-xwd
 xorg-xwininfo
 xorg-xwud
 xsel
+yaegi
 yt-dlp
 ytfzf
 zathura

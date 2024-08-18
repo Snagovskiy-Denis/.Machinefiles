@@ -100,13 +100,12 @@ urgency.user.tag.I.coefficient=1
 urgency.user.tag.refactor.coefficient=-2.3
 
 # Priority goals
-urgency.user.tag.w2.coefficient=0.7
 urgency.user.tag.FL.coefficient=0.5  #1.25
 urgency.user.project.SH.coefficient=0.1
 urgency.user.tag.CS.coefficient=1
 urgency.user.tag.PH.coefficient=0.75
 urgency.user.tag.MG.coefficient=0.2
-urgency.user.tag.LVLUP.coefficient=1.5
+urgency.user.tag.O3.coefficient=1.5
 
 
 # plugins
@@ -123,4 +122,4 @@ alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote
 
 # End of file
 # Below are 'task config'-setted values
-context=t
+context=nw

@@ -1,0 +1,20 @@
+#!/bin/bash
+# LANG=C = respect . as float point delimeter
+# Examples
+#
+# Feeds with tags 'favorite' and 'yt' from 2024-08-10 up to now
+# newsboat-report-table --start-date 2024-08-10 | grep '\<yt\>' | grep 'favorite'
+#
+# Exclude feeds that contains www.youtube.com
+# newsboat-report-table | grep --invert-match www\.youtube\.com
+
+newsboat-report-raw "$@" \
+    | LANG=C sort -k 1 --numeric-sort --revers \
+    | column \
+        --separator='	' \
+        --output-separator='	' \
+        --table \
+        --table-columns="Avg,Title,[ Tags ],URL" \
+        --table-noextreme="URL,Title" \
+        --table-order="Title,Avg,[ Tags ],URL" \
+        --output-width 0
