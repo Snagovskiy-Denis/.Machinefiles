@@ -76,7 +76,8 @@ class TaskWarriorWidget(base.ThreadPoolText):
     def next_task(self) -> Task | None:
         tasks = self.tw.tasks.pending()
         if context_read_filter := self._get_tw_context_filter():
-            tasks = tasks.filter(context_read_filter)
+            # for whatever reason, I need to use pending twice
+            tasks = tasks.filter(context_read_filter).pending()
         return max(tasks, key=lambda task: task["urgency"], default=None)
 
     def open_annotated_urls(self):

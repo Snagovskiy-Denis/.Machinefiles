@@ -1,13 +1,24 @@
 #!/bin/bash
-notify-send newsboat "yt-dlp start ${1}" --icon="${USER_ICONS}rss.png"
+# Download a yt video in a phone-friendly format; filter out shorts
+#
+# notify-send newsboat "yt-dlp start ${1}" --icon="${USER_ICONS}rss.png"
 
-yt-dlp \
-    --add-metadata \
-    --ignore-errors \
-    --embed-thumbnail \
-    --sponsorblock-remove default \
-    --quiet \
-    "${1}" -o "${HOME}/Data/yt-q/%(epoch>%Y-%m-%d)s RSS | %(title)s [%(id)s].%(ext)s" \
-    >/dev/null 2>/dev/null
+if
+	yt-dlp \
+		--add-metadata \
+		--sponsorblock-remove default \
+		--break-match-filter "duration > 60" \
+        --format "bv[height<=999]+ba/b[height<=999]" \
+        --cookies-from-browser vivaldi \
+		--embed-thumbnail \
+		--ignore-errors \
+		--quiet \
+		"${1}" -o "${HOME}/Data/yt-q/%(epoch>%Y-%m-%d)s RSS-S | %(title)s [%(id)s].%(ext)s" \
+		>/dev/null 2>/dev/null
+then
+	title=downloaded
+else
+	title=skiping_shorts
+fi
 
-notify-send downloaded "${1}" --icon="${USER_ICONS}rss.png"
+notify-send "$title" "${1}" --icon="${USER_ICONS}rss.png"

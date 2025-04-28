@@ -14,7 +14,9 @@ null_ls.setup {
         diagnostic.shellcheck,
 
         -- formatting.autopep8,  -- python
-        formatting.prettier,  -- js, html+css, md
-        formatting.shfmt,     -- shell
+        formatting.prettier, -- js, html+css, md
+        formatting.shfmt,    -- shell
+
+        formatting.golines, -- go line break
     }
 }

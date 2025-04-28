@@ -53,9 +53,13 @@ macro - set browser \
 macro + set browser \
     "rss-rating score --article-url=%u --score=1" ; \
     open-in-browser ; set browser linkhandler
+## null
+macro 0 set browser \
+    "rss-rating score --article-url=%u --score=0" ; \
+    open-in-browser ; set browser linkhandler
 ## custom/super like/dislike
 macro s set browser \
-    "rss-rating score --article-url=%u --score=$(echo -e '2\n-2\n0' | rofi -dmenu)" ; \
+    "rss-rating score --article-url=%u --score=$(echo -e '2\n-2' | rofi -dmenu)" ; \
     open-in-browser ; set browser linkhandler
 
 # colorscheme - maybe place into different file and include

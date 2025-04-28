@@ -4,7 +4,7 @@ import subprocess
 import matplotlib.pyplot as plt
 
 # Run hledger command and capture output
-cmd = ["hledger", "balance", "date:2023", "cur:\\$", "Expenses"]
+cmd = ["hledger", "balance", "date:2024", "cur:\\$", "Expenses"]
 result = subprocess.run(cmd, capture_output=True, text=True)
 output = result.stdout
 

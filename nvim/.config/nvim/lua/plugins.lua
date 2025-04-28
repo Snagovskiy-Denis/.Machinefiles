@@ -1,8 +1,8 @@
 -- NB - :luafile $MYVIMRC doesn't work for some reason.
 -- Needs to reopen nvim so that changes will take an effect.
 return {
-    -- Packer can manage itself as an optional plugin
     { 'wbthomason/packer.nvim' },
+    -- { "folke/lazy.nvim" },
 
     -- LSP actions & formatter
     { 'jose-elias-alvarez/null-ls.nvim', requires = { 'nvim-lua/popup.nvim' } },  -- TODO: migrate to 'nvimtools/none-ls.nvim'
@@ -79,12 +79,6 @@ return {
       'numToStr/Comment.nvim',
       event = 'BufRead',
       config = [[require 'plugin.comment']],
-    },
-
-    -- project.nvim
-    {
-      'ahmedkhalf/project.nvim',
-      config = [[require 'plugin.project']],
     },
 
     -- Status Line and Bufferline
@@ -180,7 +174,7 @@ return {
     { 'mipmip/vim-scimark' },
 
 
-    { 
+    {
         'ThePrimeagen/harpoon',
         branch = 'harpoon2',
         requires = { { 'nvim-lua/plenary.nvim' } },
@@ -188,4 +182,6 @@ return {
     },
 
     { 'mbbill/undotree' },
+
+    { 'akinsho/git-conflict.nvim' },
 }

@@ -58,7 +58,7 @@ def plot(
         int,
         Argument(min=0, help="Enter 0 to show all days"),
     ] = 30,
-    resample: Resample = Resample.weekly,
+    resample: Resample = Resample.weekly_static,
     annotations: bool = True,
     energy_balance: bool = True,
     calories: bool = True,

@@ -62,7 +62,7 @@ local keymaps = {
         ['<C-n>'] = ':lua require("harpoon"):list():select(1)<CR>',
         ['<C-m>'] = ':lua require("harpoon"):list():select(2)<CR>',
         ['<C-s>'] = ':lua require("harpoon"):list():select(3)<CR>',
-        ['<C-i>'] = ':lua require("harpoon"):list():select(4)<CR>',
+        -- ['<C-i>'] = ':lua require("harpoon"):list():select(4)<CR>',
 
         ['<C-S-P'] = ':lua require("harpoon"):list():prev()<CR>',
         ['<C-S-N'] = ':lua require("harpoon"):list():next()<CR>',

@@ -15,7 +15,7 @@ inotify_etl_entrypoint.py etl.uhabits ~/sync/habits/ 'Loop Habits Backup \d{4}-\
 capture_scales_data &
 
 # keyboard tweaks
-${HOME}/.config/shell/keyboard.sh &
+"${HOME}/.config/shell/keyboard.sh" &
 
 # GUI & TUI applications
 if [ ! "${1}" == "NoFgJobs" ]; then
@@ -23,6 +23,6 @@ if [ ! "${1}" == "NoFgJobs" ]; then
     # ${TERMINAL:-alacritty} --title taskwarrior -e taskwarrior-tui &
     # ${TERMINAL:-alacritty} --title cmus -e cmus &
     #vivaldi-stable &
-    anki &
+    # anki &
     # start_bluetooth_discovery &
 fi

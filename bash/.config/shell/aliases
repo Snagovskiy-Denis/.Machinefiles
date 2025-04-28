@@ -11,7 +11,7 @@ alias dirs="dirs -v"
 # alias ls="ls -hN --color=auto --group-directories-first"
 alias ls="lsd"
 alias grep="grep --color=auto"
-alias diff="diff --color=auto"
+# alias diff="diff --color=auto"
 alias cat="bat"
 alias diff="delta"
 
@@ -40,10 +40,11 @@ alias zdb="sqlite3 ${ZETTELKASTEN_DB}"
 alias list-lan-clients="sudo arp-scan --localnet"
 alias seho="s e /etc/hosts"
 alias curr_power="cat /sys/class/power_supply/BAT0/capacity"
+alias edit_week="\ls -Q | tail -8 | head -7 | xargs ${EDITOR}"
 
 alias ll="ls -Al --group-directories-first"
 alias cb="xsel --clipboard"  # if piped copy to clipboard else print cb
-alias yt="yt-dlp --add-metadata --ignore-errors --embed-thumbnail --sponsorblock-remove default"  # ffprob
+alias yt="yt-dlp --cookies-from-browser vivaldi --add-metadata --ignore-errors --embed-thumbnail --sponsorblock-remove default"  # ffprob
 alias yta="yt --extract-audio"
 alias ytac="cb | yta --batch-file -"  # yta link from clipboard
 alias ytc=" cb | yt  --batch-file -"

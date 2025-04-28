@@ -130,8 +130,8 @@ _audio_and_cmus_keys = [
         [mod],
         "m",
         [
-            Key([], "f", _pause),
-            Key([], "s", _stop),
+            Key([], "c", _pause),
+            Key([], "v", _stop),
             Key([], "n", _mute),
         ],
     ),
@@ -143,6 +143,10 @@ _audio_and_cmus_keys = [
             Key([], "i", _volup),
             Key([], "j", _next),
             Key([], "k", _prev),
+            # Duplicates for convinience
+            Key([], "c", _pause),
+            Key([], "v", _stop),
+            Key([], "n", _mute),
         ],
         mode=True,
     ),
@@ -206,7 +210,7 @@ _layout_keys = [
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack (Column layout)",
     ),
-    Key([mod, ctrl], "m", lazy.hide_show_bar()),
+    Key([mod, ctrl], "n", lazy.hide_show_bar()),
 ]
 
 

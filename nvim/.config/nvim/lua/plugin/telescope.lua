@@ -1,5 +1,5 @@
 local actions = require 'telescope.actions'
-require 'telescope'.load_extension 'projects'
+-- require 'telescope'.load_extension 'projects'
 
 -- TODO: further configurations
 require 'telescope'.setup {

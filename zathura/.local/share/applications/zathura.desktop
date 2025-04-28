@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Zathura pdf viewer
+cat mimeapps.list | grep zathura
+Application/pdf=zathura.Desktop;
+Exec=zathura %F
+Terminal=false
+NoDisplay=false
+Type=Application
+Icon=zathura
+Categories=Utility
