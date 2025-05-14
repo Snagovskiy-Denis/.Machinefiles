@@ -184,3 +184,19 @@ class fzf_select(Command):
                 self.fm.cd(selected)
             else:
                 self.fm.select_file(selected)
+
+
+class score(Command):
+    def execute(self):
+        if not self.arg(1):
+            self.fm.notify("Missing score!", bad=True)
+            return
+
+        import re
+
+        video_id_match = re.search(r"\[(.*)\]\..+$", self.fm.thisfile.path)
+        if video_id_match is None or video_id_match.group(1) is None:
+            self.fm.notify(f"cannot extract id from {self.fm.thisfile.path}", bad=True)
+            return
+
+        self.fm.execute_command(f'rss-score -score {self.arg(1)} -id {video_id_match.group(1)}', flags='p')

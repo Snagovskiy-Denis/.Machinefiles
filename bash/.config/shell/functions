@@ -196,3 +196,9 @@ note () {
         printf "%s\n" "$*" >> $filepath
     fi
 }
+
+restart_wifi() {
+    sudo systemctl restart NetworkManager
+    sudo rfkill unblock wlan
+    sudo ip link set wlan0 up
+}

@@ -1,0 +1,25 @@
+vault-path = "$ZETTELKASTEN_DB"
+
+# [[modules]]
+# cmd = "../dummy/dummy"
+# listen-dir = "/tmp"
+# filename-re = "dummy_\\d+"
+# icon = "$USER_ICONS/db.png"
+
+[[modules]]
+cmd = "daylio-etl"
+listen-dir = "$HOME/sync/default/"
+filename-re = "daylio_export_\\d{4}_\\d\\d_\\d\\d\\.csv"
+icon = "$USER_ICONS/daylio.png"
+
+# [[modules]]
+# cmd = "cronometer-etl"
+# listen-dir = "$HOME/download/"
+# filename-re = "cronometer_export\\.csv"
+# icon = "$USER_ICONS/cronometer.png"
+
+# [[modules]]
+# cmd = "uhabits-etl"
+# listen-dir = "$HOME/sync/habits/"
+# filename-re = "Loop Habits Backup \\d{4}-\\d\\d-\\d\\d.*\\.db"
+# icon = "$USER_ICONS/uhabits.png"

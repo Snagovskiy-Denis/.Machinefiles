@@ -5,6 +5,12 @@ Sets ETL script as handler on filesystem events.
 System-level requirements:
     - typer - CLI parser
     - inotify_simple - python wrapper for inotify
+
+Example usage:
+    # run 3 etl plugins and listen specific directories, filtering out filename patterns
+    $ inotify_etl_entrypoint.py etl.daylio ~/sync/default/ 'daylio_export_\\d{4}_\\d\\d_\\d\\d\\.csv' &
+    $ inotify_etl_entrypoint.py etl.cronometer ~/download/ 'cronometer_export\\.csv' &
+    $ inotify_etl_entrypoint.py etl.uhabits ~/sync/habits/ 'Loop Habits Backup \\d{4}-\\d\\d-\\d\\d.*\\.db' &
 """
 
 import re

@@ -8,7 +8,6 @@
 scripts=(
     "${XDG_CONFIG_HOME}/shell/functions" 
     "${XDG_CONFIG_HOME}/shell/aliases" 
-    /usr/share/fzf/completion.bash  # fzf - https://wiki.archlinux.org/title/Fzf
 )
 for script in "${scripts[@]}"
 do
@@ -52,6 +51,8 @@ ranger() {
 # setups zoxide https://github.com/ajeetdsouza/zoxide?tab=readme-ov-file
 eval "$(zoxide init bash)"
 
+# fzf - https://wiki.archlinux.org/title/Fzf
+eval "$(fzf --bash)"
 
 # force fzf to respect .gitignore's and .fdignore's
 export FZF_DEFAULT_COMMAND='fd --type f'

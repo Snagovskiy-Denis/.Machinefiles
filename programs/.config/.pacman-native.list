@@ -2,7 +2,6 @@ alacritty
 alsa-firmware
 alsa-utils
 android-file-transfer
-arduino-avr-core
 arduino-cli
 arp-scan
 autopep8
@@ -35,6 +34,9 @@ dunst
 efibootmgr
 entr
 exfat-utils
+faac
+faad2
+fclones
 fd
 firefox
 flameshot
@@ -49,8 +51,10 @@ gnome-font-viewer
 go
 gopls
 go-tools
+grpc-cli
 grub
 gtk-engine-murrine
+gvfs-mtp
 hledger
 hledger-ui
 hledger-web
@@ -79,6 +83,7 @@ linux-lts
 linux-lts-headers
 lsd
 lxappearance
+lxqt-policykit
 lynx
 man-db
 man-pages
@@ -86,6 +91,7 @@ mariadb
 mediainfo
 mesa-demos
 mpv
+mtpfs
 ncdu
 neofetch
 neomutt
@@ -95,6 +101,7 @@ networkmanager-openvpn
 newsboat
 nfs-utils
 nitrogen
+nix
 nodejs
 noto-fonts-emoji
 ntfs-3g
@@ -141,7 +148,6 @@ python-coverage
 python-dbus-next
 python-debugpy
 python-docs
-python-ipdb
 python-isort
 python-matplotlib
 python-mutagen
@@ -176,9 +182,11 @@ shfmt
 smartmontools
 sof-firmware
 speedtest-cli
+spice-vdagent
 sshfs
 stack
 stow
+strace
 sudo
 surfraw
 sxiv
@@ -198,6 +206,7 @@ traceroute
 translate-shell
 transmission-cli
 transmission-gtk
+trash-cli
 tree
 ttf-0xproto-nerd
 ttf-3270-nerd
@@ -322,4 +331,5 @@ yt-dlp
 ytfzf
 zathura
 zathura-pdf-poppler
+zbar
 zoxide

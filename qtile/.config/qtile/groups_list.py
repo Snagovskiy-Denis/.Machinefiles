@@ -6,7 +6,7 @@ from libqtile.config import DropDown, Group, Match, ScratchPad
 groups = [
     Group(
         "1",
-        layout="monadtall",
+        # layout="monadtall",
         matches=[Match(title=re.compile(r"^(oj|Oj)$"))],
         label="",
         position=1,
@@ -55,7 +55,7 @@ groups = [
     ),
     Group(
         "9",
-        layout="monadwide",
+        # layout="monadwide",
         matches=[Match(wm_class=re.compile(r"^(gnome\-pomodoro|anki)$"))],
         label="9",
         position=9,
