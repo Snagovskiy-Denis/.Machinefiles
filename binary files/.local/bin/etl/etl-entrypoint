@@ -1,8 +1,14 @@
 #!/bin/bash
 #
-# Listen close_write inotify events and do actions on it.
+# Sets ETL script as handler on filesystem events.
 #
 # Dependencies: inotify, rg, systemd, notify-send
+#
+# Expects etl-script to:
+#   - use 0 exit code for success and non zero code if error occures
+#   - return number of affected rows to stdout
+#   - return error string to stderr
+#   - to be callable without args or options
 #
 # Example:
 #    $ etl-entrypoint etl-daylio ~/sync/default '^daylio_export_\d{4}_\d\d_\d\d\.csv$' &
@@ -19,6 +25,8 @@ ETL_CMD="$1"
 WATCH_PATH="$2"
 FILENAME_REGEX="$3"
 ICON="$4"
+
+WATCH_PATH="${WATCH_PATH%/}"  # Remove trailing slash if present
 
 inotifywait \
     --quiet \
@@ -45,7 +53,7 @@ inotifywait \
                 echo "$stderr" | systemd-cat --identifier="$ETL_CMD" --priority=err
                 notify-send \
                     "❌ $ETL_CMD" \
-                    "cannot import data for '$new_file' because of $stderr. See systemd journal for traceback" \
+                    "cannot import data from '$new_file' because of:\n$stderr" \
                     --expire-time 10000 \
                     --icon="$ICON"
             else
@@ -53,7 +61,7 @@ inotifywait \
                 echo "$stdout" | systemd-cat --identifier="$ETL_CMD" --priority=info
 
                 # if affected more than 0 rows, notify user
-                if [ "$stdout" != "0" ]; then
+                if [ -n "$stdout" ] && [ "$stdout" != "0" ]; then
                     notify-send \
                         "✅ $ETL_CMD" \
                         "$new_file inserted $stdout new entries" \
