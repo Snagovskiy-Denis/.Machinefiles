@@ -1,6 +1,9 @@
+# [my custom config]
+# big_font_size = 12
+# small_font_size = 7
+
 [font]
-size = 9
-# size = 13
+size = 12
 
 [[colors.indexed_colors]]
 color = "0xff9900"

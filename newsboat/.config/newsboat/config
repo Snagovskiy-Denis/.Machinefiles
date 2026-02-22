@@ -5,6 +5,7 @@ datetime-format "%F"
 # download-full-page yes
 external-url-viewer "urlscan -dc -r 'linkhandler {}'"
 # notify-program notify-send
+reload-threads 10
 
 # vi-movements
 bind-key l open
@@ -83,3 +84,7 @@ highlight article ":.*\\(image\\)$" blue default
 highlight article ":.*\\(embedded flash\\)$" magenta default
 
 # feedlist-format "%4i %n %11u %t %> %-60L"
+
+# ignore
+ignore-article "*" "link =~ \"https://www.youtube.com/shorts/\""
+ignore-mode display

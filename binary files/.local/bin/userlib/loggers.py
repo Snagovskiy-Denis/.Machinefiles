@@ -10,7 +10,7 @@ def notify_send(title: str, message: str, time=10_000, icon: str = "") -> None:
     arguments = ["notify-send", title, fill(message), f"--expire-time={time}"]
     if icon:
         icons_home = expandvars("$USER_ICONS")
-        arguments.append(f"--icon={icons_home}{icon}")
+        arguments.append(f"--icon={icons_home}/{icon}")
     subprocess.run(arguments)
 
 

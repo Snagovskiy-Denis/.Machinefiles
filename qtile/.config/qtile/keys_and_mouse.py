@@ -1,4 +1,5 @@
 from os import getenv
+from pathlib import Path
 
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
@@ -93,12 +94,13 @@ _application_launcher_keys = [
             # GUI
             Key([], "o", lazy.spawn("obsidian")),
             Key([], "z", lazy.spawn("anki")),
-            Key([], "c", lazy.group["scratchpad"].dropdown_toggle("pomodoro")),
-            Key([], "v", lazy.spawn("telegram-desktop")),
+            Key([], "v", lazy.spawn("Telegram")),
             Key([], "x", lazy.spawn("discord")),
             Key([], "t", lazy.spawn("torbrowser-launcher")),
+            Key([], "i", lazy.spawn("outline-client")),
             # TUI
             Key([], "u", lazy.spawn(terminal_with("taskwarrior-tui"))),
+            Key([], "c", lazy.group["scratchpad"].dropdown_toggle("pomodoro")),
             Key([], "m", lazy.group["scratchpad"].dropdown_toggle("music")),
             Key([], "p", lazy.spawn(terminal_with("ipython"))),
             Key([], "g", lazy.spawn(terminal_with("yaegi"))),
@@ -108,6 +110,8 @@ _application_launcher_keys = [
             Key([], "j", lazy.spawn(terminal_with("oj"))),
             Key([], "s", lazy.spawn("share")),
             Key([], "b", lazy.spawn("start_bluetooth_discovery")),
+            Key([], "y", lazy.spawn("switch_alacritty_font")),
+            Key([], "k", lazy.spawn(str(Path.home() / ".config/shell/keyboard.sh"))),
         ],
     ),
 ]
@@ -185,7 +189,7 @@ _layout_keys = [
     Key([mod, ctrl], "l", lazy.layout.grow_right()),
     Key([mod, ctrl], "j", lazy.layout.grow_down()),
     Key([mod, ctrl], "k", lazy.layout.grow_up()),
-    Key([mod, ctrl], "n", lazy.layout.normilize(), desc="Reset win sizes"),
+    # Key([mod, ctrl], "n", lazy.layout.normilize(), desc="Reset win sizes"),
     # Toggle between different layouts
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod, shift], "Tab", lazy.prev_layout(), desc="in other direction"),
@@ -236,6 +240,6 @@ for group in groups:
             Key([mod], name, lazy.group[name].toscreen(toggle=True)),
             # Key([mod, shift], name, lazy.window.togroup(name, switch_group=True)),
             Key([mod, shift], name, lazy.window.togroup(name, switch_group=False)),
-            Key([mod, ctrl], name, lazy.group.switch_groups(name)),
+            # Key([mod, ctrl], name, lazy.group.switch_groups(name)),
         ]
     )

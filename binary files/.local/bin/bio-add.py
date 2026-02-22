@@ -29,6 +29,8 @@ class Metric(str, Enum):
     right_calf = "right_calf"
 
 
+# TODO: add options that allows to modity today_ts (rename to ts)
+# e.g. to insert 'unixepoch(date('now', '-1 days'))'
 def add(value: float, metric: Metric, db: sqlite3.Cursor) -> None:
     "Add todays metric to database"
 

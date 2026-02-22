@@ -1,4 +1,9 @@
 [global]
+monitor = 0
+follow = mouse
+
+offset = (20, 35)
+
 frame_color = "#cad3f5"
 separator_color = "#cad3f5"
 

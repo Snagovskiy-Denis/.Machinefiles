@@ -132,6 +132,13 @@ local mappings = {
     { "<leader>A", "<cmd>:AnsiEsc<CR>", desc = "Toggle ANSI ecapie sequences look", nowait = true, remap = false },
     { "<leader>D", "<cmd>ToggleDiag<CR>", desc = "Toggle Diagnostics", nowait = true, remap = false },
     { "<leader>M", "<cmd>MarkdownPreviewToggle<cr>", desc = "Render markdown", nowait = true, remap = false },
+    { "<leader>e", "<cmd>NvimTreeToggle<CR>", desc = "Explore", nowait = true, remap = false },
+    { "<leader>f", "<cmd>Telescope find_files<CR>", desc = "Find File", nowait = true, remap = false },
+    { "<leader>S", "<cmd>:set spell!<CR>", desc = "Toggle Spell checking", nowait = true, remap = false },
+    { "<leader>a", ':lua require("harpoon"):list():add()<cr>', desc = "Harpoon this", nowait = true, remap = false },
+    { "<leader>t", "<cmd>new term://bash<CR>", desc = "Open Terminal", nowait = true, remap = false },
+    { "<leader>x", "<cmd>TZAtaraxis<CR>", desc = "Dzen mode", nowait = true, remap = false },
+    { "<leader>h", "<cmd>:set hlsearch!<CR>", desc = "Toggle highlight", nowait = true, remap = false },
 
     { "<leader>l", group = "LSP", nowait = true, remap = false },
     { "<leader>lD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Declaration", nowait = true, remap = false },
@@ -161,15 +168,12 @@ local mappings = {
     { "<leader>sq", "<cmd>Telescope command_history<CR>", desc = "Commands history", nowait = true, remap = false },
     { "<leader>sr", "<cmd>Telescope oldfiles<CR>", desc = "Open Recent File", nowait = true, remap = false },
     { "<leader>st", "<cmd>Telescope live_grep<CR>", desc = "Text", nowait = true, remap = false },
-    { "<leader>t", "<cmd>new term://bash<CR>", desc = "Open Terminal", nowait = true, remap = false },
-    { "<leader>x", "<cmd>TZAtaraxis<CR>", desc = "Dzen mode", nowait = true, remap = false },
 
     { "<leader>g", group = "Git", nowait = true, remap = false },
     { "<leader>gC", "<cmd>Telescope git_bcommits<cr>", desc = "Checkout commit(for current file)", nowait = true, remap = false },
     { "<leader>gb", desc = '<cmd>Telescope git_branches<cr>", "Checkout branch', nowait = true, remap = false },
     { "<leader>gc", desc = '<cmd>Telescope git_commits<cr>", "Checkout commit', nowait = true, remap = false },
     { "<leader>go", desc = '<cmd>Telescope git_status<cr>", "Open changed file', nowait = true, remap = false },
-    { "<leader>h", "<cmd>:set hlsearch!<CR>", desc = "Toggle highlight", nowait = true, remap = false },
 
     { "<leader>z", group = "Zettelkasten", nowait = true, remap = false },
     { "<leader>zB", "<cmd>Telekasten show_backlinks<cr>", desc = "Show all notes linking to the link under the cursor", nowait = true, remap = false },
@@ -187,8 +191,6 @@ local mappings = {
     { "<leader>P", group = "Plugin", nowait = true, remap = false },
     { "<leader>Po", "\"byi':!xdg-open https://github.com/<C-r>b &<CR>", desc = "Open link", nowait = true, remap = false },
     { "<leader>Pp", "o{ '<Esc>\"+pa' },<Esc>2T/dT'", desc = 'Paste new from "+', nowait = true, remap = false },
-    { "<leader>S", "<cmd>:set spell!<CR>", desc = "Toggle Spell checking", nowait = true, remap = false },
-    { "<leader>a", ':lua require("harpoon"):list():add()<cr>', desc = "Harpoon this", nowait = true, remap = false },
 
     { "<leader>c", group = "Change", nowait = true, remap = false },
     { "<leader>cC", ":OpenInScim<CR>", desc = "Edit in sc-im", nowait = true, remap = false },
@@ -197,8 +199,7 @@ local mappings = {
     { "<leader>cf", "/<++><CR>c4l", desc = "<++> forward", nowait = true, remap = false },
     { "<leader>ct", "/<++><CR>R", desc = "<++> table (f)", nowait = true, remap = false },
     { "<leader>cx", "<cmd>UndotreeToggle<cr>", desc = "Undo tree", nowait = true, remap = false },
-    { "<leader>e", "<cmd>NvimTreeToggle<CR>", desc = "Explore", nowait = true, remap = false },
-    { "<leader>f", "<cmd>Telescope find_files<CR>", desc = "Find File", nowait = true, remap = false },
+    { "<leader>ch", "<cmd>cd %:h<CR><cmd>:pwd<cr>", desc = "cd to Here", nowait = true, remap = false },
 
 }
 

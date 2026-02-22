@@ -41,7 +41,7 @@ alias wget="wget --hsts-file=${XDG_CACHE_HOME:-$HOME/.cache}/wget-hsts"
 export ZETTELKASTEN="${HOME}/Vaults/Zettelkasten/"
 export ZETTELKASTEN_DB="${ZETTELKASTEN}db.sqlite3"
 
-export USER_ICONS="${XDG_DATA_HOME}/icons/self/"
+export USER_ICONS="${XDG_DATA_HOME}/icons/self"
 export USER_BKP="${HOME}/.local/bkp/"
 
 # Other program settings:
@@ -72,3 +72,6 @@ fi
 
 # without x session
 ${HOME}/.config/shell/keyboard.sh
+
+
+

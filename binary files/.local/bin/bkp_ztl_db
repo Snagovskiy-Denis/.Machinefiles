@@ -12,4 +12,4 @@ timestamp = date("+%y%m%d_%H%M%S").strip()
 bkp_path = bkp_dir / f"{timestamp}_db.sqlite3"
 
 cp(db, bkp_path)
-notify_send("--expire-time", 10 * 1000, "Database backup", "database backup complete")
+notify_send("--expire-time", 10 * 1000, "✅ Database backup", f"--icon={local.env.get('USER_ICONS')}/db.png")

@@ -7,11 +7,12 @@ no_annotation_hook = addnote
 
 [Actions]
 notes.regex = "Notes"
-notes.command = "$EDITOR $HOME/.local/tasknotes/$UUID.md"
+notes.command = "$EDITOR ${ZETTELKASTEN}tasks/$UUID.md"
 
 # edit.regex = ".*"
 # edit.command = "rawedit $UUID"
 # edit.filtercommand = "test ! -e $FILE"
+
 # delete.regex = ".*"
 # delete.command = "task $UUID denotate -- \"$ANNOTATION\""
 # delete.filtercommand = "test ! -e $FILE"

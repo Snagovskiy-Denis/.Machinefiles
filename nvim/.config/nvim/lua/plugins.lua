@@ -1,7 +1,7 @@
 -- NB - :luafile $MYVIMRC doesn't work for some reason.
 -- Needs to reopen nvim so that changes will take an effect.
 return {
-    { 'wbthomason/packer.nvim' },
+    { 'wbthomason/packer.nvim' },  -- TODO: migrate to...
     -- { "folke/lazy.nvim" },
 
     -- LSP actions & formatter
@@ -92,16 +92,7 @@ return {
       event = 'BufWinEnter',
     },
 
-    -- TODO Debugging
-    {
-      'mfussenegger/nvim-dap',
-      -- event = 'BufWinEnter',
-      config = [[require 'plugin.dap']],
-    },
-    { 'theHamsta/nvim-dap-virtual-text' },
-    { 'Pocco81/DAPInstall.nvim' },
-
-    -- Terminal
+    -- Terminal TODO: replace with tmux
     {
         'akinsho/toggleterm.nvim',
         event = 'BufWinEnter',
@@ -136,18 +127,19 @@ return {
     { 'dracula/vim' },
     { 'bignimbus/pop-punk.vim' },
 
-
     -- { 'romgrk/nvim-treesitter-context' },
 
     -- Maybe later
     -- { 'TimUntersberger/neogit' },
 
-    -- Smooth scroll
-    { 'karb94/neoscroll.nvim', config = [[require 'neoscroll'.setup()]], disable = true },
-
-    -- JavaScript syntax highlighting
+    -- Syntax highlighting
+    ---- JavaScript
     { 'mxw/vim-jsx' },
     { 'pangloss/vim-javascript' },
+    -- mermaid
+    { 'mracos/mermaid.vim' },
+    -- ledger
+    { 'ledger/vim-ledger' },
 
     -- zettelkasten
     {
@@ -162,17 +154,11 @@ return {
     { 'michaeljsmith/vim-indent-object' },
 
 
-    { 'ledger/vim-ledger' },
     {
         'iamcco/markdown-preview.nvim',
         run = function() vim.fn['mkdp#util#install']() end,
     },
     { 'vim-scripts/AnsiEsc.vim' },
-
-    { 'mracos/mermaid.vim' },
-
-    { 'mipmip/vim-scimark' },
-
 
     {
         'ThePrimeagen/harpoon',

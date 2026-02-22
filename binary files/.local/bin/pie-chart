@@ -3,18 +3,19 @@ import sys
 import pprint
 import subprocess
 import matplotlib.pyplot as plt
+import datetime
 
 
-date = 2024
+year = datetime.date.today().year
 
 if len(sys.argv) >= 2:
     try:
-        date = int(sys.argv[1])
+        year = int(sys.argv[1])
     except Exception:
-        print(f"cannot assign {sys.argv[1]} as date, fallback to {date}")
+        print(f"cannot assign {sys.argv[1]} as date, fallback to {year}")
 
 # Run hledger command and capture output
-cmd = ["hledger", "balance", f"date:{date}", "cur:\\$", "Expenses"]
+cmd = ["hledger", "balance", f"date:{year}", "cur:\\$", "expenses"]
 result = subprocess.run(cmd, capture_output=True, text=True)
 output = result.stdout
 
@@ -53,7 +54,7 @@ legend_labels = [
 # plt.legend(legend_labels, loc="lower left", bbox_to_anchor=(1, 0.5))
 plt.legend(legend_labels, loc="lower left")
 
-plt.title('Balance Pie Chart')
+plt.title(f'Balance Pie Chart {year}')
 
 pprint.pprint(data)
 

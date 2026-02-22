@@ -33,13 +33,16 @@ groups = [
     ),
     Group(
         "6",
+        matches=[
+            Match(title=re.compile(r"^(Outline)$")),
+        ],
         label="6",
         position=6
     ),
     Group(
         "7",
         matches=[
-            Match(wm_class=re.compile(r"^(telegram\-desktop|discord)$")),
+            Match(wm_class=re.compile(r"^(telegram\-desktop|Telegram|discord)$")),
             Match(title=re.compile(r"^(irssi)$")),
         ],
         label="",

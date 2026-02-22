@@ -14,7 +14,7 @@
 
 get_filename() {
     bmfiles="${HOME}/.config/shell/bm-files"
-    menu="rofi -matching fuzzy -dmenu -i -p Edit:"
+    menu="rofi -matching fuzzy -dmenu -i -p Edit: -select ${1}"
 
     awk '{print $NF}' "${bmfiles}" | envsubst | ${menu}
 }
@@ -25,5 +25,5 @@ edit_file() {
 }
 
 
-filename=$(get_filename)
+filename=$(get_filename "${1}")
 [[ -f "${filename}" ]] && edit_file "${filename}"

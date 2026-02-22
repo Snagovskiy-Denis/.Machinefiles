@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Taskopen script
+# Edit the tasks note and create one if there is none
+
+if [ $# -lt 1 ]; then
+    echo "Usage: editnote <task_id>"
+    exit 1
+fi
+
+if 
+    ! task /Notes/ "${1}" >/dev/null 2>/dev/null
+then
+    /usr/share/taskopen/scripts/addnote "${1}"
+fi
+
+taskopen "${1}"

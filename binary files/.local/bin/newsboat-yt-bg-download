@@ -1,24 +1,29 @@
 #!/bin/bash
 # Download a yt video in a phone-friendly format; filter out shorts
 #
-# notify-send newsboat "yt-dlp start ${1}" --icon="${USER_ICONS}rss.png"
+
+URL="${1}"
+
+OUTDIR="${HOME}/Data/yt-q/"
+FILENAME_TEMPLATE="%(epoch>%Y-%m-%d)s RSS-S | %(title)s [%(id)s].%(ext)s"
+TEMPLATE="${OUTDIR}/${FILENAME_TEMPLATE}"
 
 if
 	yt-dlp \
 		--add-metadata \
 		--sponsorblock-remove default \
+		--embed-thumbnail \
 		--break-match-filter "duration > 60" \
         --format "bv[height<=999]+ba/b[height<=999]" \
-        --cookies-from-browser vivaldi \
-		--embed-thumbnail \
 		--ignore-errors \
 		--quiet \
-		"${1}" -o "${HOME}/Data/yt-q/%(epoch>%Y-%m-%d)s RSS-S | %(title)s [%(id)s].%(ext)s" \
+        --output "${TEMPLATE}" \
+		"${URL}" \
 		>/dev/null 2>/dev/null
 then
 	title=downloaded
 else
-	title=skiping_shorts
+	title=skiping_shorts_or_error
 fi
 
-notify-send "$title" "${1}" --icon="${USER_ICONS}rss.png"
+notify-send "$title" "${1}" --icon="${USER_ICONS}/rss.png"

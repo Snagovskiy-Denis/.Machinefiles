@@ -33,6 +33,7 @@ class Resample(str, Enum):
         return f"{self.name.capitalize()} {text}"
 
 
+# TODO брать вес и талию тоже через JOIN, а селектить все даты YYYY-MM-DD до сегодняшней
 SELECT_PROGRESS = f"""
     SELECT
         date(bio.timestamp, 'auto') AS day,

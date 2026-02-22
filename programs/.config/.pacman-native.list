@@ -11,6 +11,7 @@ bash-completion
 bash-language-server
 bat
 bind
+bitcoin-qt
 bluez
 bluez-utils
 btop
@@ -66,6 +67,7 @@ ipset
 ipython
 irssi
 isync
+iw
 iwd
 jdk17-openjdk
 jdk-openjdk
@@ -93,7 +95,6 @@ mesa-demos
 mpv
 mtpfs
 ncdu
-neofetch
 neomutt
 neovim
 networkmanager
@@ -167,7 +168,6 @@ qtile
 qutebrowser
 r
 ranger
-redis
 repo
 ripgrep
 rofi
@@ -327,7 +327,6 @@ xorg-xwininfo
 xorg-xwud
 xsel
 yaegi
-yt-dlp
 ytfzf
 zathura
 zathura-pdf-poppler

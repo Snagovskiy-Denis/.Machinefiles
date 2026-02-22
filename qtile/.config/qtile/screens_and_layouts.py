@@ -49,11 +49,12 @@ extension_defaults = widget_defaults.copy()
 
 widgets = (
     widget.GroupBox(),
-    widget.CurrentLayoutIcon(scale=0.6),
+    widget.CurrentLayout(scale=0.6),
     widget.Prompt(foreground=colors["dark-magenta"]),
     widget.WindowName(),
     widget.Systray(padding=5),
     widget.Sep(),
+    widget.TextBox("🎯"),
     TaskWarriorWidget(),
     widget.Sep(),
     widget.Cmus(max_chars=70),

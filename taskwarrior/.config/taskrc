@@ -20,24 +20,21 @@ weekstart=Monday
 include /usr/share/doc/task/rc/solarized-dark-256.theme
 #include /usr/share/doc/task/rc/no-color.theme
 
+# 
+# scrum setup uses context
+# its rules:
+# - context t --> what I execute today
+# - context w --> what belongs to the current sprint
+# - anything without scheduled or dues inside the next w --> backlog
+# 
 
 # context
-## no-work
-context.nw.read=-w project != Q
-
 context.t.read=scheduled < tomorrow or due < tomorrow
-#context.t.read=(scheduled < tomorrow or due < tomorrow) and -w
 context.t.write=scheduled:today
 
-context.week.read=scheduled < 1week or due < 1week
-context.week.write=scheduled:6days
-
-## work
-context.w.read=+w
-context.w.write=+w
-
-context.tw.read=+w and (scheduled < tomorrow or due < tomorrow)
-context.tw.write=+w scheduled:today
+# w (planning horizon = sprint)
+context.w.read=scheduled < 1week or due < 1week
+context.w.write=scheduled:6days
 
 
 ## misc
@@ -57,56 +54,62 @@ uda.dod.type=string
 # report
 # report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
 report.next.labels=ID,Age,P,Sched,⏳,Description,Due,Project,Tag,Urg
-report.next.columns=id,entry.age,priority,scheduled.relative,estimate,description,due.relative,project,tags,urgency
+report.next.columns=id,entry.age,priority,scheduled.countdown,estimate,description,due.relative,project,tags,urgency
 # use description.count to replace annotations with annotations count
-#report.next.sort=urgency-,priority+\/
+report.next.sort=urgency-
+report.next.filter=status:pending -WAITING limit:page
 
-report.odd.description=Candidates for deletion or for decomposition into a project
-report.odd.columns=id,entry.age,estimate,description.count,project,tags
-report.odd.sort=estimate-
-report.odd.filter=status = pending and (+odd or (((estimate > 3h or estimate = '') entry < today-1m)))
+report.waiting.columns=id,start.active,entry.age,depends.indicator,priority,project,tags,recur.indicator,wait,wait.remaining,scheduled,due,until,estimate,description
+report.waiting.labels=ID,A,Age,D,P,Project,Tags,R,Wait,Remaining,Sched,Due,Until,Estimate,Description
+
+report.retro.labels=UUID,Done,Project,Tags,R,Description
+report.retro.description=Completed tasks for last week
+report.retro.columns=uuid.short,end,project,tags,recur.indicator,description
+report.retro.sort=project-/,end+
+report.retro.filter=status:completed end > today-1w
 
 # Colors
 color.tag.$=green
 color.tag.difficult=rgb212
 color.tag.joy=rgb515
 #color.tag.joy=rgb335
-color.tag.I=rgb105
+color.tag.grooming=rgb105
 color.tag.notes=color14
-color.keyword.Notes=color14
+#color.keyword.Notes=color14
 color.tag.Z=rgb503
 
+color.tag.red=rgb501
+#color.tag.green=rgb052
+
 color.blocking=none
+color.blocked=on color8
 
 
 # Urgency coefficients
 #   Due + scheduled + High priority = Top Urgency
 #   Current project = Middle Urgency
 #   Time Estimate matches my free time = Low Urgency
-#   No priority, no estimate, no difficulty, etc. = is it even a task? should I keep it?
+#   No priority, no estimate, no difficulty, etc. = is this even a task? should I keep it?
 # urgency.uda.why..coefficient=-2
-urgency.uda.estimate.PT1H.coefficient=0.2  # short tasks = more priority
-urgency.uda.estimate.PT30M.coefficient=1.3  # short tasks = more priority
-urgency.uda.estimate.PT15M.coefficient=2.2  # short tasks = more priority
-urgency.uda.estimate.PT10M.coefficient=3  # short tasks = more priority
-urgency.uda.estimate.PT5M.coefficient=5  # short tasks = more priority
-urgency.uda.priority.L.coefficient=-2
-urgency.blocking.coefficient=0.5
-urgency.blocked.coefficient=-5
+#urgency.uda.estimate.PT1H.coefficient=0.1  # short tasks = more priority
+#urgency.uda.estimate.PT30M.coefficient=0.25  # short tasks = more priority
+#urgency.uda.estimate.PT15M.coefficient=0.65  # short tasks = more priority
+#urgency.uda.estimate.PT10M.coefficient=1.1  # short tasks = more priority
+#urgency.uda.estimate.PT5M.coefficient=1.5  # short tasks = more priority
+urgency.uda.estimate..coefficient=-1.5  # no estimate = hard to plan
+urgency.uda.priority.L.coefficient=-3
+urgency.blocking.coefficient=0
+urgency.blocked.coefficient=-3
 urgency.annotations.coefficient=0
-urgency.user.tag.Z.coefficient=0.2
-urgency.user.tag.I.coefficient=1
+urgency.user.tag.retro.coefficient=0.3
+urgency.user.project..coefficient=-1
+urgency.user.tag.red.coefficient=0.2
 
 # Priority goals
 # examples:
 # urgency.user.tag.mytag.coefficient=0
 # urgency.user.project.myproject.coefficient=0
-urgency.user.tag.medicine.coefficient=1.5
-urgency.user.tag.health.coefficient=1.25
-urgency.user.project.vision.coefficient=0.8
-urgency.user.project.senior.coefficient=0.2
-urgency.user.project.social.coefficient=0.0
-urgency.user.tag.MG.coefficient=0.15
+urgency.user.project.LVLUP2.coefficient=3
 
 
 # plugins
@@ -119,7 +122,9 @@ uda.taskwarrior-tui.shortcuts.1=/usr/bin/taskopen
 ## taskopen
 alias.open=execute taskopen
 alias.addnote=execute /usr/share/taskopen/scripts/addnote  # usage: task addnote 127 && taskopen 127
+alias.editnote=execute "$HOME/.local/bin/editnote"  # usage: task editnote 127
 
 
 # End of file
 # Below are 'task config'-setted values
+context=w

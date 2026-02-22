@@ -160,12 +160,15 @@ zd() {
 
 alias no="note -o"
 note () {
-    help_note="How to use:
+    help_note="Usage: note [OPTION] [PLAIN_TEXT...]
+
+DESCRIPTION
         No arguments = print file
         If more than 1 argument = add all arguments to file
         
+OPTIONS
         If first argument is one of these:
-        -h = print this [h]elp message
+        --help = print this [h]elp message
         -o = [o]pen note in editor specified by EDITOR
         -c = put\paste [c]lipboard to file
         -p = take [p]iped input from stdin or run cat interactivelly
@@ -180,14 +183,15 @@ note () {
 
     if ! (($#)); then
         cat $filepath
-    elif [[ "$1" == "-h" ]]; then
+    elif [[ "$1" == "--help" ]]; then
         printf "${help_note}\n"
     elif [[ "$1" == "--clear-file" ]]; then
-        printf "%s" > $filepath
+        printf "" > $filepath
     elif [[ "$1" == "-o" ]]; then
         $EDITOR $filepath
     elif [[ "$1" == "-c" ]]; then
         xsel --clipboard >> $filepath
+        printf "\n" >> $filepath
     elif [[ "$1" == "-p" ]]; then
         cat >> $filepath
     elif [[ "$1" == "-f" ]]; then
@@ -196,6 +200,7 @@ note () {
         printf "%s\n" "$*" >> $filepath
     fi
 }
+complete -W "--help -o -c -p -f --clear-file" note
 
 restart_wifi() {
     sudo systemctl restart NetworkManager

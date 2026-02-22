@@ -1,0 +1,138 @@
+#!/usr/bin/env python
+# TODO: Read xrandr output? Set font size based on resolution of a bigger screen. Set breakpoints config values.
+# Setup cron job for this script?
+
+from dataclasses import dataclass
+from enum import StrEnum, auto
+from os import environ
+from pathlib import Path
+from sys import argv
+from contextlib import suppress
+
+
+FONT_SECTION = "[font]"
+FONT_SIZE = "size"
+
+
+class Font(StrEnum):
+    BIG = auto()
+    SMALL = auto()
+
+
+@dataclass
+class ConfigLine:
+    key: str
+    value: str = ""
+    commented: bool = False
+
+    def __str__(self) -> str:
+        prefix = "# " if self.commented else ""
+        if not self.value:
+            return prefix + self.key
+        return f"{prefix}{self.key} = {self.value}"
+
+ConfigLines = list[ConfigLine]
+
+@dataclass
+class FontSizer:
+    big_font_size: str
+    small_font_size: str
+
+    def switch(self, value: str) -> str:
+        return {
+            self.small_font_size: self.big_font_size,
+            self.big_font_size: self.small_font_size,
+        }.get(value, self.big_font_size)
+
+    def resize(self, value: str, required_font: Font | None) -> str:
+        if required_font is None:
+            return self.switch(value)
+
+        match required_font:
+            case Font.BIG:
+                return self.big_font_size
+            case Font.SMALL:
+                return self.small_font_size
+
+@dataclass
+class Config:
+    lines: ConfigLines
+    font: FontSizer
+
+    @classmethod
+    def from_toml(cls, toml: list[str]) -> "Config":
+        lines = []
+        font_sizer = FontSizer("", "")
+
+        for raw_line in toml:
+            splited = raw_line.split("=")
+
+            # section, empty string, something else
+            if len(splited) != 2:
+                lines.append(ConfigLine(raw_line))
+                continue
+
+            key, value = splited[0].strip(), splited[1].strip()
+            cfg_line = ConfigLine(key.lower())
+            lines.append(cfg_line)
+
+            # key value pair
+            if not cfg_line.key.startswith("#"):
+                cfg_line.value = value
+                continue
+
+            cfg_line.commented = True
+            cfg_line.key = cfg_line.key[1:].strip()
+
+            # strange commented line
+            if " " in cfg_line.key or " " in value:
+                continue
+
+            # custom value
+            cfg_line.value = value
+
+            # font size config 
+            if cfg_line.key == "big_font_size":
+                font_sizer.big_font_size = cfg_line.value
+            elif cfg_line.key == "small_font_size":
+                font_sizer.small_font_size = cfg_line.value
+
+
+        if not (font_sizer.small_font_size and font_sizer.big_font_size):
+            exit(2) # improperly configured
+
+        return cls(lines, font_sizer)
+
+
+def main():
+    cfg_path = Path(environ.get("XDG_CONFIG_HOME", "~/.config/")) / "alacritty/alacritty.toml"
+    if not cfg_path.exists():
+        exit(5) # cfg_path does not exists
+
+    cfg = Config.from_toml(cfg_path.read_text().splitlines())
+    required_font = None
+    if len(argv) == 2:
+        with suppress(ValueError):
+            required_font = Font(argv[1].lower())
+
+    out_lines = []
+    found_section = False
+    for line in cfg.lines:  # I want to toy around with line by line processing instead of toml.load
+        if line.key == FONT_SECTION:
+            found_section = True
+            out_lines.append(str(line))
+            continue
+
+        if not (found_section and line.key == FONT_SIZE):
+            out_lines.append(str(line))
+            continue
+
+        line.value = cfg.font.resize(line.value, required_font)
+        out_lines.append(str(line))
+        found_section = False
+
+    cfg_path.write_text("\n".join(out_lines))
+
+
+if __name__ == "__main__":
+    main()
