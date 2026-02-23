@@ -35,6 +35,9 @@ function M:load_vanilla_options()
         wrap = false, -- display lines as one long line
         spelllang = 'ru,en,la', -- check spelling of given languages
         laststatus = 3, -- global statusline (one for every window splits)
+        swapfile = false,
+        --winborder = "rounded", -- K window border
+        signcolumn = "yes", -- always create left margin for diagnostics and git-sign
     }
 
     local append_options = {

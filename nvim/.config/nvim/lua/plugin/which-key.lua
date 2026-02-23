@@ -37,97 +37,6 @@ local vmappings = {
 }
 
 local mappings = {
-    -- old mappings
-    -- ['/'] = { "<Plug>(comment_toggle_linewise_current)", "Comment toggle current line" },
-    -- ['a'] = { ':lua require("harpoon"):list():append()<cr>', 'Harpoon this' },
-    -- ['f'] = { '<cmd>Telescope find_files<CR>', 'Find File' },
-    -- ['h'] = { '<cmd>:set hlsearch!<CR>', 'Toggle highlight' },
-    -- ['A'] = { '<cmd>:AnsiEsc<CR>', 'Toggle ANSI ecapie sequences look' },
-    -- ['S'] = { '<cmd>:set spell!<CR>', 'Toggle Spell checking' },
-    -- ['t'] = { '<cmd>new term://bash<CR>', 'Open Terminal' },
-    -- ['e'] = { '<cmd>NvimTreeToggle<CR>', 'Explore' },
-    -- ['x'] = { '<cmd>TZAtaraxis<CR>', 'Dzen mode' },
-    -- ['D'] = { '<cmd>ToggleDiag<CR>', 'Toggle Diagnostics' },
-    -- ['M'] = { '<cmd>MarkdownPreviewToggle<cr>', 'Render markdown' },
-    -- l = {
-    --     name = 'LSP',
-
-    --     I = { '<cmd>LspInstallInfo<CR>', 'Info' },
-    --     K = { '<cmd>lua vim.lsp.buf.hover()<CR>', 'Help pop-up' },
-    --     d = { '<cmd>lua vim.lsp.buf.definition()<CR>', 'Definitoin' },
-    --     D = { '<cmd>lua vim.lsp.buf.declaration()<CR>', 'Declaration' },
-    --     i = { '<cmd>lua vim.lsp.buf.implementation()<CR>', 'Implementation' },
-    --     a = { "<cmd>lua require('lvim.core.telescope').code_actions()<cr>", 'Code Action' },
-    --     r = { '<cmd>lua vim.lsp.buf.rename()<CR>', 'Rename' },
-    --     f = { '<cmd>lua vim.lsp.buf.format { async = true }<CR>', 'Format' },
-
-    --     s = { '<cmd>Telescope lsp_document_symbols<CR>', 'Document Symbols' },
-    --     S = { '<cmd>Telescope lsp_workspace_symbols<CR>', 'Workspace Symbols' },
-
-    --     -- Diagnostics
-    --     j = { '<cmd>lua vim.diagnostic.goto_next()<CR>', 'Next Diagnostics' },
-    --     k = { '<cmd>lua vim.diagnostic.goto_prev()<CR>', 'Previous Diagnostics' },
-    --     l = { '<cmd>Telescope diagnostics<CR>', 'Document Diagnostics' },
-
-    --     R = { '<cmd>LspRestart<CR>', 'Refreshes the LSP' },
-    -- },
-    -- s = {
-    --     name = 'Search',
-    --     f = { '<cmd>Telescope find_files<CR>', 'Find File' },
-    --     -- e = { '<cmd>Telescope file_browser<CR>', 'Browse files' },
-    --     t = { '<cmd>Telescope live_grep<CR>', 'Text' },
-    --     b = { '<cmd>Telescope buffers<CR>', 'Buffers' },
-    --     h = { '<cmd>Telescope help_tags<CR>', 'Find Help' },
-    --     R = { '<cmd>Telescope registers<CR>', 'Registers' },
-    --     c = { '<cmd>Telescope colorscheme<CR>', 'Colorscheme' },
-    --     M = { '<cmd>Telescope man_pages<CR>', 'Man Pages' },
-    --     k = { '<cmd>Telescope keymaps<CR>', 'Keymaps' },
-    --     r = { '<cmd>Telescope oldfiles<CR>', 'Open Recent File' },
-    --     C = { '<cmd>Telescope commands<CR>', 'Commands' },
-    --     q = { '<cmd>Telescope command_history<CR>', 'Commands history' },
-    -- },
-    -- z = {
-    --     name = 'Zettelkasten',
-    --     o = { '<cmd>Telekasten panel<cr>', 'Command palette' },
-    --     f = { '<cmd>Telekasten find_notes<cr><cmd>cd "${ZETTELKASTEN}Z/"<cr>', 'Find notes by title' },
-    --     l = { '<cmd>Telekasten insert_link<cr>', 'Paste [[link]]' },
-    --     n = { '<cmd>Telekasten new_note<cr>', 'New note, prompts for title' },
-    --     z = { '<cmd>Telekasten follow_link<cr>', 'Follow link under cursor' },
-    --     g = { '<cmd>Telekasten search_notes<cr>', 'grep in all notes' },
-    --     B = { '<cmd>Telekasten show_backlinks<cr>', 'Show all notes linking to the link under the cursor' },
-    --     F = { '<cmd>Telekasten find_friends<cr>', 'Show all notes linking to the link under the cursor' },
-    --     T = { '<cmd>Telekasten goto_today<cr>', "Open today's daily note" },
-    --     t = { '<cmd>Telekasten toggle_todo<cr>', "Toggle todo" },
-    --     r = { '<cmd>Telekasten rename_note<cr>', "Rename" },
-    -- },
-    -- g = {
-    --     name = 'Git',
-    --     o = { '<cmd>Telescope git_status<cr>", "Open changed file' },
-    --     b = { '<cmd>Telescope git_branches<cr>", "Checkout branch' },
-    --     c = { '<cmd>Telescope git_commits<cr>", "Checkout commit' },
-    --     C = {
-    --       '<cmd>Telescope git_bcommits<cr>',
-    --       'Checkout commit(for current file)',
-    --     },
-    -- },
-    -- P = {
-    --     name = 'Plugin',
-    --     -- TODO: function instead of buffer maccros
-    --     o = { [["byi':!xdg-open https://github.com/<C-r>b &<CR>]], 'Open link' },
-    --     p = { [[o{ '<Esc>"+pa' },<Esc>2T/dT']], 'Paste new from "+' },
-    -- },
-    -- c = {
-    --     name = 'Change',
-    --     -- TODO: function instead of buffer maccros
-    --     f = { '/<++><CR>c4l', '<++> forward' },
-    --     b = { '?<++><CR>c4l', '<++> backward' },
-    --     t = { '/<++><CR>R', '<++> table (f)' },
-
-    --     C = { ':OpenInScim<CR>', 'Edit in sc-im' },
-    --     c = { '<cmd>terminal sc-im "%"', 'Open current in sc-im' },
-    --     x = { '<cmd>UndotreeToggle<cr>', 'Undo tree' },
-    -- },
-
     { "<leader>/", "<Plug>(comment_toggle_linewise_current)", desc = "Comment toggle current line", nowait = true, remap = false },
     { "<leader>A", "<cmd>:AnsiEsc<CR>", desc = "Toggle ANSI ecapie sequences look", nowait = true, remap = false },
     { "<leader>D", "<cmd>ToggleDiag<CR>", desc = "Toggle Diagnostics", nowait = true, remap = false },
@@ -139,6 +48,7 @@ local mappings = {
     { "<leader>t", "<cmd>new term://bash<CR>", desc = "Open Terminal", nowait = true, remap = false },
     { "<leader>x", "<cmd>TZAtaraxis<CR>", desc = "Dzen mode", nowait = true, remap = false },
     { "<leader>h", "<cmd>:set hlsearch!<CR>", desc = "Toggle highlight", nowait = true, remap = false },
+    { "<leader>ch", "<cmd>cd %:h<CR><cmd>:pwd<cr>", desc = "cd to Here", nowait = true, remap = false },
 
     { "<leader>l", group = "LSP", nowait = true, remap = false },
     { "<leader>lD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Declaration", nowait = true, remap = false },
@@ -199,8 +109,6 @@ local mappings = {
     { "<leader>cf", "/<++><CR>c4l", desc = "<++> forward", nowait = true, remap = false },
     { "<leader>ct", "/<++><CR>R", desc = "<++> table (f)", nowait = true, remap = false },
     { "<leader>cx", "<cmd>UndotreeToggle<cr>", desc = "Undo tree", nowait = true, remap = false },
-    { "<leader>ch", "<cmd>cd %:h<CR><cmd>:pwd<cr>", desc = "cd to Here", nowait = true, remap = false },
-
 }
 
 require 'keymappings'  -- for vim.g.mapleader
