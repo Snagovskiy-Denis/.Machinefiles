@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=Neovim editor
+cat mimeapps.list | grep nvim
+application/octet-stream=nvim.desktop;
+text/plain=nvim.desktop;
+text/markdown=nvim.desktop;
+application/x-shellscript=nvim.desktop;
+Exec=alacritty -e nvim %F
+Terminal=true
+NoDisplay=true
+Type=Application
+Icon=nvim
+Categories=Utility;TextEditor
