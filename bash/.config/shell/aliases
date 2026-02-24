@@ -31,6 +31,7 @@ alias p="pacman"
 alias a="aura"
 alias e="${EDITOR:-nvim}"
 alias en="NVIM_APPNAME=nvim_nightly bob run nightly "
+alias es="nvim -c 'lua require(\"persistence\").load()'" # open persistence session for pwd
 alias se="s e"
 alias o="xdg-open"
 alias f="dmconf"

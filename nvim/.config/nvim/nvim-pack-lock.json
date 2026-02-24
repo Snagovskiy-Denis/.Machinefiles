@@ -37,14 +37,6 @@
       "rev": "44d1e90e1f66e077268191e3ee9d2ac97cc18e65",
       "src": "https://github.com/williamboman/mason.nvim"
     },
-    "mermaid.vim": {
-      "rev": "a8470711907d47624d6860a2bcbd0498a639deb6",
-      "src": "https://github.com/mracos/mermaid.vim"
-    },
-    "nightfox.nvim": {
-      "rev": "ba47d4b4c5ec308718641ba7402c143836f35aa9",
-      "src": "https://github.com/EdenEast/nightfox.nvim"
-    },
     "nvim-autopairs": {
       "rev": "59bce2eef357189c3305e25bc6dd2d138c1683f5",
       "src": "https://github.com/windwp/nvim-autopairs"
@@ -86,6 +78,14 @@
       "rev": "48fc83a9978c5f25833634700c08be583ee78eb7",
       "src": "https://github.com/stevearc/oil.nvim"
     },
+    "onedark.nvim": {
+      "rev": "213c23ae45a04797572242568d5d51937181792d",
+      "src": "https://github.com/navarasu/onedark.nvim"
+    },
+    "persistence.nvim": {
+      "rev": "b20b2a7887bd39c1a356980b45e03250f3dce49c",
+      "src": "https://github.com/folke/persistence.nvim"
+    },
     "plenary.nvim": {
       "rev": "b9fd5226c2f76c951fc8ed5923d85e4de065e509",
       "src": "https://github.com/nvim-lua/plenary.nvim"
@@ -93,10 +93,6 @@
     "pop-punk.vim": {
       "rev": "be9dce0ca0fae285e5007bc9b0e7de7904c3ae3a",
       "src": "https://github.com/bignimbus/pop-punk.vim"
-    },
-    "telekasten.nvim": {
-      "rev": "74b8644d1a9a4e63d033b1248cdcd11be0efb952",
-      "src": "https://github.com/renerocksai/telekasten.nvim"
     },
     "telescope-ui-select.nvim": {
       "rev": "6e51d7da30bd139a6950adf2a47fda6df9fa06d2",
@@ -110,18 +106,6 @@
       "rev": "50ea089fc548917cc3cc16b46a8211833b9e3c7c",
       "src": "https://github.com/akinsho/toggleterm.nvim",
       "version": "'v2.13.1'"
-    },
-    "tokyonight.nvim": {
-      "rev": "5da1b76e64daf4c5d410f06bcb6b9cb640da7dfd",
-      "src": "https://github.com/folke/tokyonight.nvim"
-    },
-    "vim-ledger": {
-      "rev": "4f2d93dd914f625e2d3db47d97bd9f428fedd68f",
-      "src": "https://github.com/ledger/vim-ledger"
-    },
-    "vim-matchup": {
-      "rev": "0fb1e6b7cea34e931a2af50b8ad565c5c4fd8f4d",
-      "src": "https://github.com/andymass/vim-matchup"
     },
     "which-key.nvim": {
       "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",

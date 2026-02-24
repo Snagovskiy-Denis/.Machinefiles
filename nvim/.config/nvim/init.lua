@@ -1,6 +1,7 @@
 -- self@machine .vimrc
 --
 
+-- tip: use ':help' to check what options does
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.wrap = false
@@ -18,8 +19,7 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.laststatus = 3
 vim.opt.winborder = "rounded"
-vim.opt.cmdheight = 2
-vim.opt.conceallevel = 0 -- markdown don"t hide marks now
+--vim.opt.cmdheight = 2 -- TODO: nvim v0.12 and lualine glitches with this setting
 vim.opt.cursorline = true
 vim.opt.expandtab = true
 vim.opt.keymap = "russian-jcukenwin"
@@ -33,37 +33,38 @@ vim.cmd [[set completeopt+=menuone,noselect,popup]]
 vim.cmd [[set suffixesadd+=.md]]
 --vim.cmd [[set shortmess+=c]] -- disable default completion messages
 
---vim.g.mapleader = " "
-vim.g.mapleader = ","
+--vim.g.mapleader = ","
+vim.g.mapleader = " "
 
+-- tip: use 'checkhealth' to ensure plugins are valid
 vim.pack.add({
-    { src = "https://github.com/renerocksai/telekasten.nvim" },
     { src = "https://github.com/windwp/nvim-autopairs" },
     { src = "https://github.com/numToStr/Comment.nvim" },
-    { src = "https://github.com/andymass/vim-matchup" },
     { src = "https://github.com/nvim-lua/plenary.nvim" },
-    { src = "https://github.com/folke/which-key.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
-    { src = "https://github.com/ThePrimeagen/harpoon",                   version = "harpoon2" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter",        version = "main" },
+    { src = "https://github.com/ThePrimeagen/harpoon",                   version = "harpoon2" },
     { src = "https://github.com/akinsho/toggleterm.nvim",                version = "v2.13.1" },
+    { src = "https://github.com/folke/persistence.nvim" },
+    { src = "https://github.com/nvim-lualine/lualine.nvim" },
+    { src = "https://github.com/romgrk/barbar.nvim" },
+    { src = "https://github.com/folke/which-key.nvim" },
     -- telescope
     { src = "https://github.com/nvim-telescope/telescope.nvim" },
     { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
     -- telescope end
     -- lsp
     { src = "https://github.com/neovim/nvim-lspconfig" }, -- lsp configs data repository
-    { src = "https://github.com/mason-org/mason.nvim" },  -- lsp apps manager (instead of pacman)
+    { src = "https://github.com/mason-org/mason.nvim" },  -- lsp apps manager (instead of pacman & brew)
     -- lsp end
     -- autocomplete
     { src = "https://github.com/saghen/blink.cmp" },
     { src = "https://github.com/L3MON4D3/LuaSnip" },
     { src = "https://github.com/rafamadriz/friendly-snippets" },
     -- autocomplete end
-    -- status line and bufferline
-    { src = "https://github.com/nvim-lualine/lualine.nvim" },
-    { src = "https://github.com/romgrk/barbar.nvim" },
-    -- status line and bufferline end
+    -- git
+    { src = "https://github.com/lewis6991/gitsigns.nvim" },
+    -- git end
     -- debugger
     { src = "https://github.com/mfussenegger/nvim-dap" },
     { src = "https://github.com/rcarriga/nvim-dap-ui" },
@@ -71,38 +72,45 @@ vim.pack.add({
     { src = "https://github.com/leoluz/nvim-dap-go" },
     { src = "https://github.com/nvim-neotest/nvim-nio" },
     -- debugger end
-    -- git
-    { src = "https://github.com/lewis6991/gitsigns.nvim" },
-    -- git end
     -- aesthetics
-    { src = "https://github.com/folke/tokyonight.nvim" },
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
-    { src = "https://github.com/EdenEast/nightfox.nvim" },
-    { src = "https://github.com/bignimbus/pop-punk.vim" },
+    { src = "https://github.com/navarasu/onedark.nvim" },
+    { src = "https://github.com/bignimbus/pop-punk.vim" }, -- nostalgia
     -- aesthetics end
-    -- syntax
-    { src = "https://github.com/ledger/vim-ledger" },
-    { src = "https://github.com/mracos/mermaid.vim" },
-    -- syntax end
 })
 
-vim.cmd [[colorscheme tokyonight-moon]]
--- vim.cmd [[colorscheme carbonfox]]
+require "onedark".setup{style="deep"}
+require "onedark".load()
 
+-- tip: 'help lspconfig-all' for correct names
 vim.lsp.enable({
     "lua_ls", "gopls", "bashls", "clangd", "cssls",
-    "denols", "docker_compose_language_server", "dockerls",
+    "denols", "docker_compose_language_service", "dockerls",
     "html", "jsonls", "lemminx", "markdown_oxide", "pyright",
-    "rust+analyzer", "sqlls", "stylelint_lsp", "templ", "texlab",
+    "rust_analyzer", "sqlls", "stylelint_lsp", "texlab",
 })
 
 vim.lsp.config("lua_ls", { settings = { Lua = { workspace = { library = vim.api.nvim_get_runtime_file("", true) } } } }) -- add vim config api autocomplition
 
-require("nvim-dap-virtual-text").setup {}
-require("dap-go").setup()
+local treesitter_langs = {
+    "go", "mermaid", "ledger", "markdown", "lua", "python",
+    "bash", "c", "cpp", "cmake", "comment", "csv", "diff",
+    "dockerfile", "printf", "gitignore", "gomod", "gosum",
+    "gowork", "graphql", "html", "css", "javascript", "jq",
+    "make", "nix", "proto", "regex", "sql", "yaml", "xml",
+    "awk", "git_config", "json", "passwd", "http", "readline",
+    "vimdoc",
+}
+require "nvim-treesitter".install(treesitter_langs)
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = treesitter_langs,
+    callback = function() vim.treesitter.start() end,
+})
+
+require("dap-go").setup {}
+require "nvim-dap-virtual-text".setup {}
 local dap, dapui = require("dap"), require("dapui")
 dapui.setup()
-
 dap.listeners.after.event_initialized["dapui_config"] = function()
     dapui.open()
 end
@@ -113,24 +121,30 @@ dap.listeners.before.event_exited["dapui_config"] = function()
     dapui.close()
 end
 
-
 require "luasnip".setup { enable_autosnippets = true }
 
 require "blink.cmp".setup({
     signature = { enabled = true },
+    completion = { documentation = { auto_show = true } },
+    sources = { default = { "lsp", "path", "snippets", "buffer" } },
     fuzzy = { implementation = "lua" },
 })
 
 require "Comment".setup()
 
-require "lualine".setup { sections = { lualine_a = { "mode",
-    function()
-        if vim.opt.iminsert:get() > 0 and vim.b.keymap_name then
-            return "⌨ " .. string.upper(vim.b.keymap_name)
-        end
-        return ""
-    end,
-}, }, }
+require "lualine".setup {
+    sections = {
+        lualine_a = {
+            "mode",
+            function()
+                if vim.opt.iminsert:get() > 0 and vim.b.keymap_name then
+                    return "⌨ " .. string.upper(vim.b.keymap_name)
+                end
+                return ""
+            end,
+        },
+    },
+}
 
 require "nvim-autopairs".setup()
 
@@ -156,6 +170,7 @@ telescope.setup {
             prompt_position = "bottom",
             preview_cutoff = 120,
         },
+        border = false,
         file_ignore_patterns = { "venv" },
         mappings = {
             i = {
@@ -171,45 +186,25 @@ require "toggleterm".setup {
     direction = "float",
 }
 
-local harpoon = require "harpoon"
-harpoon:setup()
-
-local homeDir = vim.loop.fs_realpath(vim.fn.expand("$ZETTELKASTEN"))
-require("telekasten").setup {
-    home = homeDir,
-
-    -- dailies = home .. "../Journal",
-    -- weeklies = home .. "../Journal",
-    -- templates = home .. "../Templates",
-    dailies = homeDir .. "/Journal",
-    weeklies = homeDir .. "/Journal",
-    templates = homeDir .. "/Templates",
-    image_subdir = homeDir .. "/Files",
-
-    weeklies_create_nonexisting = false,
-
-    -- template_new_note = home .. "../Templates/Mine Моё.md",
-    -- template_new_daily = home .. "../Templates/Daily.md",
-    template_new_note = homeDir .. "/Templates/Mine Моё.md",
-    template_new_daily = homeDir .. "/Templates/Daily.md",
-
-    -- subdirs_in_links = false,  -- проблемы с переименованием заметок при включении
-    plug_into_calendar = false,
-}
 
 local map = vim.keymap.set
 
-map({ "n" }, "Y", "y$")
+local which_key = require "which-key"
+map({ "n" }, "<leader>?", which_key.show, { desc = "Which-key help" })
+map({ "n" }, "Y", "y$", { desc = "Yank to end of line" })
+map({ "n" }, "<leader>Qq", ":qa<cr>", { desc = "Gentle quit" })
+map({ "n" }, "<leader>Qf", ":qa!<cr>", { desc = "Force quit" })
 map({ "n" }, "<leader>h", "<cmd>:set hlsearch!<cr>", { desc = "Toggle highlight" })
 map({ "n" }, "<leader>S", "<cmd>:set spell!<cr>", { desc = "Toggle Spell check" })
 map({ "n" }, "<leader>e", "<cmd>Oil<cr>", { desc = "Explore" })
 map({ "n" }, "<leader>ch", "<cmd>cd %:h<cr><cmd>:pwd<cr>", { desc = "cd to Here" })
+map({ "n" }, "<leader>bd", ":bp | bd #<cr>", { desc = "Close buffer w/o split close" })
 
--- switch layout
-map({ "i", "c" }, "<C-F>", "<C-^>")
-map({ "v", "x" }, "<C-F>", "<Esc>a<C-^><Esc>gv")
-map({ "n" }, "<C-F>", "a<C-^><Esc>")
--- switch layout end
+map({ "i", "c" }, "<C-F>", "<C-^>", { desc = "Toggle layout" })
+map({ "v", "x" }, "<C-F>", "<Esc>a<C-^><Esc>gv", { desc = "Toggle layout" })
+map({ "n" }, "<C-F>", "a<C-^><Esc>", { desc = "Toggle layout" })
+
+map({ "t" }, "<C-\\>", "<C-\\><C-N>", { desc = "Exit terminal mode" })
 
 map({ "n" }, "<M-Left>", ":vertical resize -2<CR>")
 map({ "n" }, "<M-Right>", ":vertical resize +2<CR>")
@@ -220,11 +215,46 @@ map({ "n" }, "<S-L>", ":BufferNext<CR>")
 map({ "n" }, "<S-H>", ":BufferPrevious<CR>")
 
 -- debugger
-map({ "n" }, "<leader>d", ":DapNew<cr>", { desc = "Debug mode" })
+local last_test_expression = ""
+local function startDapForTest(name)
+    last_test_expression = name
+    local config = {
+        type = "go",
+        name = "test",
+        request = "launch",
+        mode = "test",
+        program = "neovim",
+        args = { "-test.run", name }
+    }
+    dap.run(config)
+end
+
+-- map({ "n" }, "<leader>d", ":DapNew<cr>", { desc = "Debug mode" })
 map({ "n", "i" }, "<C-B>", ":DapToggleBreakpoint<cr>", { desc = "Toggle breakpoint" })
+map({ "n" }, "<leader>dd", function()
+    vim.ui.input({ prompt = "Test expression: ", default = last_test_expression }, function(input)
+        if not input then
+            return
+        end
+        startDapForTest(input)
+    end)
+end, { desc = "Debug test" })
+map({ "n" }, "<leader>dr", function()
+    if last_test_expression == "" then
+        print("last test expression is empty")
+        return
+    end
+    startDapForTest(last_test_expression)
+end, { desc = "Rerun last test" })
+map({ "n" }, "<leader>dc", dap.continue, { desc = "Continue" })
+map({ "n" }, "<Right>", dap.step_over, { desc = "Step over" })
+map({ "n" }, "<Down>", dap.step_into, { desc = "Step into" })
+map({ "n" }, "<Up>", dap.step_out, { desc = "Step out" })
 -- debugger end
 
 -- harpoon
+local harpoon = require "harpoon"
+harpoon:setup()
 map({ "n" }, "<leader>a", function() harpoon:list():add() end, { desc = "Harpoon this" })
 map({ "n" }, "<C-E>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 map({ "n" }, "<C-j>", function() harpoon:list():select(1) end)
@@ -262,9 +292,39 @@ map("n", "<leader>pc",
     end
 )
 
-map({ "n", "v", "x" }, "<leader>/", "<Plug>(comment_toggle_linewise_visual)", { desc = "Comment toggle linewise" })
-map({ "n" }, "<leader>o", ":update<CR> :source " .. vim.fn.expand("$MYVIMRC") .. "<CR>")
+map({ "n", }, "<leader>/", "<Plug>(comment_toggle_linewise_current)", { desc = "Toggle comment" })
+map({ "v", "x" }, "<leader>/", "<Plug>(comment_toggle_linewise_visual)", { desc = "Toggle comment" })
+map({ "n" }, "<leader>o", ":source " .. vim.fn.expand("$MYVIMRC") .. "<CR>")
 map({ "n" }, "<leader>O", ":restart<cr>")
+
+local builtin = require("telescope.builtin")
+map({ "n" }, "<leader>f", builtin.find_files, { desc = "Find files (ignore)" })
+map({ "n" }, "<leader>sfi", builtin.find_files, { desc = "Find files (ignore)" })
+map({ "n" }, "<leader>sfa", function() builtin.find_files({ no_ignore = true, hidden = true }) end,
+    { desc = "Find files (all)" })
+map({ "n" }, "<leader>sti", builtin.live_grep, { desc = "Live grep (ignore)" })
+map({ "n" }, "<leader>sta", function() builtin.live_grep({ no_ignore = true, hidden = true }) end,
+    { desc = "Live grep (all)" })
+map({ "n" }, "<leader>sM", builtin.man_pages, { desc = "Man pages" })
+map({ "n" }, "<leader>sb", function()
+    builtin.buffers({
+        attach_mappings = function(buffer_picker, telescope_map)
+            telescope_map({ "n" }, "<leader>d", function()
+                local current_picker = require("telescope.actions.state").get_current_picker(buffer_picker)
+                current_picker:delete_selection(function(selection)
+                    vim.api.nvim_buf_delete(selection.bufnr, { force = true })
+                end)
+            end, { desc = "Delete selected buf" })
+            return true -- don't close the buffer_picker
+        end
+    })
+end, { desc = "Buffers" })
+map({ "n" }, "<leader>sh", builtin.help_tags, { desc = "Help tags" })
+map({ "n" }, "<leader>sq", builtin.command_history, { desc = "Command history" })
+map({ "n" }, "<leader>sr", builtin.lsp_references, { desc = "LSP references" })
+map({ "n" }, "<leader>si", builtin.lsp_implementations, { desc = "Implementations" })
+map({ "n" }, "<leader>sd", builtin.diagnostics, { desc = "Diagnostics" })
+map({ "n" }, "<leader>sj", builtin.jumplist, { desc = "Jumplist" })
 
 map({ "n" }, "<leader>lf", vim.lsp.buf.format, { desc = "LSP format" })
 map({ "n" }, "<leader>lD", vim.lsp.buf.declaration, { desc = "Declaration" })
@@ -273,34 +333,60 @@ map({ "n" }, "<leader>li", vim.lsp.buf.implementation, { desc = "implementation"
 map({ "n" }, "<leader>lj", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next diagnostics" })
 map({ "n" }, "<leader>lk", function() vim.diagnostic.jump({ count = -1, float = true }) end,
     { desc = "Prev diagnostics" })
-map({ "n" }, "<leader>lr", vim.lsp.buf.rename, { desc = "Rename" })
+map({ "n" }, "<leader>lR", vim.lsp.buf.rename, { desc = "Rename" })
 map({ "n" }, "<leader>la", vim.lsp.buf.code_action, { desc = "Action" })
 
-local builtin = require("telescope.builtin")
-map({ "n" }, "<leader>f", builtin.find_files, { desc = "Find files (ignore)" })
-map({ "n" }, "<leader>sfi", builtin.find_files, { desc = "Find files (ignore)" })
-map({ "n" }, "<leader>sfa", function() builtin.find_files({ no_ignore = true }) end, { desc = "Find files (all)" })
-map({ "n" }, "<leader>sti", builtin.live_grep, { desc = "Live grep (ignore)" })
-map({ "n" }, "<leader>sta", function() builtin.live_grep({ no_ignore = true }) end, { desc = "Live grep (all)" })
-map({ "n" }, "<leader>sM", builtin.man_pages, { desc = "Man pages" })
-map({ "n" }, "<leader>sb", builtin.buffers, { desc = "Buffers" })
-map({ "n" }, "<leader>sh", builtin.help_tags, { desc = "Help tags" })
-map({ "n" }, "<leader>sq", builtin.command_history, { desc = "Command history" })
-map({ "n" }, "<leader>sr", builtin.lsp_references, { desc = "LSP references" })
-map({ "n" }, "<leader>si", builtin.lsp_implementations, { desc = "Implementations" })
-map({ "n" }, "<leader>sd", builtin.diagnostics, { desc = "Diagnostics" })
-map({ "n" }, "<leader>sj", builtin.jumplist, { desc = "Jumplist" })
+map({ "n", }, "<leader>zf", function()
+    local vault = vim.loop.fs_realpath(vim.fn.expand("$ZETTELKASTEN"))
+    if vault == nil then
+        print "vim.loop.fs_realpath: got nil"
+        return
+    end
+    builtin.find_files { cwd = vault }
+    vim.api.nvim_set_current_dir(vault)
+end, { desc = "Find notes" })
+map({ "n", }, "<leader>zn", function()
+    local Path = require "plenary.path"
 
-map({ "n" }, "<leader>zB", ":Telekasten show_backlinks<cr>", { desc = "Show backlinks" })
-map({ "n" }, "<leader>zF", ":Telekasten find_friends<cr>", { desc = "Find friends" })
-map({ "n" }, "<leader>zT", ":Telekasten goto_today<cr>", { desc = "Goto today" })
-map({ "n" }, "<leader>zf", ':Telekasten find_notes<cr><cmd>cd "$ZETTELKASTENZ/"<cr>', { desc = "Find notes" })
-map({ "n" }, "<leader>zg", ":Telekasten search_notes<cr>", { desc = "Search notes" })
-map({ "n" }, "<leader>zl", ":Telekasten insert_link<cr>", { desc = "Paste [[link]]" })
-map({ "n" }, "<leader>zn", ":Telekasten new_note<cr>", { desc = "New note" })
-map({ "n" }, "<leader>zo", ":Telekasten panel<cr>", { desc = "Telekasten command palette" })
-map({ "n" }, "<leader>zr", ":Telekasten rename_note<cr>", { desc = "Rename note" })
-map({ "n" }, "<leader>zz", ":Telekasten follow_link<cr>", { desc = "Follow link under cursor" })
+    local vault = vim.fn.expand("$ZETTELKASTEN")
+    if not Path:new(vault):exists() then
+        print("cannot expand env var or path under it doesn't exist: " .. vault)
+        return
+    end
+
+    local template = vault .. "/Templates/Mine Моё.md"
+    if not Path:new(template):exists() then
+        print("template does not exists")
+        return
+    end
+
+    vim.ui.input({ prompt = "Title: " }, function(input)
+        if not input then
+            return
+        end
+
+        local target = string.format("%s/%s/%s.%s", vault, "Z", input, "md")
+
+        vim.cmd("edit " .. target)
+        vim.api.nvim_set_current_dir(string.format("%s/%s", vault, "Z"))
+
+        if Path:new(target):exists() then
+            return
+        end
+
+        vim.cmd("read " .. template)
+        vim.cmd [[normal gg"xdd]]
+        vim.cmd("%s/{{title}}/" .. input .. "/g")
+        vim.cmd [[normal G]]
+    end)
+end, { desc = "New note" })
+
+local persistence = require "persistence"
+persistence.setup()
+map({ "n" }, "<leader>qs", persistence.load, { desc = "Load $PWD session" })
+map({ "n" }, "<leader>qS", persistence.select, { desc = "Select session" })
+map({ "n" }, "<leader>qd", persistence.stop, { desc = "Disable session save on quit" })
+map({ "n" }, "<leader>qe", persistence.start, { desc = "Enable session save on quit" })
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "gitcommit", "markdown", "text" },
@@ -315,10 +401,4 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = { "javascript", "html" },
     callback = function() vim.cmd [[setlocal ts=2 sts=2 sw=2]] end,
     group = vim.api.nvim_create_augroup("javascript", {}),
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "ledger" },
-    callback = function() vim.cmd [[setlocal foldmethod=syntax]] end,
-    group = vim.api.nvim_create_augroup("ledger", {}),
 })
