@@ -132,7 +132,16 @@ require "luasnip".setup { enable_autosnippets = true }
 require "blink.cmp".setup({
     signature = { enabled = true },
     completion = { documentation = { auto_show = true } },
-    sources = { default = { "lsp", "path", "snippets", "buffer" } },
+    sources = {
+        default = { "lsp", "path", "snippets", "buffer" },
+        providers = {
+            path = {
+                opts = {
+                    show_hidden_files_by_default = true,
+                },
+            },
+        },
+    },
     fuzzy = { implementation = "lua" },
 })
 
@@ -175,7 +184,7 @@ telescope.setup {
             prompt_position = "top",
             preview_cutoff = 120,
         },
-        file_ignore_patterns = { "venv" },
+        file_ignore_patterns = { "venv" }, -- python thing
         mappings = {
             i = {
                 ["<C-f>"] = { "<C-^>", type = "command" }, -- switch layout
@@ -260,7 +269,7 @@ map({ "n" }, "<Up>", dap.step_out, { desc = "Step out" })
 local harpoon = require "harpoon"
 harpoon:setup()
 map({ "n" }, "<leader>a", function() harpoon:list():add() end, { desc = "Harpoon this" })
-map({ "n" }, "<C-E>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+map({ "n" }, "<C-E>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = "Harpoon menu" })
 map({ "n" }, "<C-j>", function() harpoon:list():select(1) end)
 map({ "n" }, "<C-k>", function() harpoon:list():select(2) end)
 map({ "n" }, "<C-n>", function() harpoon:list():select(3) end)
@@ -269,32 +278,30 @@ map({ "n" }, "<C-S-P>", function() harpoon:list():prev() end)
 map({ "n" }, "<C-S-N>", function() harpoon:list():next() end)
 -- harpoon end
 
-map("n", "<leader>pc",
-    function()
-        local active_plugins = {}
-        local unused_plugins = {}
+map("n", "<leader>pc", function()
+    local active_plugins = {}
+    local unused_plugins = {}
 
-        for _, plugin in ipairs(vim.pack.get()) do
-            active_plugins[plugin.spec.name] = plugin.active
-        end
+    for _, plugin in ipairs(vim.pack.get()) do
+        active_plugins[plugin.spec.name] = plugin.active
+    end
 
-        for _, plugin in ipairs(vim.pack.get()) do
-            if not active_plugins[plugin.spec.name] then
-                table.insert(unused_plugins, plugin.spec.name)
-            end
-        end
-
-        if #unused_plugins == 0 then
-            print("No unused plugins.")
-            return
-        end
-
-        local choice = vim.fn.confirm("Remove unused plugins?", "&Yes\n&No", 2)
-        if choice == 1 then
-            vim.pack.del(unused_plugins)
+    for _, plugin in ipairs(vim.pack.get()) do
+        if not active_plugins[plugin.spec.name] then
+            table.insert(unused_plugins, plugin.spec.name)
         end
     end
-)
+
+    if #unused_plugins == 0 then
+        print("No unused plugins.")
+        return
+    end
+
+    local choice = vim.fn.confirm("Remove unused plugins?", "&Yes\n&No", 2)
+    if choice == 1 then
+        vim.pack.del(unused_plugins)
+    end
+end, { desc = "Clean unused plugins" })
 
 map({ "n", }, "<leader>/", "<Plug>(comment_toggle_linewise_current)", { desc = "Toggle comment" })
 map({ "v", "x" }, "<leader>/", "<Plug>(comment_toggle_linewise_visual)", { desc = "Toggle comment" })
@@ -345,7 +352,7 @@ local Path = require "plenary.path"
 
 function Path:mustExist()
     if not self:exists() then
-        error(string.format("invalid path or path doesn't exist: %s", tostring(self)))
+        error(string.format("path doesn't exist: %s", tostring(self)))
     end
 end
 
@@ -356,15 +363,15 @@ function Path:Zettelkasten()
 end
 
 map({ "n", }, "<leader>zf", function()
-    local vault = Path:Zettelkasten()
-    builtin.find_files { cwd = tostring(vault) }
-    vim.api.nvim_set_current_dir(tostring(vault))
+    local vault = tostring(Path:Zettelkasten())
+    builtin.find_files { cwd = vault }
+    vim.api.nvim_set_current_dir(vault)
 end, { desc = "Find notes" })
 
 map({ "n" }, "<leader>zt", function()
-    local vault = Path:Zettelkasten()
-    builtin.live_grep { cwd = tostring(vault) }
-    vim.api.nvim_set_current_dir(tostring(vault))
+    local vault = tostring(Path:Zettelkasten())
+    builtin.live_grep { cwd = vault }
+    vim.api.nvim_set_current_dir(vault)
 end, { desc = "Grep notes" })
 
 map({ "n", }, "<leader>zn", function()
@@ -397,6 +404,20 @@ map({ "n", }, "<leader>zn", function()
         vim.cmd [[normal G]]
     end)
 end, { desc = "New note" })
+
+map({ "n" }, "<leader>zd", function()
+    local filepath = vim.fn.expand("%")
+    local choice = vim.fn.confirm("Remove file " .. filepath, "&Yes\n&No", 2)
+    if choice ~= 1 then
+        return
+    end
+    local success, err = os.remove(filepath)
+    if success then
+        print "file deleted"
+    else
+        error(err)
+    end
+end, { desc = "Delete current file" })
 -- zettelkasten end
 
 local persistence = require "persistence"
@@ -420,3 +441,8 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function() vim.cmd [[setlocal ts=2 sts=2 sw=2]] end,
     group = vim.api.nvim_create_augroup("javascript", {}),
 })
+
+-- fix nvimdiff: https://github.com/neovim/neovim/issues/22696
+if vim.opt.diff:get() then
+  vim.o.diffopt = 'internal,filler,closeoff'
+end

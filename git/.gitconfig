@@ -11,7 +11,7 @@
 [core]
     editor = nvim
     pager = delta
-	quotepath = falsE
+	quotepath = false
 
 [interactive]
     diffFilter = delta --color-only
@@ -21,7 +21,10 @@
     light = false    # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
 
 [merge]
-    conflictstyle = diff3
+    tool = nvimdiff
+
+[mergetool "nvimdiff"]
+    cmd = nvim -d -c '4wincmd w | wincmd J' \"$LOCAL\" \"$BASE\" \"$REMOTE\" \"$MERGED\"
 
 [init]
 	defaultBranch = master
@@ -37,5 +40,6 @@
     diff-dev = !git diff dev... -- ':!*.json' ':!*migrations*'
     apk-bump = !git commit -m 'Bump build version' && git tag $(python -c "from version import __version__; print(__version__)")
     acfp = !git add . && git commit --amend --no-edit && git push --force # I am danger
+
 [push]
 	autoSetupRemote = True
