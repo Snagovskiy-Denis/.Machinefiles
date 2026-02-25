@@ -169,9 +169,10 @@ telescope.setup {
         preview = { treesitter = true },
         color_devicons = true,
         path_displays = { "smart" },
+        sorting_strategy = "ascending",
         layout_config = {
             width = 0.75,
-            prompt_position = "bottom",
+            prompt_position = "top",
             preview_cutoff = 120,
         },
         file_ignore_patterns = { "venv" },
@@ -339,35 +340,31 @@ map({ "n" }, "<leader>lk", function() vim.diagnostic.jump({ count = -1, float = 
 map({ "n" }, "<leader>lR", vim.lsp.buf.rename, { desc = "Rename" })
 map({ "n" }, "<leader>la", vim.lsp.buf.code_action, { desc = "Action" })
 
-map({ "n", }, "<leader>zf", function()
-    local vault = vim.loop.fs_realpath(vim.fn.expand("$ZETTELKASTEN"))
-    if vault == nil then
-        print "vim.loop.fs_realpath: vault is nil"
-        return
-    end
-    builtin.find_files { cwd = vault }
-    vim.api.nvim_set_current_dir(vault)
-end, { desc = "Find notes" })
-map({ "n", }, "<leader>zn", function()
-    local Path = require "plenary.path"
+-- zettelkasten
+local Path = require "plenary.path"
 
-    local vault = Path:new(vim.fn.expand("$ZETTELKASTEN"))
-    if not vault:exists() then
-        print "invalid vault path"
-        return
+function Path:mustExist()
+    if not self:exists() then
+        error(string.format("invalid path or path doesn't exist: %s", tostring(self)))
     end
+end
+
+map({ "n", }, "<leader>zf", function()
+    local vault = Path:new(vim.fn.expand("$ZETTELKASTEN"))
+    vault:mustExist(vault)
+    builtin.find_files { cwd = tostring(vault) }
+    vim.api.nvim_set_current_dir(tostring(vault))
+end, { desc = "Find notes" })
+
+map({ "n", }, "<leader>zn", function()
+    local vault = Path:new(vim.fn.expand("$ZETTELKASTEN"))
+    vault:mustExist()
 
     local template = vault / "Templates" / "Mine Моё.md"
-    if not template:exists() then
-        print "template doesn't exist"
-        return
-    end
+    template:mustExist()
 
     local targetDir = vault / "Z"
-    if not targetDir:exists() then
-        print "target dir doesn't exist"
-        return
-    end
+    targetDir:mustExist()
 
     vim.ui.input({ prompt = "Title: " }, function(input)
         if not input then
@@ -383,12 +380,14 @@ map({ "n", }, "<leader>zn", function()
             return
         end
 
+        -- place template and replace {{title}} tag if presented
         vim.cmd("read " .. tostring(template))
         vim.cmd [[normal gg"xdd]]
         vim.cmd("%s/{{title}}/" .. input .. "/g")
         vim.cmd [[normal G]]
     end)
 end, { desc = "New note" })
+-- zettelkasten end
 
 local persistence = require "persistence"
 persistence.setup()
