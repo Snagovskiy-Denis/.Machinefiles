@@ -85,7 +85,7 @@ mode = "~Search"
 mods = "Shift|Control"
 
 [[keyboard.bindings]]
-action = "SpawnNewInstance"
+action = "CreateNewWindow"
 key = "Return"
 mods = "Control|Shift"
 

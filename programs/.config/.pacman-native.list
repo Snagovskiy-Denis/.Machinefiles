@@ -24,6 +24,7 @@ cmatrix
 cmus
 cpio
 cronie
+delve
 deno
 dictd
 discord
@@ -35,6 +36,7 @@ dunst
 efibootmgr
 entr
 exfat-utils
+ex-vi-compat
 faac
 faad2
 fclones
@@ -50,11 +52,9 @@ git-delta
 gnome-boxes
 gnome-font-viewer
 go
-gopls
 go-tools
 grpc-cli
 grub
-gtk-engine-murrine
 gvfs-mtp
 hledger
 hledger-ui
@@ -76,6 +76,12 @@ jq
 kdeconnect
 klavaro
 languagetool
+lazygit
+libao
+libcddb
+libiconv
+libmp4v2
+libmpcdec
 libreoffice-still
 libreoffice-still-ru
 libusb-compat
@@ -96,12 +102,10 @@ mpv
 mtpfs
 ncdu
 neomutt
-neovim
 networkmanager
 networkmanager-openvpn
 newsboat
 nfs-utils
-nitrogen
 nix
 nodejs
 noto-fonts-emoji
@@ -143,7 +147,6 @@ pptpclient
 pulseaudio
 pulseaudio-alsa
 pulseaudio-jack
-pyright
 python-black
 python-coverage
 python-dbus-next
@@ -271,7 +274,6 @@ unzip
 urlscan
 usb_modeswitch
 v2ray
-vi
 vim
 vimb
 virt-manager
@@ -327,8 +329,10 @@ xorg-xwininfo
 xorg-xwud
 xsel
 yaegi
+yt-dlp-ejs
 ytfzf
 zathura
 zathura-pdf-poppler
 zbar
+zellij
 zoxide

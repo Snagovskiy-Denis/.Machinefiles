@@ -70,7 +70,6 @@ report.retro.filter=status:completed end > today-1w
 
 # Colors
 color.tag.$=green
-color.tag.difficult=rgb212
 color.tag.joy=rgb515
 #color.tag.joy=rgb335
 color.tag.grooming=rgb105

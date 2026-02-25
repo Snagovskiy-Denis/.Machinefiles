@@ -25,18 +25,17 @@ vim.opt.expandtab = true
 vim.opt.keymap = "russian-jcukenwin"
 vim.opt.iminsert = 0 -- start insert using eng lang, not russian-jcukenwin
 vim.opt.imsearch = 0 -- same as above, but for search mode
-vim.opt.mouse = "a"  -- oh no
+vim.opt.mouse = "a"  -- heresy
 vim.opt.hidden = true
 vim.opt.spelllang = "ru,en,la"
 
 vim.cmd [[set completeopt+=menuone,noselect,popup]]
 vim.cmd [[set suffixesadd+=.md]]
---vim.cmd [[set shortmess+=c]] -- disable default completion messages
 
---vim.g.mapleader = ","
 vim.g.mapleader = " "
 
--- tip: use 'checkhealth' to ensure plugins are valid
+-- tip: use 'checkhealth' to ensure plugins are valid,
+-- also check their external requirements (e.g. nvim-treesitter requires gcc)
 vim.pack.add({
     { src = "https://github.com/windwp/nvim-autopairs" },
     { src = "https://github.com/numToStr/Comment.nvim" },
@@ -56,6 +55,7 @@ vim.pack.add({
     -- lsp
     { src = "https://github.com/neovim/nvim-lspconfig" }, -- lsp configs data repository
     { src = "https://github.com/mason-org/mason.nvim" },  -- lsp apps manager (instead of pacman & brew)
+    { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
     -- lsp end
     -- autocomplete
     { src = "https://github.com/saghen/blink.cmp" },
@@ -79,16 +79,22 @@ vim.pack.add({
     -- aesthetics end
 })
 
-require "onedark".setup{style="deep"}
+require "onedark".setup { style = "deep" }
 require "onedark".load()
 
 -- tip: 'help lspconfig-all' for correct names
-vim.lsp.enable({
+local lsp_langs = {
     "lua_ls", "gopls", "bashls", "clangd", "cssls",
     "denols", "docker_compose_language_service", "dockerls",
     "html", "jsonls", "lemminx", "markdown_oxide", "pyright",
     "rust_analyzer", "sqlls", "stylelint_lsp", "texlab",
-})
+}
+require "mason".setup {}
+require "mason-lspconfig".setup {
+    automatically_enable = false,
+    ensure_installed = lsp_langs,
+}
+vim.lsp.enable(lsp_langs)
 
 vim.lsp.config("lua_ls", { settings = { Lua = { workspace = { library = vim.api.nvim_get_runtime_file("", true) } } } }) -- add vim config api autocomplition
 
@@ -157,8 +163,6 @@ require "oil".setup {
     columns = { "icon", }
 }
 
-require "mason".setup {}
-
 local telescope = require "telescope"
 telescope.setup {
     defaults = {
@@ -170,7 +174,6 @@ telescope.setup {
             prompt_position = "bottom",
             preview_cutoff = 120,
         },
-        border = false,
         file_ignore_patterns = { "venv" },
         mappings = {
             i = {
@@ -297,21 +300,21 @@ map({ "v", "x" }, "<leader>/", "<Plug>(comment_toggle_linewise_visual)", { desc 
 map({ "n" }, "<leader>o", ":source " .. vim.fn.expand("$MYVIMRC") .. "<CR>")
 map({ "n" }, "<leader>O", ":restart<cr>")
 
-local builtin = require("telescope.builtin")
+local builtin = require "telescope.builtin"
 map({ "n" }, "<leader>f", builtin.find_files, { desc = "Find files (ignore)" })
-map({ "n" }, "<leader>sfi", builtin.find_files, { desc = "Find files (ignore)" })
+map({ "n" }, "<leader>sff", builtin.find_files, { desc = "Find files (ignore)" })
 map({ "n" }, "<leader>sfa", function() builtin.find_files({ no_ignore = true, hidden = true }) end,
     { desc = "Find files (all)" })
-map({ "n" }, "<leader>sti", builtin.live_grep, { desc = "Live grep (ignore)" })
+map({ "n" }, "<leader>stt", builtin.live_grep, { desc = "Live grep (ignore)" })
 map({ "n" }, "<leader>sta", function() builtin.live_grep({ no_ignore = true, hidden = true }) end,
     { desc = "Live grep (all)" })
 map({ "n" }, "<leader>sM", builtin.man_pages, { desc = "Man pages" })
 map({ "n" }, "<leader>sb", function()
     builtin.buffers({
-        attach_mappings = function(buffer_picker, telescope_map)
+        attach_mappings = function(prompt_bufnr, telescope_map)
             telescope_map({ "n" }, "<leader>d", function()
-                local current_picker = require("telescope.actions.state").get_current_picker(buffer_picker)
-                current_picker:delete_selection(function(selection)
+                local buffer_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+                buffer_picker:delete_selection(function(selection)
                     vim.api.nvim_buf_delete(selection.bufnr, { force = true })
                 end)
             end, { desc = "Delete selected buf" })
@@ -339,7 +342,7 @@ map({ "n" }, "<leader>la", vim.lsp.buf.code_action, { desc = "Action" })
 map({ "n", }, "<leader>zf", function()
     local vault = vim.loop.fs_realpath(vim.fn.expand("$ZETTELKASTEN"))
     if vault == nil then
-        print "vim.loop.fs_realpath: got nil"
+        print "vim.loop.fs_realpath: vault is nil"
         return
     end
     builtin.find_files { cwd = vault }
@@ -348,15 +351,21 @@ end, { desc = "Find notes" })
 map({ "n", }, "<leader>zn", function()
     local Path = require "plenary.path"
 
-    local vault = vim.fn.expand("$ZETTELKASTEN")
-    if not Path:new(vault):exists() then
-        print("cannot expand env var or path under it doesn't exist: " .. vault)
+    local vault = Path:new(vim.fn.expand("$ZETTELKASTEN"))
+    if not vault:exists() then
+        print "invalid vault path"
         return
     end
 
-    local template = vault .. "/Templates/Mine Моё.md"
-    if not Path:new(template):exists() then
-        print("template does not exists")
+    local template = vault / "Templates" / "Mine Моё.md"
+    if not template:exists() then
+        print "template doesn't exist"
+        return
+    end
+
+    local targetDir = vault / "Z"
+    if not targetDir:exists() then
+        print "target dir doesn't exist"
         return
     end
 
@@ -365,16 +374,16 @@ map({ "n", }, "<leader>zn", function()
             return
         end
 
-        local target = string.format("%s/%s/%s.%s", vault, "Z", input, "md")
+        local target = targetDir / (input .. ".md")
 
-        vim.cmd("edit " .. target)
-        vim.api.nvim_set_current_dir(string.format("%s/%s", vault, "Z"))
+        vim.cmd("edit " .. tostring(target))
+        vim.api.nvim_set_current_dir(tostring(targetDir))
 
-        if Path:new(target):exists() then
+        if target:exists() then
             return
         end
 
-        vim.cmd("read " .. template)
+        vim.cmd("read " .. tostring(template))
         vim.cmd [[normal gg"xdd]]
         vim.cmd("%s/{{title}}/" .. input .. "/g")
         vim.cmd [[normal G]]
