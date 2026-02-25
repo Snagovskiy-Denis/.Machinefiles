@@ -427,6 +427,20 @@ map({ "n" }, "<leader>qS", persistence.select, { desc = "Select session" })
 map({ "n" }, "<leader>qd", persistence.stop, { desc = "Disable session save on quit" })
 map({ "n" }, "<leader>qe", persistence.start, { desc = "Enable session save on quit" })
 
+-- nvimdiff
+if vim.opt.diff:get() then
+    -- fix nvimdiff: https://github.com/neovim/neovim/issues/22696
+    vim.o.diffopt = 'internal,filler,closeoff'
+
+    -- disable session autosave to no pollute $PWD session
+    persistence.stop()
+end
+map({ "n" }, "<leader>Qc", ":cq<cr>", { desc = "Abort nvimdiff process" })
+map({ "n" }, "<leader>t1", ":diffget 1<cr>", { desc = "Accept ours" })
+map({ "n" }, "<leader>t2", ":diffget 2<cr>", { desc = "Accept base" })
+map({ "n" }, "<leader>t3", ":diffget 3<cr>", { desc = "Accept theirs" })
+-- nvimdiff end
+
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "gitcommit", "markdown", "text" },
     callback = function()
@@ -441,11 +455,3 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function() vim.cmd [[setlocal ts=2 sts=2 sw=2]] end,
     group = vim.api.nvim_create_augroup("javascript", {}),
 })
-
-if vim.opt.diff:get() then
-    -- fix nvimdiff: https://github.com/neovim/neovim/issues/22696
-    vim.o.diffopt = 'internal,filler,closeoff'
-
-    -- disable session autosave to no pollute $PWD session
-    persistence.stop()
-end
