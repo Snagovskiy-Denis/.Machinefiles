@@ -349,21 +349,31 @@ function Path:mustExist()
     end
 end
 
-map({ "n", }, "<leader>zf", function()
+function Path:Zettelkasten()
     local vault = Path:new(vim.fn.expand("$ZETTELKASTEN"))
-    vault:mustExist(vault)
+    vault:mustExist()
+    return vault
+end
+
+map({ "n", }, "<leader>zf", function()
+    local vault = Path:Zettelkasten()
     builtin.find_files { cwd = tostring(vault) }
     vim.api.nvim_set_current_dir(tostring(vault))
 end, { desc = "Find notes" })
 
+map({ "n" }, "<leader>zt", function()
+    local vault = Path:Zettelkasten()
+    builtin.live_grep { cwd = tostring(vault) }
+    vim.api.nvim_set_current_dir(tostring(vault))
+end, { desc = "Grep notes" })
+
 map({ "n", }, "<leader>zn", function()
-    local vault = Path:new(vim.fn.expand("$ZETTELKASTEN"))
-    vault:mustExist()
-
+    local vault = Path:Zettelkasten()
     local template = vault / "Templates" / "Mine Моё.md"
-    template:mustExist()
-
     local targetDir = vault / "Z"
+
+    -- user feedback before input
+    template:mustExist()
     targetDir:mustExist()
 
     vim.ui.input({ prompt = "Title: " }, function(input)
