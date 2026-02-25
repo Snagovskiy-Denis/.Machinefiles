@@ -442,7 +442,10 @@ vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("javascript", {}),
 })
 
--- fix nvimdiff: https://github.com/neovim/neovim/issues/22696
 if vim.opt.diff:get() then
-  vim.o.diffopt = 'internal,filler,closeoff'
+    -- fix nvimdiff: https://github.com/neovim/neovim/issues/22696
+    vim.o.diffopt = 'internal,filler,closeoff'
+
+    -- disable session autosave to no pollute $PWD session
+    persistence.stop()
 end
