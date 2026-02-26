@@ -1,7 +1,7 @@
 -- self@machine .vimrc
 --
 
--- tip: use ':help' to check what options does
+-- tip: use ':help number' to check option effect
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.wrap = false
@@ -31,6 +31,15 @@ vim.opt.spelllang = "ru,en,la"
 
 vim.cmd [[set completeopt+=menuone,noselect,popup]]
 vim.cmd [[set suffixesadd+=.md]]
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "gitcommit", "markdown", "text" },
+    callback = function()
+        vim.opt_local.wrap = true
+        vim.opt_local.spell = true
+    end,
+    group = vim.api.nvim_create_augroup("text", {}),
+})
 
 vim.g.mapleader = " "
 
@@ -169,7 +178,7 @@ require "oil".setup {
         timeout_ms = 1000,
         autosave_changes = true,
     },
-    columns = { "icon", }
+    columns = { "icon" },
 }
 
 local telescope = require "telescope"
@@ -184,7 +193,6 @@ telescope.setup {
             prompt_position = "top",
             preview_cutoff = 120,
         },
-        file_ignore_patterns = { "venv" }, -- python thing
         mappings = {
             i = {
                 ["<C-f>"] = { "<C-^>", type = "command" }, -- switch layout
@@ -278,7 +286,9 @@ map({ "n" }, "<C-S-P>", function() harpoon:list():prev() end)
 map({ "n" }, "<C-S-N>", function() harpoon:list():next() end)
 -- harpoon end
 
-map("n", "<leader>pc", function()
+-- plugins manager
+map({ "n" }, "<leader>pu", vim.pack.update, { desc = "Update plugins" })
+map({ "n" }, "<leader>pc", function()
     local active_plugins = {}
     local unused_plugins = {}
 
@@ -302,6 +312,7 @@ map("n", "<leader>pc", function()
         vim.pack.del(unused_plugins)
     end
 end, { desc = "Clean unused plugins" })
+-- plugins manager end
 
 map({ "n", }, "<leader>/", "<Plug>(comment_toggle_linewise_current)", { desc = "Toggle comment" })
 map({ "v", "x" }, "<leader>/", "<Plug>(comment_toggle_linewise_visual)", { desc = "Toggle comment" })
@@ -311,11 +322,13 @@ map({ "n" }, "<leader>O", ":restart<cr>")
 local builtin = require "telescope.builtin"
 map({ "n" }, "<leader>f", builtin.find_files, { desc = "Find files (ignore)" })
 map({ "n" }, "<leader>sff", builtin.find_files, { desc = "Find files (ignore)" })
-map({ "n" }, "<leader>sfa", function() builtin.find_files({ no_ignore = true, hidden = true }) end,
-    { desc = "Find files (all)" })
+map({ "n" }, "<leader>sfa", function()
+    builtin.find_files { no_ignore = true, hidden = true }
+end, { desc = "Find files (all)" })
 map({ "n" }, "<leader>stt", builtin.live_grep, { desc = "Live grep (ignore)" })
-map({ "n" }, "<leader>sta", function() builtin.live_grep({ no_ignore = true, hidden = true }) end,
-    { desc = "Live grep (all)" })
+map({ "n" }, "<leader>sta", function()
+    builtin.live_grep { no_ignore = true, hidden = true }
+end, { desc = "Live grep (all)" })
 map({ "n" }, "<leader>sM", builtin.man_pages, { desc = "Man pages" })
 map({ "n" }, "<leader>sb", function()
     builtin.buffers({
@@ -430,28 +443,39 @@ map({ "n" }, "<leader>qe", persistence.start, { desc = "Enable session save on q
 -- nvimdiff
 if vim.opt.diff:get() then
     -- fix nvimdiff: https://github.com/neovim/neovim/issues/22696
-    vim.o.diffopt = 'internal,filler,closeoff'
+    vim.o.diffopt = "internal,filler,closeoff"
 
-    -- disable session autosave to no pollute $PWD session
+    -- disable session autosave to prevent $PWD session pollution by nvimdiff
     persistence.stop()
 end
-map({ "n" }, "<leader>Qc", ":cq<cr>", { desc = "Abort nvimdiff process" })
-map({ "n" }, "<leader>t1", ":diffget 1<cr>", { desc = "Accept ours" })
-map({ "n" }, "<leader>t2", ":diffget 2<cr>", { desc = "Accept base" })
-map({ "n" }, "<leader>t3", ":diffget 3<cr>", { desc = "Accept theirs" })
+map({ "n" }, "<leader>Qc", ":cq<cr>", { desc = "Abort git mergetool" })
+map({ "n" }, "<leader>bo", ":diffget 1<cr>", { desc = "Accept ours" })
+map({ "n" }, "<leader>bb", ":diffget 2<cr>", { desc = "Accept base" })
+map({ "n" }, "<leader>bt", ":diffget 3<cr>", { desc = "Accept theirs" })
 -- nvimdiff end
 
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "gitcommit", "markdown", "text" },
-    callback = function()
-        vim.cmd [[setlocal wrap]]
-        vim.cmd [[setlocal spell]]
-    end,
-    group = vim.api.nvim_create_augroup("text", {}),
-})
+map({ "n" }, "<leader>sm", function()
+    local bmfiles_path = Path:new(vim.fn.expand("$HOME") .. "/.config/shell/bm-files")
+    bmfiles_path:mustExist()
+    local file = io.open(tostring(bmfiles_path), "r")
+    if not file then error("file is missing") end
 
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "javascript", "html" },
-    callback = function() vim.cmd [[setlocal ts=2 sts=2 sw=2]] end,
-    group = vim.api.nvim_create_augroup("javascript", {}),
-})
+    local filepaths = {}
+    for line in file:lines() do
+        local fields = {}
+        for field in string.gmatch(line, "%S+") do
+            table.insert(fields, field)
+        end
+        if #fields ~= 2 then
+            file:close()
+            error("invalid line: " .. line)
+        end
+        -- TODO: join paths with spaces from fields[2:] to single path
+        table.insert(filepaths, vim.fn.expand(fields[2]))
+    end
+    file:close()
+
+    builtin.find_files {
+        find_command = { "echo", "-e", table.concat(filepaths, "\n") },
+    }
+end, { desc = "Fzf configs" })

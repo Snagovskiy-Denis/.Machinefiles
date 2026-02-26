@@ -162,7 +162,6 @@ python-plumbum
 python-poetry
 python-pynvim
 python-pytest
-python-ruff
 python-scipy
 python-tasklib
 python-typer
@@ -177,7 +176,6 @@ rofi
 rofi-calc
 rofi-emoji
 rofi-pass
-rust-analyzer
 rustup
 sassc
 shellcheck

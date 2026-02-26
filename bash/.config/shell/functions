@@ -59,6 +59,16 @@ zd() {
   cd "$dir" || return
 }
 
+# ez - find file with fzf and edit it
+ez() {
+    local file
+    file="$(fzf)"
+    if [[ ! -z "${file}" ]]; then
+        "${EDITOR}" "$file"
+    else
+        return 1
+    fi
+}
 
 alias no="note -o"
 note () {

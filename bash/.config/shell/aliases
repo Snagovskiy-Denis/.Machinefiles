@@ -49,7 +49,6 @@ alias edit_week="\ls -Q | tail -8 | head -7 | xargs ${EDITOR}"
 alias list-lan-clients="sudo arp-scan --localnet"
 alias seho="s e /etc/hosts"
 alias curr_power="cat /sys/class/power_supply/BAT0/capacity"
-d ()  { dict "${1}" | less; }
 
 alias yt="yt-dlp --add-metadata --ignore-errors --embed-thumbnail --sponsorblock-remove default"  # ffprob
 alias yta="yt --extract-audio"
