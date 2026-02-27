@@ -34,9 +34,9 @@ class TaskWarriorWidget(base.BackgroundPoll):
     def next_task(self) -> Task | None:
         tasks = self.tw.tasks.pending()
         if context_read_filter := self._get_tw_context_filter():
-            # for whatever reason, I need to use pending twice
+            # for whatever reason filter gets all tasks, not only pending ones
             tasks = tasks.filter(context_read_filter).pending()
-        return max(tasks, key=lambda task: task["urgency"], default=None)
+        return max(tasks, key=lambda task: int(task["urgency"]*100), default=None)
 
     def prompt_complete(self):
         if self.task is None:

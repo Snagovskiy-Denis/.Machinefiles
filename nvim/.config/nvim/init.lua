@@ -68,6 +68,7 @@ vim.pack.add({
     -- lsp end
     -- autocomplete
     { src = "https://github.com/saghen/blink.cmp" },
+    { src = "https://github.com/joelazar/blink-calc" },
     { src = "https://github.com/L3MON4D3/LuaSnip" },
     { src = "https://github.com/rafamadriz/friendly-snippets" },
     -- autocomplete end
@@ -142,12 +143,16 @@ require "blink.cmp".setup({
     signature = { enabled = true },
     completion = { documentation = { auto_show = true } },
     sources = {
-        default = { "lsp", "path", "snippets", "buffer" },
+        default = { "lsp", "path", "snippets", "buffer", "calc" },
         providers = {
             path = {
                 opts = {
                     show_hidden_files_by_default = true,
                 },
+            },
+            calc = {
+                name = "Calc",
+                module = "blink-calc",
             },
         },
     },
@@ -237,7 +242,7 @@ map({ "n" }, "<S-H>", ":BufferPrevious<CR>")
 
 -- debugger
 local last_test_expression = ""
-local function startDapForTest(name)
+local function start_dap_for_test(name)
     last_test_expression = name
     local config = {
         type = "go",
@@ -257,7 +262,7 @@ map({ "n" }, "<leader>dd", function()
         if not input then
             return
         end
-        startDapForTest(input)
+        start_dap_for_test(input)
     end)
 end, { desc = "Debug test" })
 map({ "n" }, "<leader>dr", function()
@@ -265,7 +270,7 @@ map({ "n" }, "<leader>dr", function()
         print("last test expression is empty")
         return
     end
-    startDapForTest(last_test_expression)
+    start_dap_for_test(last_test_expression)
 end, { desc = "Rerun last test" })
 map({ "n" }, "<leader>dc", dap.continue, { desc = "Continue" })
 map({ "n" }, "<Right>", dap.step_over, { desc = "Step over" })
@@ -307,8 +312,7 @@ map({ "n" }, "<leader>pc", function()
         return
     end
 
-    local choice = vim.fn.confirm("Remove unused plugins?", "&Yes\n&No", 2)
-    if choice == 1 then
+    if 1 == vim.fn.confirm("Remove unused plugins?", "&Yes\n&No", 2) then
         vim.pack.del(unused_plugins)
     end
 end, { desc = "Clean unused plugins" })
@@ -359,6 +363,12 @@ map({ "n" }, "<leader>lk", function() vim.diagnostic.jump({ count = -1, float = 
     { desc = "Prev diagnostics" })
 map({ "n" }, "<leader>lR", vim.lsp.buf.rename, { desc = "Rename" })
 map({ "n" }, "<leader>la", vim.lsp.buf.code_action, { desc = "Action" })
+map({ "n" }, "<leader>lo", function()
+    for _, client in pairs(vim.lsp.get_clients { bufnr = 0 }) do
+        client:stop()
+    end
+    vim.defer_fn(vim.cmd.edit, 1000)
+end, { desc = "Restart LSP" })
 
 -- zettelkasten
 local Path = require "plenary.path"
@@ -380,48 +390,74 @@ map({ "n", }, "<leader>zf", function()
     builtin.find_files { cwd = vault }
     vim.api.nvim_set_current_dir(vault)
 end, { desc = "Find notes" })
-
 map({ "n" }, "<leader>zt", function()
     local vault = tostring(Path:Zettelkasten())
     builtin.live_grep { cwd = vault }
     vim.api.nvim_set_current_dir(vault)
 end, { desc = "Grep notes" })
+map({ "n" }, "<leader>zh", '<cmd>cd $ZETTELKASTEN<cr><cmd>:pwd<cr>', { desc = "cd to Vault" })
 
-map({ "n", }, "<leader>zn", function()
+local function edit_note(name)
     local vault = Path:Zettelkasten()
     local template = vault / "Templates" / "Mine Моё.md"
-    local targetDir = vault / "Z"
-
-    -- user feedback before input
     template:mustExist()
+    local targetDir = vault / "Z"
     targetDir:mustExist()
 
+    local target = targetDir / (name .. ".md")
+    vim.cmd("edit " .. tostring(target))
+    vim.api.nvim_set_current_dir(tostring(targetDir))
+
+    if target:exists() then
+        return
+    end
+
+    -- place template and replace {{title}} tag if presented
+    vim.cmd("read " .. tostring(template))
+    vim.cmd [[normal gg"xdd]]
+    vim.cmd("%s/{{title}}/" .. name .. "/g")
+    vim.cmd [[normal G]]
+end
+map({ "n" }, "<leader>zz", function()
+    local line = vim.api.nvim_get_current_line()
+    local link_start, link_end = line:find("%[%[.-%]%]")
+    if not link_start then return end
+
+    local col = vim.api.nvim_win_get_cursor(0)[2] + 1
+    if col < link_start or col > link_end then return end
+
+    local link_text = line:sub(link_start + #"[[", link_end - #"]]")
+
+    local note_name = link_text
+
+    local alias_start, alias_end = link_text:find("|.-$")
+    if alias_start and alias_end then
+        note_name = link_text:sub(0, alias_start - 1)
+    end
+
+    edit_note(note_name)
+end, { desc = "Edit note under cursor" })
+map({ "n" }, "<leader>zn", function()
     vim.ui.input({ prompt = "Title: " }, function(input)
-        if not input then
-            return
+        if input then
+            edit_note(input)
         end
-
-        local target = targetDir / (input .. ".md")
-
-        vim.cmd("edit " .. tostring(target))
-        vim.api.nvim_set_current_dir(tostring(targetDir))
-
-        if target:exists() then
-            return
-        end
-
-        -- place template and replace {{title}} tag if presented
-        vim.cmd("read " .. tostring(template))
-        vim.cmd [[normal gg"xdd]]
-        vim.cmd("%s/{{title}}/" .. input .. "/g")
-        vim.cmd [[normal G]]
     end)
 end, { desc = "New note" })
+map({ "v" }, "<leader>zn", function()
+    local vstart, vend = vim.fn.getpos("v"), vim.fn.getpos(".")
+    local visual_selection = vim.fn.getregion(vstart, vend, vim.empty_dict())
+    local visual_selection_text = table.concat(visual_selection, "")
 
+    vim.ui.input({ prompt = "Title: ", default = visual_selection_text }, function(input)
+        if input then
+            edit_note(input)
+        end
+    end)
+end, { desc = "New note" })
 map({ "n" }, "<leader>zd", function()
     local filepath = vim.fn.expand("%")
-    local choice = vim.fn.confirm("Remove file " .. filepath, "&Yes\n&No", 2)
-    if choice ~= 1 then
+    if 1 ~= vim.fn.confirm("Remove file " .. filepath, "&Yes\n&No", 2) then
         return
     end
     local success, err = os.remove(filepath)
@@ -455,25 +491,22 @@ map({ "n" }, "<leader>bt", ":diffget 3<cr>", { desc = "Accept theirs" })
 -- nvimdiff end
 
 map({ "n" }, "<leader>sm", function()
-    local bmfiles_path = Path:new(vim.fn.expand("$HOME") .. "/.config/shell/bm-files")
+    -- ~/.local/bin/dmconf replacement for MacOS
+    local bmfiles_path = Path:new(vim.fn.expand("$HOME/.config/shell/bm-files"))
     bmfiles_path:mustExist()
-    local file = io.open(tostring(bmfiles_path), "r")
-    if not file then error("file is missing") end
 
     local filepaths = {}
-    for line in file:lines() do
+    for line in bmfiles_path:read():gmatch("([^\n]+)") do
         local fields = {}
         for field in string.gmatch(line, "%S+") do
             table.insert(fields, field)
         end
-        if #fields ~= 2 then
-            file:close()
-            error("invalid line: " .. line)
+        if #fields < 2 then
+            error("line " .. #filepaths .. " is invalid: " .. line)
         end
-        -- TODO: join paths with spaces from fields[2:] to single path
+        -- TODO: join enquoted paths with spaces from fields[2:] to single path
         table.insert(filepaths, vim.fn.expand(fields[2]))
     end
-    file:close()
 
     builtin.find_files {
         find_command = { "echo", "-e", table.concat(filepaths, "\n") },

@@ -10,6 +10,7 @@ nvim       $HOME/.config/nvim/init.lua
 profile    $HOME/.bash_profile
 qtile      $HOME/.config/qtile/config.py
 task       $HOME/.config/taskrc
+
 log-qtile  $HOME/.local/share/qtile/qtile.log
 autostart  $HOME/.config/shell/autostart.sh
 bm-files   $HOME/.config/shell/bm-files

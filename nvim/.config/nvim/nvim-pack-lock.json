@@ -12,6 +12,10 @@
       "rev": "539d73def39c9172b4d4d769f14090e08f37b29d",
       "src": "https://github.com/romgrk/barbar.nvim"
     },
+    "blink-calc": {
+      "rev": "199e8a5fe356d553d33a3511ca28e625dac5c470",
+      "src": "https://github.com/joelazar/blink-calc"
+    },
     "blink.cmp": {
       "rev": "b4d379393882561f9055abe780342ee00f02c573",
       "src": "https://github.com/saghen/blink.cmp"
