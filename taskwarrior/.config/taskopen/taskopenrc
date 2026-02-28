@@ -7,7 +7,7 @@ no_annotation_hook = addnote
 
 [Actions]
 notes.regex = "Notes"
-notes.command = "$EDITOR ${ZETTELKASTEN}tasks/$UUID.md"
+notes.command = "$EDITOR ${ZETTELKASTEN}/tasks/$UUID.md"
 
 # edit.regex = ".*"
 # edit.command = "rawedit $UUID"

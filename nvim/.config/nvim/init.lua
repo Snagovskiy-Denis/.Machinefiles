@@ -47,16 +47,17 @@ vim.g.mapleader = " "
 -- also check their external requirements (e.g. nvim-treesitter requires gcc)
 vim.pack.add({
     { src = "https://github.com/windwp/nvim-autopairs" },
-    { src = "https://github.com/numToStr/Comment.nvim" },
     { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter",        version = "main" },
-    { src = "https://github.com/ThePrimeagen/harpoon",                   version = "harpoon2" },
-    { src = "https://github.com/akinsho/toggleterm.nvim",                version = "v2.13.1" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter",            version = "main" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
+    { src = "https://github.com/ThePrimeagen/harpoon",                       version = "harpoon2" },
+    { src = "https://github.com/akinsho/toggleterm.nvim",                    version = "v2.13.1" },
     { src = "https://github.com/folke/persistence.nvim" },
     { src = "https://github.com/nvim-lualine/lualine.nvim" },
     { src = "https://github.com/romgrk/barbar.nvim" },
     { src = "https://github.com/folke/which-key.nvim" },
+    { src = "https://github.com/folke/flash.nvim" },
     -- telescope
     { src = "https://github.com/nvim-telescope/telescope.nvim" },
     { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
@@ -159,8 +160,6 @@ require "blink.cmp".setup({
     fuzzy = { implementation = "lua" },
 })
 
-require "Comment".setup()
-
 require "lualine".setup {
     sections = {
         lualine_a = {
@@ -207,7 +206,7 @@ telescope.setup {
 }
 telescope.load_extension("ui-select")
 
-require "toggleterm".setup {
+require "toggleterm".setup { -- TODO: replace with tmux after tmux+alacritty bugfix
     open_mapping = "<C-T>",
     direction = "float",
 }
@@ -221,6 +220,14 @@ map({ "n" }, "Y", "y$", { desc = "Yank to end of line" })
 map({ "n" }, "<leader>Qq", ":qa<cr>", { desc = "Gentle quit" })
 map({ "n" }, "<leader>Qf", ":qa!<cr>", { desc = "Force quit" })
 map({ "n" }, "<leader>h", "<cmd>:set hlsearch!<cr>", { desc = "Toggle highlight" })
+map({ "v" }, "<leader>h", function()
+    local vstart, vend = vim.fn.getpos("v"), vim.fn.getpos(".")
+    local visual_selection = vim.fn.getregion(vstart, vend, vim.empty_dict())
+    local visual_selection_text = table.concat(visual_selection, "")
+    vim.fn.setreg("/", visual_selection_text)
+    vim.opt.hlsearch = true
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+end, { desc = "Highlight selection" })
 map({ "n" }, "<leader>S", "<cmd>:set spell!<cr>", { desc = "Toggle Spell check" })
 map({ "n" }, "<leader>e", "<cmd>Oil<cr>", { desc = "Explore" })
 map({ "n" }, "<leader>ch", "<cmd>cd %:h<cr><cmd>:pwd<cr>", { desc = "cd to Here" })
@@ -318,8 +325,8 @@ map({ "n" }, "<leader>pc", function()
 end, { desc = "Clean unused plugins" })
 -- plugins manager end
 
-map({ "n", }, "<leader>/", "<Plug>(comment_toggle_linewise_current)", { desc = "Toggle comment" })
-map({ "v", "x" }, "<leader>/", "<Plug>(comment_toggle_linewise_visual)", { desc = "Toggle comment" })
+map({ "n", }, "<leader>/", "gcc", { desc = "Toggle comment", remap = true })
+map({ "v", "x" }, "<leader>/", "gc", { desc = "Toggle comment", remap = true })
 map({ "n" }, "<leader>o", ":source " .. vim.fn.expand("$MYVIMRC") .. "<CR>")
 map({ "n" }, "<leader>O", ":restart<cr>")
 
@@ -373,7 +380,7 @@ end, { desc = "Restart LSP" })
 -- zettelkasten
 local Path = require "plenary.path"
 
-function Path:mustExist()
+function Path:must_exist()
     if not self:exists() then
         error(string.format("path doesn't exist: %s", tostring(self)))
     end
@@ -381,7 +388,7 @@ end
 
 function Path:Zettelkasten()
     local vault = Path:new(vim.fn.expand("$ZETTELKASTEN"))
-    vault:mustExist()
+    vault:must_exist()
     return vault
 end
 
@@ -400,9 +407,9 @@ map({ "n" }, "<leader>zh", '<cmd>cd $ZETTELKASTEN<cr><cmd>:pwd<cr>', { desc = "c
 local function edit_note(name)
     local vault = Path:Zettelkasten()
     local template = vault / "Templates" / "Mine Моё.md"
-    template:mustExist()
+    template:must_exist()
     local targetDir = vault / "Z"
-    targetDir:mustExist()
+    targetDir:must_exist()
 
     local target = targetDir / (name .. ".md")
     vim.cmd("edit " .. tostring(target))
@@ -439,17 +446,6 @@ map({ "n" }, "<leader>zz", function()
 end, { desc = "Edit note under cursor" })
 map({ "n" }, "<leader>zn", function()
     vim.ui.input({ prompt = "Title: " }, function(input)
-        if input then
-            edit_note(input)
-        end
-    end)
-end, { desc = "New note" })
-map({ "v" }, "<leader>zn", function()
-    local vstart, vend = vim.fn.getpos("v"), vim.fn.getpos(".")
-    local visual_selection = vim.fn.getregion(vstart, vend, vim.empty_dict())
-    local visual_selection_text = table.concat(visual_selection, "")
-
-    vim.ui.input({ prompt = "Title: ", default = visual_selection_text }, function(input)
         if input then
             edit_note(input)
         end
@@ -492,23 +488,67 @@ map({ "n" }, "<leader>bt", ":diffget 3<cr>", { desc = "Accept theirs" })
 
 map({ "n" }, "<leader>sm", function()
     -- ~/.local/bin/dmconf replacement for MacOS
-    local bmfiles_path = Path:new(vim.fn.expand("$HOME/.config/shell/bm-files"))
-    bmfiles_path:mustExist()
-
-    local filepaths = {}
-    for line in bmfiles_path:read():gmatch("([^\n]+)") do
-        local fields = {}
-        for field in string.gmatch(line, "%S+") do
-            table.insert(fields, field)
-        end
-        if #fields < 2 then
-            error("line " .. #filepaths .. " is invalid: " .. line)
-        end
-        -- TODO: join enquoted paths with spaces from fields[2:] to single path
-        table.insert(filepaths, vim.fn.expand(fields[2]))
+    local bookmarks_sources = {}
+    for _, str_path in pairs({ "$HOME/.config/shell/bm-files", "$HOME/.config/shell/bm-dirs" })  do
+        local path = Path:new(vim.fn.expand(str_path))
+        path:must_exist()
+        table.insert(bookmarks_sources, path)
     end
 
-    builtin.find_files {
-        find_command = { "echo", "-e", table.concat(filepaths, "\n") },
-    }
+    local bookmarks = {}
+    for _, bookmark_source in pairs(bookmarks_sources) do
+        local filepaths = {}
+        for line in bookmark_source:read():gmatch("([^\n]+)") do
+            if line:sub(1, 1) == "#" then
+                goto continue
+            end
+
+            local fields = {}
+            for field in line:gmatch("%S+") do
+                if #fields < 2 then
+                    table.insert(fields, field)
+                else
+                    fields[2] = fields[2] .. field
+                end
+            end
+
+            if #fields < 2 then
+                error("line " .. #filepaths .. " is invalid: " .. line)
+            end
+
+            table.insert(filepaths, vim.fn.expand(fields[2]))
+            ::continue::
+        end
+
+        for _, filepath in pairs(filepaths) do
+            table.insert(bookmarks, filepath)
+        end
+    end
+
+    local bookmarks_string = table.concat(bookmarks, "\n")
+    builtin.find_files { find_command = { "echo", "-e", bookmarks_string } }
 end, { desc = "Fzf configs" })
+
+local flash = require "flash"
+map({ "n", "x", "o" }, "<leader>j", flash.jump, { desc = "Flash" })
+map({ "n", "x", "o" }, "Zk", flash.treesitter, { desc = "Flash Treesitter" })
+
+-- nvim-treesitter-textobjects
+require "nvim-treesitter-textobjects".setup {}
+
+local textobjects_move = require "nvim-treesitter-textobjects.move"
+map({ "n", "x", "o" }, "]f", function()
+    textobjects_move.goto_next_start("@function.outer", "textobjects")
+end, { desc = "Next function" })
+map({ "n", "x", "o" }, "[f", function()
+    textobjects_move.goto_previous_start("@function.outer", "textobjects")
+end, { desc = "Next function" })
+
+local textobjects_select = require "nvim-treesitter-textobjects.select"
+map({ "x", "o" }, "af", function()
+    textobjects_select.select_textobject("@function.outer", "textobjects")
+end, { desc = "Select a function" })
+map({ "x", "o" }, "if", function()
+    textobjects_select.select_textobject("@function.inner", "textobjects")
+end, { desc = "Select a function" })
+-- end nvim-treesitter-textobjects

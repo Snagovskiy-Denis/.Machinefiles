@@ -29,29 +29,12 @@ AUR () {
     sudo pacman -U $(find ${download_path} -name "${package_name}*.pkg*")
 }
 
-setup-wireguard() {
-    sudo mv -f download/*-wg.conf /etc/wireguard/wg0.conf
-    sudo wg-quick up wg0
-    curl --silent https://api.country.is | jq
-}
-
-# fzf --preview command for file and directory
-if type bat >/dev/null 2>&1; then
-    FZF_PREVIEW_CMD='bat --color=always --plain --line-range :$FZF_PREVIEW_LINES {}'
-elif type pygmentize >/dev/null 2>&1; then
-    FZF_PREVIEW_CMD='head -n $FZF_PREVIEW_LINES {} | pygmentize -g'
-else
-    FZF_PREVIEW_CMD='head -n $FZF_PREVIEW_LINES {}'
-fi
-
-
 # zd - cd to selected directory
 zd() {
   local dir
   dir="$(
     fd --type directory | fzf +m \
           --preview='tree -C {} | head -n $FZF_PREVIEW_LINES' \
-          --preview-window='right:hidden:wrap' \
           --bind=ctrl-v:toggle-preview \
           --bind=ctrl-x:toggle-sort \
           --header='(view:ctrl-v) (sort:ctrl-x)' \

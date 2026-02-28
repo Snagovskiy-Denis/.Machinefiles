@@ -7,7 +7,16 @@ h    $HOME
 m    $XDG_MUSIC_DIR
 mf   $HOME/.Machinefiles
 mn   /mnt
+tt   /tmp
 pp   $XDG_PICTURES_DIR
 sc   $HOME/.local/bin
 src  $HOME/.local/src
 vv   $XDG_VIDEOS_DIR
+
+J    $ZETTELKASTEN/Journal
+s    $HOME/Data/Singularity
+v    $ZETTELKASTEN/Z
+y    $HOME/Data/yt-q
+b    $HOME/Vaults/Lore/Pictures/vision_boards
+p    $HOME/sync/default
+w    $HOME/Vaults/Lore
