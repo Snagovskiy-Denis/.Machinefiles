@@ -481,9 +481,9 @@ if vim.opt.diff:get() then
     persistence.stop()
 end
 map({ "n" }, "<leader>Qc", ":cq<cr>", { desc = "Abort git mergetool" })
-map({ "n" }, "<leader>bo", ":diffget 1<cr>", { desc = "Accept ours" })
+map({ "n" }, "<leader>bt", ":diffget 1<cr>", { desc = "Accept theirs" })
 map({ "n" }, "<leader>bb", ":diffget 2<cr>", { desc = "Accept base" })
-map({ "n" }, "<leader>bt", ":diffget 3<cr>", { desc = "Accept theirs" })
+map({ "n" }, "<leader>bo", ":diffget 3<cr>", { desc = "Accept ours" })
 -- nvimdiff end
 
 map({ "n" }, "<leader>sm", function()
