@@ -1,10 +1,9 @@
 alacritty  $HOME/.config/alacritty/alacritty.toml
 aliasrc    $HOME/.config/shell/aliases
 functions  $HOME/.config/shell/functions
-apk        $HOME/.config/shell/apk_related
+#apk        $HOME/.config/shell/apk_related
 bashrc     $HOME/.bashrc
 newsboat   $HOME/.config/newsboat/config
-rss-feed   $ZETTELKASTEN/newsboat_rss_feed_urls.txt
 notes      $HOME/.notes.md
 nvim       $HOME/.config/nvim/init.lua
 profile    $HOME/.bash_profile
@@ -14,3 +13,6 @@ task       $HOME/.config/taskrc
 log-qtile  $HOME/.local/share/qtile/qtile.log
 autostart  $HOME/.config/shell/autostart.sh
 bm-files   $HOME/.config/shell/bm-files
+bm-dirs    $HOME/.config/shell/bm-dirs
+
+rss-feed   $ZETTELKASTEN/newsboat_rss_feed_urls.txt

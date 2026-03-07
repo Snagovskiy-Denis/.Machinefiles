@@ -1,5 +1,6 @@
 -- self@machine .vimrc
 --
+-- MEMO: KISS
 
 -- tip: use ':help number' to check option effect
 vim.opt.number = true
@@ -30,7 +31,6 @@ vim.opt.hidden = true
 vim.opt.spelllang = "ru,en,la"
 
 vim.cmd [[set completeopt+=menuone,noselect,popup]]
-vim.cmd [[set suffixesadd+=.md]]
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "gitcommit", "markdown", "text" },
@@ -46,48 +46,51 @@ vim.g.mapleader = " "
 -- tip: use 'checkhealth' to ensure plugins are valid,
 -- also check their external requirements (e.g. nvim-treesitter requires gcc)
 vim.pack.add({
-    { src = "https://github.com/windwp/nvim-autopairs" },
-    { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter",            version = "main" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter",            version = "main" },
     { src = "https://github.com/ThePrimeagen/harpoon",                       version = "harpoon2" },
     { src = "https://github.com/akinsho/toggleterm.nvim",                    version = "v2.13.1" },
-    { src = "https://github.com/folke/persistence.nvim" },
+    { src = "https://github.com/windwp/nvim-autopairs" },
+    { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/nvim-lualine/lualine.nvim" },
     { src = "https://github.com/romgrk/barbar.nvim" },
+    { src = "https://github.com/folke/persistence.nvim" },
+    {
+        src = "https://github.com/folke/twilight.nvim",
+        version = "664e752",
+        data = {
+            patches_cmds_for_manual_execution_after_installation = {
+                [[patch -p1 -d $(nvim --headless -c ':lua print(vim.pack.get({"twilight.nvim"})[1].path)' +qa! 2>&1) < patches/twilight.nvim.patch ]],
+            },
+        },
+    },
     { src = "https://github.com/folke/which-key.nvim" },
     { src = "https://github.com/folke/flash.nvim" },
     -- telescope
     { src = "https://github.com/nvim-telescope/telescope.nvim" },
     { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
-    -- telescope end
     -- lsp
     { src = "https://github.com/neovim/nvim-lspconfig" }, -- lsp configs data repository
     { src = "https://github.com/mason-org/mason.nvim" },  -- lsp apps manager (instead of pacman & brew)
     { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
-    -- lsp end
     -- autocomplete
     { src = "https://github.com/saghen/blink.cmp" },
     { src = "https://github.com/joelazar/blink-calc" },
     { src = "https://github.com/L3MON4D3/LuaSnip" },
     { src = "https://github.com/rafamadriz/friendly-snippets" },
-    -- autocomplete end
     -- git
     { src = "https://github.com/lewis6991/gitsigns.nvim" },
-    -- git end
     -- debugger
     { src = "https://github.com/mfussenegger/nvim-dap" },
     { src = "https://github.com/rcarriga/nvim-dap-ui" },
     { src = "https://github.com/theHamsta/nvim-dap-virtual-text" },
     { src = "https://github.com/leoluz/nvim-dap-go" },
     { src = "https://github.com/nvim-neotest/nvim-nio" },
-    -- debugger end
     -- aesthetics
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
     { src = "https://github.com/navarasu/onedark.nvim" },
     { src = "https://github.com/bignimbus/pop-punk.vim" }, -- nostalgia
-    -- aesthetics end
 })
 
 require "onedark".setup { style = "deep" }
@@ -211,6 +214,8 @@ require "toggleterm".setup { -- TODO: replace with tmux after tmux+alacritty bug
     direction = "float",
 }
 
+require "zettelkasten" -- locale package
+
 
 local map = vim.keymap.set
 
@@ -228,10 +233,11 @@ map({ "v" }, "<leader>h", function()
     vim.opt.hlsearch = true
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
 end, { desc = "Highlight selection" })
-map({ "n" }, "<leader>S", "<cmd>:set spell!<cr>", { desc = "Toggle Spell check" })
 map({ "n" }, "<leader>e", "<cmd>Oil<cr>", { desc = "Explore" })
 map({ "n" }, "<leader>ch", "<cmd>cd %:h<cr><cmd>:pwd<cr>", { desc = "cd to Here" })
 map({ "n" }, "<leader>bd", ":bp | bd #<cr>", { desc = "Close buffer w/o split close" })
+map({ "n" }, "<leader>o", ":source " .. vim.fn.expand("$MYVIMRC") .. "<CR>")
+map({ "n" }, "<leader>O", ":restart<cr>")
 
 map({ "i", "c" }, "<C-F>", "<C-^>", { desc = "Toggle layout" })
 map({ "v", "x" }, "<C-F>", "<Esc>a<C-^><Esc>gv", { desc = "Toggle layout" })
@@ -274,7 +280,7 @@ map({ "n" }, "<leader>dd", function()
 end, { desc = "Debug test" })
 map({ "n" }, "<leader>dr", function()
     if last_test_expression == "" then
-        print("last test expression is empty")
+        vim.notify("last test expression is empty", vim.log.levels.ERROR)
         return
     end
     start_dap_for_test(last_test_expression)
@@ -294,8 +300,6 @@ map({ "n" }, "<C-j>", function() harpoon:list():select(1) end)
 map({ "n" }, "<C-k>", function() harpoon:list():select(2) end)
 map({ "n" }, "<C-n>", function() harpoon:list():select(3) end)
 map({ "n" }, "<C-m>", function() harpoon:list():select(4) end)
-map({ "n" }, "<C-S-P>", function() harpoon:list():prev() end)
-map({ "n" }, "<C-S-N>", function() harpoon:list():next() end)
 -- harpoon end
 
 -- plugins manager
@@ -315,7 +319,7 @@ map({ "n" }, "<leader>pc", function()
     end
 
     if #unused_plugins == 0 then
-        print("No unused plugins.")
+        vim.notify("No unused plugins.", vim.log.levels.WARN)
         return
     end
 
@@ -324,11 +328,6 @@ map({ "n" }, "<leader>pc", function()
     end
 end, { desc = "Clean unused plugins" })
 -- plugins manager end
-
-map({ "n", }, "<leader>/", "gcc", { desc = "Toggle comment", remap = true })
-map({ "v", "x" }, "<leader>/", "gc", { desc = "Toggle comment", remap = true })
-map({ "n" }, "<leader>o", ":source " .. vim.fn.expand("$MYVIMRC") .. "<CR>")
-map({ "n" }, "<leader>O", ":restart<cr>")
 
 local builtin = require "telescope.builtin"
 map({ "n" }, "<leader>f", builtin.find_files, { desc = "Find files (ignore)" })
@@ -377,100 +376,10 @@ map({ "n" }, "<leader>lo", function()
     vim.defer_fn(vim.cmd.edit, 1000)
 end, { desc = "Restart LSP" })
 
--- zettelkasten
-local Path = require "plenary.path"
-
-function Path:must_exist()
-    if not self:exists() then
-        error(string.format("path doesn't exist: %s", tostring(self)))
-    end
-end
-
-function Path:Zettelkasten()
-    local vault = Path:new(vim.fn.expand("$ZETTELKASTEN"))
-    vault:must_exist()
-    return vault
-end
-
-map({ "n", }, "<leader>zf", function()
-    local vault = tostring(Path:Zettelkasten())
-    builtin.find_files { cwd = vault }
-    vim.api.nvim_set_current_dir(vault)
-end, { desc = "Find notes" })
-map({ "n" }, "<leader>zt", function()
-    local vault = tostring(Path:Zettelkasten())
-    builtin.live_grep { cwd = vault }
-    vim.api.nvim_set_current_dir(vault)
-end, { desc = "Grep notes" })
-map({ "n" }, "<leader>zh", '<cmd>cd $ZETTELKASTEN<cr><cmd>:pwd<cr>', { desc = "cd to Vault" })
-
-local function edit_note(name)
-    local vault = Path:Zettelkasten()
-    local template = vault / "Templates" / "Mine Моё.md"
-    template:must_exist()
-    local targetDir = vault / "Z"
-    targetDir:must_exist()
-
-    local target = targetDir / (name .. ".md")
-    vim.cmd("edit " .. tostring(target))
-    vim.api.nvim_set_current_dir(tostring(targetDir))
-
-    if target:exists() then
-        return
-    end
-
-    -- place template and replace {{title}} tag if presented
-    vim.cmd("read " .. tostring(template))
-    vim.cmd [[normal gg"xdd]]
-    vim.cmd("%s/{{title}}/" .. name .. "/g")
-    vim.cmd [[normal G]]
-end
-map({ "n" }, "<leader>zz", function()
-    local line = vim.api.nvim_get_current_line()
-    local link_start, link_end = line:find("%[%[.-%]%]")
-    if not link_start then return end
-
-    local col = vim.api.nvim_win_get_cursor(0)[2] + 1
-    if col < link_start or col > link_end then return end
-
-    local link_text = line:sub(link_start + #"[[", link_end - #"]]")
-
-    local note_name = link_text
-
-    local alias_start, alias_end = link_text:find("|.-$")
-    if alias_start and alias_end then
-        note_name = link_text:sub(0, alias_start - 1)
-    end
-
-    edit_note(note_name)
-end, { desc = "Edit note under cursor" })
-map({ "n" }, "<leader>zn", function()
-    vim.ui.input({ prompt = "Title: " }, function(input)
-        if input then
-            edit_note(input)
-        end
-    end)
-end, { desc = "New note" })
-map({ "n" }, "<leader>zd", function()
-    local filepath = vim.fn.expand("%")
-    if 1 ~= vim.fn.confirm("Remove file " .. filepath, "&Yes\n&No", 2) then
-        return
-    end
-    local success, err = os.remove(filepath)
-    if success then
-        print "file deleted"
-    else
-        error(err)
-    end
-end, { desc = "Delete current file" })
--- zettelkasten end
-
 local persistence = require "persistence"
 persistence.setup()
 map({ "n" }, "<leader>qs", persistence.load, { desc = "Load $PWD session" })
 map({ "n" }, "<leader>qS", persistence.select, { desc = "Select session" })
-map({ "n" }, "<leader>qd", persistence.stop, { desc = "Disable session save on quit" })
-map({ "n" }, "<leader>qe", persistence.start, { desc = "Enable session save on quit" })
 
 -- nvimdiff
 if vim.opt.diff:get() then
@@ -484,54 +393,11 @@ map({ "n" }, "<leader>Qc", ":cq<cr>", { desc = "Abort git mergetool" })
 map({ "n" }, "<leader>bt", ":diffget 1<cr>", { desc = "Accept theirs" })
 map({ "n" }, "<leader>bb", ":diffget 2<cr>", { desc = "Accept base" })
 map({ "n" }, "<leader>bo", ":diffget 3<cr>", { desc = "Accept ours" })
+map({ "n" }, "<leader>bn", ":xa<cr>", { desc = "Save all and edit next file" })
 -- nvimdiff end
-
-map({ "n" }, "<leader>sm", function()
-    -- ~/.local/bin/dmconf replacement for MacOS
-    local bookmarks_sources = {}
-    for _, str_path in pairs({ "$HOME/.config/shell/bm-files", "$HOME/.config/shell/bm-dirs" })  do
-        local path = Path:new(vim.fn.expand(str_path))
-        path:must_exist()
-        table.insert(bookmarks_sources, path)
-    end
-
-    local bookmarks = {}
-    for _, bookmark_source in pairs(bookmarks_sources) do
-        local filepaths = {}
-        for line in bookmark_source:read():gmatch("([^\n]+)") do
-            if line:sub(1, 1) == "#" then
-                goto continue
-            end
-
-            local fields = {}
-            for field in line:gmatch("%S+") do
-                if #fields < 2 then
-                    table.insert(fields, field)
-                else
-                    fields[2] = fields[2] .. field
-                end
-            end
-
-            if #fields < 2 then
-                error("line " .. #filepaths .. " is invalid: " .. line)
-            end
-
-            table.insert(filepaths, vim.fn.expand(fields[2]))
-            ::continue::
-        end
-
-        for _, filepath in pairs(filepaths) do
-            table.insert(bookmarks, filepath)
-        end
-    end
-
-    local bookmarks_string = table.concat(bookmarks, "\n")
-    builtin.find_files { find_command = { "echo", "-e", bookmarks_string } }
-end, { desc = "Fzf configs" })
 
 local flash = require "flash"
 map({ "n", "x", "o" }, "<leader>j", flash.jump, { desc = "Flash" })
-map({ "n", "x", "o" }, "Zk", flash.treesitter, { desc = "Flash Treesitter" })
 
 -- nvim-treesitter-textobjects
 require "nvim-treesitter-textobjects".setup {}
@@ -552,3 +418,5 @@ map({ "x", "o" }, "if", function()
     textobjects_select.select_textobject("@function.inner", "textobjects")
 end, { desc = "Select a function" })
 -- end nvim-treesitter-textobjects
+
+require "twilight".setup { context = 0, expand = { "section" } } -- presentation viewer

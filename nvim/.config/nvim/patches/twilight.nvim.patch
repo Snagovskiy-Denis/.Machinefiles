@@ -1,0 +1,15 @@
+# Dim next markdown section title.
+# 
+diff --git a/lua/twilight/view.lua b/lua/twilight/view.lua
+index ae81c21..24c40f4 100644
+--- a/lua/twilight/view.lua
++++ b/lua/twilight/view.lua
+@@ -169,7 +169,7 @@ function M.get_context(buf, line)
+     local root = M.get_expand_root(node)
+     if root then
+       local from, to = M.range(root)
+-      return from + 1, to + 2
++      return from, to + 1
+     end
+     local from, to = M.expand(buf, line, line, line)
+ 

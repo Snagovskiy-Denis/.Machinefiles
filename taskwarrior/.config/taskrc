@@ -126,3 +126,4 @@ alias.editnote=execute "$HOME/.local/bin/editnote"  # usage: task editnote 127
 
 # End of file
 # Below are 'task config'-setted values
+context=w
