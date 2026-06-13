@@ -22,7 +22,7 @@ if [ ! "${1}" == "NoFgJobs" ]; then
     ${TERMINAL:-alacritty} --title oj -e oj &
     # ${TERMINAL:-alacritty} --title taskwarrior -e taskwarrior-tui &
     # ${TERMINAL:-alacritty} --title cmus -e cmus &
-    #vivaldi-stable &
+    vivaldi-stable &
     # anki &
     # start_bluetooth_discovery &
 fi

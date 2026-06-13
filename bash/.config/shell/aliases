@@ -21,6 +21,8 @@ alias s="sudo "
 
 # Abbreviate long commands
 alias t="task"
+complete -o nospace -F _task t # autocompletion for alias
+alias taks="task" # errorless experience
 alias py="python"
 alias ipy="ipython"
 alias gorepl="yaegi"
@@ -54,8 +56,8 @@ alias yta="yt --extract-audio"
 alias ytac="cb | yta --batch-file -"  # yta link from clipboard
 alias ytc=" cb | yt  --batch-file -"
 
-tra () { trans "$*";       }
-tru () { trans ru:en "$*"; }  # tru instead of tr beacuse of task completion
+trans   () { command trans "$*"; }
+transru () { command trans ru:en "$*"; }  # tru instead of tr beacuse of task completion
 
 alias vpn-ip="curl --silent https://api.country.is | jq"
 
@@ -68,11 +70,6 @@ tn  ()   { termdown $(calc $1*60) && mpv "${HOME}/Data/Music/alarm.mp3"; }
 # Errorless experience
 alias :q="exit"
 alias :Q="exit"
-
-# Print TODOs
-alias TODO="rg TODO --glob='!*.json' --glob='!*.js*' --glob='!*.css*'"
-alias TODO-git='TODO $(git ls-files -m)'
-alias TODO.txt="TODO --heading --color=always > TODO.txt"  # writes todo-summary to file
 
 # packaging + environments
 alias vc="python -m venv ./venv"

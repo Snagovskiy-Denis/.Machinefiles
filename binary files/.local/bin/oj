@@ -6,12 +6,14 @@ Opens today's note in the EDITOR.
 Creates note using template if the note doesn't exist.
 """
 
+import subprocess
+
 from pathlib import Path
 from typing import Annotated
 from datetime import date
-from os import chdir
+from os import chdir, environ
 
-from typer import run, Option, Exit, edit
+from typer import run, Option, Exit
 from rich import print
 
 
@@ -43,7 +45,9 @@ def main(
         todays_note.write_text(template.read_text())
 
     chdir(journal_dir)
-    edit(filename=str(todays_note))
+    # edit(filename=str(todays_note)) # typer.edit was deleted
+    editor = environ.get("EDITOR", "nvim")
+    subprocess.run([editor, todays_note])
 
 
 if __name__ == "__main__":

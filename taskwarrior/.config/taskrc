@@ -48,13 +48,17 @@ context.w.write=scheduled:6days
 uda.estimate.label=⏳
 uda.estimate.type=duration
 
+uda.resistance.label=👿
+uda.resistance.type=string
+uda.resistance.values=gremlin,demon,treshold
+
 uda.dod.label=DoD
 uda.dod.type=string
 
 # report
 # report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
-report.next.labels=ID,Age,P,Sched,⏳,Description,Due,Project,Tag,Urg
-report.next.columns=id,entry.age,priority,scheduled.countdown,estimate,description,due.relative,project,tags,urgency
+report.next.labels=ID,Age,P,Sched,⏳,Description,Due,Project,👿,Tag,Urg
+report.next.columns=id,entry.age,priority,scheduled.countdown,estimate,description,due.relative,project,resistance,tags,urgency
 # use description.count to replace annotations with annotations count
 report.next.sort=urgency-
 report.next.filter=status:pending -WAITING limit:page
@@ -62,9 +66,9 @@ report.next.filter=status:pending -WAITING limit:page
 report.waiting.columns=id,start.active,entry.age,depends.indicator,priority,project,tags,recur.indicator,wait,wait.remaining,scheduled,due,until,estimate,description
 report.waiting.labels=ID,A,Age,D,P,Project,Tags,R,Wait,Remaining,Sched,Due,Until,Estimate,Description
 
-report.retro.labels=UUID,Done,Project,Tags,R,Description
+report.retro.labels=UUID,Done,Project,👿,Tags,R,Description
 report.retro.description=Completed tasks for last week
-report.retro.columns=uuid.short,end,project,tags,recur.indicator,description
+report.retro.columns=uuid.short,end,project,resistance,tags,recur.indicator,description
 report.retro.sort=project-/,end+
 report.retro.filter=status:completed end > today-1w
 
@@ -108,7 +112,8 @@ urgency.user.tag.red.coefficient=0.2
 # examples:
 # urgency.user.tag.mytag.coefficient=0
 # urgency.user.project.myproject.coefficient=0
-urgency.user.project.LVLUP2.coefficient=3
+urgency.user.project.LVLUP2.coefficient=0.5
+urgency.user.project.WORLDWIDE.coefficient=2
 
 
 # plugins
@@ -126,4 +131,4 @@ alias.editnote=execute "$HOME/.local/bin/editnote"  # usage: task editnote 127
 
 # End of file
 # Below are 'task config'-setted values
-context=w
+context=t

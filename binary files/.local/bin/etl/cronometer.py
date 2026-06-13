@@ -16,6 +16,63 @@ __datasourcetype__ = "android:package"
 # logger = logging.getLogger(Path(__file__).name)
 logger = logging.root
 
+table_names = (
+    "food_name",
+    "amount",
+    "energy__kcal",
+    "alcohol__g",
+    "caffeine__mg",
+    "water__g",
+    "b1__thiamine__mg",
+    "b2__riboflavin__mg",
+    "b3__niacin__mg",
+    "b5__pantothenic_acid__mg",
+    "b6__pyridoxine__mg",
+    "b12__cobalamin__µg",
+    "folate__µg",
+    "vitamin_a__µg",
+    "vitamin_c__mg",
+    "vitamin_d__iu",
+    "vitamin_e__mg",
+    "vitamin_k__µg",
+    "calcium__mg",
+    "copper__mg",
+    "iron__mg",
+    "magnesium__mg",
+    "manganese__mg",
+    "phosphorus__mg",
+    "potassium__mg",
+    "selenium__µg",
+    "sodium__mg",
+    "zinc__mg",
+    "carbs__g",
+    "fiber__g",
+    "starch__g",
+    "sugars__g",
+    "net_carbs__g",
+    "fat__g",
+    "cholesterol__mg",
+    "monounsaturated__g",
+    "polyunsaturated__g",
+    "saturated__g",
+    "trans_fats__g",
+    "omega_3__g",
+    "omega_6__g",
+    "cystine__g",
+    "histidine__g",
+    "isoleucine__g",
+    "leucine__g",
+    "lysine__g",
+    "methionine__g",
+    "phenylalanine__g",
+    "protein__g",
+    "threonine__g",
+    "tryptophan__g",
+    "tyrosine__g",
+    "valine__g",
+    "category",
+)
+
 
 def to_SQL_list(items: Iterable) -> str:
     comma_separated_items = ",".join(str(item) for item in items)
@@ -27,24 +84,20 @@ def to_SQL_list_of_strings(strings: Iterable) -> str:
 
 
 def parse_csv(cronometer_csv: Path) -> tuple[dict, list]:
+    headers = ["timestamp"] + list(table_names)
+
     csv_days = defaultdict(list)
     with open(cronometer_csv) as csvfile:
-        reader = csv.reader(csvfile)
-        csv_header = next(reader)
+        reader = csv.DictReader(csvfile)
         for row in reader:
-            day = row[0]
-            GROUP_COLUMN_INDEX = 1
-            del row[GROUP_COLUMN_INDEX]  # skip "group" row
-            csv_days[day].append(row)
-
-    headers = ["timestamp"]
-    csv_header.pop(0)
-    for header in csv_header:
-        for old_and_new in (" ", "_"), ("(", "_"), (")", ""), ("-", "_"):
-            header = header.replace(*old_and_new)
-        if header.lower() == "group":  # skip "group" header
-            continue
-        headers.append(header.lower())
+            food_track = [row["Day"]]
+            for table in table_names:
+                for header, value in row.items():
+                    for old_and_new in (" ", "_"), ("(", "_"), (")", ""), ("-", "_"):
+                        header = header.replace(*old_and_new)
+                    if header.lower() == table:
+                        food_track.append(value)
+            csv_days[row["Day"]].append(food_track)
 
     return csv_days, headers
 
@@ -72,7 +125,7 @@ def import_data(csv_days: dict, headers: list, cursor: sqlite3.Cursor) -> int:
             days_to_import[day] = food_tracks
             continue
 
-        CALORIES_INDEX = 3
+        CALORIES_INDEX = list(table_names).index("energy__kcal") + 1 # 1 = timestamp
         kcal_sum_in_csv = sum(float(track[CALORIES_INDEX]) for track in food_tracks)
         logging.debug(f"{day} {kcal_sum_in_csv = :.2f}, {kcal_sums_in_db[day] = :.2f}")
         if int(kcal_sum_in_csv) > int(kcal_sums_in_db[day]):  # overwrite existing food_tracks

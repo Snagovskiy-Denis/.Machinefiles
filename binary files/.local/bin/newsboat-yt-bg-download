@@ -5,7 +5,7 @@
 URL="${1}"
 
 OUTDIR="${HOME}/Data/yt-q/"
-FILENAME_TEMPLATE="%(epoch>%Y-%m-%d)s RSS-S | %(title)s [%(id)s].%(ext)s"
+FILENAME_TEMPLATE="%(epoch>%Y-%m-%d)s RSS-S - %(title)s [%(id)s].%(ext)s"
 TEMPLATE="${OUTDIR}/${FILENAME_TEMPLATE}"
 
 if

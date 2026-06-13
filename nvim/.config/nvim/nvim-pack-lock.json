@@ -4,6 +4,10 @@
       "rev": "dae4f5aaa3574bd0c2b9dd20fb9542a02c10471c",
       "src": "https://github.com/L3MON4D3/LuaSnip"
     },
+    "alabaster.nvim": {
+      "rev": "b902c73fabefc13583bfc0c18b28950ea8f6244f",
+      "src": "https://github.com/dchinmay2/alabaster.nvim"
+    },
     "barbar.nvim": {
       "rev": "539d73def39c9172b4d4d769f14090e08f37b29d",
       "src": "https://github.com/romgrk/barbar.nvim"
@@ -118,11 +122,6 @@
       "rev": "50ea089fc548917cc3cc16b46a8211833b9e3c7c",
       "src": "https://github.com/akinsho/toggleterm.nvim",
       "version": "'v2.13.1'"
-    },
-    "twilight.nvim": {
-      "rev": "664e752f4a219801265cc3fc18782b457b58c1e1",
-      "src": "https://github.com/folke/twilight.nvim",
-      "version": "'664e752'"
     },
     "which-key.nvim": {
       "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",

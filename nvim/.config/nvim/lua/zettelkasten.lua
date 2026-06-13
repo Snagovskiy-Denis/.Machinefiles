@@ -18,7 +18,7 @@ local function edit_note(name)
     local vault = Path:Zettelkasten()
     local template = vault / "Templates" / "Mine Моё.md"
     template:must_exist()
-    local targetDir = vault / "Z"
+    local targetDir = vault / "Z" -- TODO: do not hardcode Z dir exactly, use find to find dir
     targetDir:must_exist()
 
     local target = targetDir / (name .. ".md")
@@ -50,11 +50,20 @@ end, { desc = "Grep notes" })
 
 vim.keymap.set({ "n" }, "<leader>zz", function()
     local line = vim.api.nvim_get_current_line()
-    local link_start, link_end = line:find("%[%[.-%]%]")
-    if not link_start then return end
-
     local col = vim.api.nvim_win_get_cursor(0)[2] + 1
-    if col < link_start or col > link_end then return end
+    local search_start = 1
+
+    ::search::
+    local link_start, link_end = line:find("%[%[.-%]%]", search_start)
+
+    -- no matches
+    if not link_start or not link_end then return end
+
+    -- search for a next match
+    if col < link_start or col > link_end then
+        search_start = link_end
+        goto search
+    end
 
     local link_text = line:sub(link_start + #"[[", link_end - #"]]")
 
@@ -120,7 +129,8 @@ vim.keymap.set({ "n" }, "<leader>sm", function()
             end
 
             if #fields < 2 then
-                vim.notify("file " .. tostring(bookmark_source) .. " is invalid: line " .. #filepaths .. " has no filepath: " .. line)
+                vim.notify("file " ..
+                tostring(bookmark_source) .. " is invalid: line " .. #filepaths .. " has no filepath: " .. line)
                 return
             end
 

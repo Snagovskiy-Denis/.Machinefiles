@@ -6,6 +6,7 @@ from libqtile import bar, layout, widget
 from libqtile.config import Screen
 
 from taskwarrior_widget import TaskWarriorWidget
+from cmus_widget import Cmus
 
 
 aesthetics_file = Path.home() / ".config/aesthetics.json"
@@ -57,7 +58,8 @@ widgets = (
     widget.TextBox("🎯"),
     TaskWarriorWidget(),
     widget.Sep(),
-    widget.Cmus(max_chars=70),
+    #widget.Cmus(max_chars=70),
+    Cmus(max_chars=70),
     widget.Sep(),
     widget.Clock(format="🗓️%Y-%m-%d ⏱%H:%M"),
     widget.QuickExit(default_text="❎ "),

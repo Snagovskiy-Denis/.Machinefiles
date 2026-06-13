@@ -29,6 +29,7 @@ vim.opt.imsearch = 0 -- same as above, but for search mode
 vim.opt.mouse = "a"  -- heresy
 vim.opt.hidden = true
 vim.opt.spelllang = "ru,en,la"
+vim.opt.background = "light"
 
 vim.cmd [[set completeopt+=menuone,noselect,popup]]
 
@@ -56,15 +57,6 @@ vim.pack.add({
     { src = "https://github.com/nvim-lualine/lualine.nvim" },
     { src = "https://github.com/romgrk/barbar.nvim" },
     { src = "https://github.com/folke/persistence.nvim" },
-    {
-        src = "https://github.com/folke/twilight.nvim",
-        version = "664e752",
-        data = {
-            patches_cmds_for_manual_execution_after_installation = {
-                [[patch -p1 -d $(nvim --headless -c ':lua print(vim.pack.get({"twilight.nvim"})[1].path)' +qa! 2>&1) < patches/twilight.nvim.patch ]],
-            },
-        },
-    },
     { src = "https://github.com/folke/which-key.nvim" },
     { src = "https://github.com/folke/flash.nvim" },
     -- telescope
@@ -91,10 +83,46 @@ vim.pack.add({
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
     { src = "https://github.com/navarasu/onedark.nvim" },
     { src = "https://github.com/bignimbus/pop-punk.vim" }, -- nostalgia
+    { src = "https://github.com/dchinmay2/alabaster.nvim" },
+    -- { src = "https://github.com/sderev/alabaster.vim" },
 })
 
-require "onedark".setup { style = "deep" }
-require "onedark".load()
+-- require "onedark".setup { style = "deep" }
+-- require "onedark".load()
+vim.cmd("colorscheme alabaster")
+
+local fg_hilghlight_theme = true
+if fg_hilghlight_theme then
+    local theme = {
+        ["@string"] = { bg = "#95cb82", fg = "" },
+        String = { bg = "#95cb82" },
+        ["@AlabasterString"] = { bg = "#95cb82", fg = "" },
+
+        ["@string.regex"] = { bg = "#cc8bc9", fg = "#000000" },
+        Special = { bg = "", fg = "#aa3731" },
+        ["@string.escape"] = { bg = "#cc8bc9", fg = "#000000" },
+        Title = { bg = "#cc8bc9", fg = "#000000" },
+
+        ["@constant.builtin"] = { bg = "#cc8bc9", fg = "#000000" },
+        ["@AlabasterConstant"] = { bg = "#cc8bc9", fg = "#000000" },
+        Number = { bg = "#cc8bc9" },
+        Boolean = { bg = "#cc8bc9" },
+        Float = { bg = "#cc8bc9" },
+        Character = { bg = "#cc8bc9" },
+        Constant = { bg = "#cc8bc9" },
+        TSConstBuiltin = { bg = "#cc8bc9" },
+        TSNone = { bg = "#cc8bc9" },
+        ["@none"] = { bg = "#cc8bc9" },
+
+        Comment = { bg = "#dfdf8e", fg = "" },
+        Todo = {bg="#aa3536",fg=""},
+
+        ["@AlabasterDefinition"] = { bg = "#71bfe7" },
+    }
+    for group, hl in pairs(theme) do
+        vim.api.nvim_set_hl(0, group, hl)
+    end
+end
 
 -- tip: 'help lspconfig-all' for correct names
 local lsp_langs = {
@@ -339,6 +367,39 @@ map({ "n" }, "<leader>stt", builtin.live_grep, { desc = "Live grep (ignore)" })
 map({ "n" }, "<leader>sta", function()
     builtin.live_grep { no_ignore = true, hidden = true }
 end, { desc = "Live grep (all)" })
+map({ "n" }, "<leader>sc", function()
+    local filepath = os.getenv("HOME") .. "/.config/fd/rgrc"
+    --vim.cmd("edit " .. filepath)
+
+    local file = io.open(filepath, "r")
+    local content
+    if file then
+        content = file:read("*all")
+        file:close()
+    else
+        vim.notify("Cound not open file", vim.log.levels.ERROR)
+        return
+    end
+
+    local mode = ""
+    if content:sub(1, 1) == "#" then
+        content = content:sub(2, -1)
+        mode = "on"
+    else
+        content = "#" .. content
+        mode = "off"
+    end
+
+    file = io.open(filepath, "w")
+    if file then
+        file:write(content)
+        file:close()
+        vim.notify("Global ignore " .. mode, vim.log.levels.INFO)
+    else
+        vim.notify("Cound not open file", vim.log.levels.ERROR)
+        return
+    end
+end, { desc = "Switch global ignore" })
 map({ "n" }, "<leader>sM", builtin.man_pages, { desc = "Man pages" })
 map({ "n" }, "<leader>sb", function()
     builtin.buffers({
@@ -397,7 +458,15 @@ map({ "n" }, "<leader>bn", ":xa<cr>", { desc = "Save all and edit next file" })
 -- nvimdiff end
 
 local flash = require "flash"
-map({ "n", "x", "o" }, "<leader>j", flash.jump, { desc = "Flash" })
+map({ "n", "x", "o" }, "<leader>j", flash.jump, { desc = "Jump" })
+map({ "n", "x", "o" }, "<leader>zj", function()
+    local cursor_before = vim.api.nvim_win_get_cursor(0)
+    flash.jump { pattern = "[[" }
+    local cursor_after = vim.api.nvim_win_get_cursor(0)
+    if cursor_before[1] ~= cursor_after[1] or cursor_before[2] ~= cursor_after[2] then
+        vim.lsp.buf.definition()
+    end
+end, { desc = "Jump into note" })
 
 -- nvim-treesitter-textobjects
 require "nvim-treesitter-textobjects".setup {}
@@ -418,5 +487,3 @@ map({ "x", "o" }, "if", function()
     textobjects_select.select_textobject("@function.inner", "textobjects")
 end, { desc = "Select a function" })
 -- end nvim-treesitter-textobjects
-
-require "twilight".setup { context = 0, expand = { "section" } } -- presentation viewer
