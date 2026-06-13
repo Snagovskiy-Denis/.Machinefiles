@@ -82,9 +82,8 @@ vim.pack.add({
     -- aesthetics
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
     { src = "https://github.com/navarasu/onedark.nvim" },
-    { src = "https://github.com/bignimbus/pop-punk.vim" }, -- nostalgia
+    { src = "https://github.com/bignimbus/pop-punk.vim" },
     { src = "https://github.com/dchinmay2/alabaster.nvim" },
-    -- { src = "https://github.com/sderev/alabaster.vim" },
 })
 
 -- require "onedark".setup { style = "deep" }
@@ -98,9 +97,9 @@ if fg_hilghlight_theme then
     local light_green = "#DBECB6"
     local dark_blue = "#71bfe7"
     local light_blue = "#DBF1FF"
-    local dark_blue = light_blue
     local light_purple = "#cc8bc9"
     local light_yellow = "#FFFABC"
+    local brown = "#aa3536"
 
     local theme = {
         ["@string"] = { bg = light_green, fg = "" },
@@ -108,7 +107,7 @@ if fg_hilghlight_theme then
         ["@AlabasterString"] = { bg = light_green, fg = "" },
 
         ["@string.regex"] = { bg = light_purple, fg = black },
-        Special = { bg = "", fg = "#aa3731" },
+        Special = { fg = brown },
         ["@string.escape"] = { bg = light_purple, fg = black },
         Title = { bg = light_purple, fg = black },
 
@@ -124,9 +123,12 @@ if fg_hilghlight_theme then
         -- ["@none"] = { bg = "#cc8bc9" },
 
         Comment = { bg = light_yellow, fg = "" },
-        Todo = { bg = "#aa3536", fg = "" },
+        Todo = { bg = brown, fg = "" },
 
-        ["@AlabasterDefinition"] = { bg = dark_blue },
+        ["@AlabasterDefinition"] = { bg = light_blue },
+
+        FlashBackdrop = { fg = black, italic = true },
+        BufferCurrentMod = { fg = brown },
     }
     for group, hl in pairs(theme) do
         vim.api.nvim_set_hl(0, group, hl)
