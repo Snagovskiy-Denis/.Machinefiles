@@ -93,31 +93,40 @@ vim.cmd("colorscheme alabaster")
 
 local fg_hilghlight_theme = true
 if fg_hilghlight_theme then
+    local black = "#000000"
+    local dark_green = "#95cb82"
+    local light_green = "#DBECB6"
+    local dark_blue = "#71bfe7"
+    local light_blue = "#DBF1FF"
+    local dark_blue = light_blue
+    local light_purple = "#cc8bc9"
+    local light_yellow = "#FFFABC"
+
     local theme = {
-        ["@string"] = { bg = "#95cb82", fg = "" },
-        String = { bg = "#95cb82" },
-        ["@AlabasterString"] = { bg = "#95cb82", fg = "" },
+        ["@string"] = { bg = light_green, fg = "" },
+        String = { bg = light_green },
+        ["@AlabasterString"] = { bg = light_green, fg = "" },
 
-        ["@string.regex"] = { bg = "#cc8bc9", fg = "#000000" },
+        ["@string.regex"] = { bg = light_purple, fg = black },
         Special = { bg = "", fg = "#aa3731" },
-        ["@string.escape"] = { bg = "#cc8bc9", fg = "#000000" },
-        Title = { bg = "#cc8bc9", fg = "#000000" },
+        ["@string.escape"] = { bg = light_purple, fg = black },
+        Title = { bg = light_purple, fg = black },
 
-        ["@constant.builtin"] = { bg = "#cc8bc9", fg = "#000000" },
-        ["@AlabasterConstant"] = { bg = "#cc8bc9", fg = "#000000" },
-        Number = { bg = "#cc8bc9" },
-        Boolean = { bg = "#cc8bc9" },
-        Float = { bg = "#cc8bc9" },
-        Character = { bg = "#cc8bc9" },
-        Constant = { bg = "#cc8bc9" },
-        TSConstBuiltin = { bg = "#cc8bc9" },
-        TSNone = { bg = "#cc8bc9" },
-        ["@none"] = { bg = "#cc8bc9" },
+        -- ["@constant.builtin"] = { bg = "#cc8bc9", fg = "#000000" },
+        -- ["@AlabasterConstant"] = { bg = "#cc8bc9", fg = "#000000" },
+        -- Number = { bg = "#cc8bc9" },
+        -- Boolean = { bg = "#cc8bc9" },
+        -- Float = { bg = "#cc8bc9" },
+        -- Character = { bg = "#cc8bc9" },
+        -- Constant = { bg = "#cc8bc9" },
+        -- TSConstBuiltin = { bg = "#cc8bc9" },
+        -- TSNone = { bg = "#cc8bc9" },
+        -- ["@none"] = { bg = "#cc8bc9" },
 
-        Comment = { bg = "#dfdf8e", fg = "" },
-        Todo = {bg="#aa3536",fg=""},
+        Comment = { bg = light_yellow, fg = "" },
+        Todo = { bg = "#aa3536", fg = "" },
 
-        ["@AlabasterDefinition"] = { bg = "#71bfe7" },
+        ["@AlabasterDefinition"] = { bg = dark_blue },
     }
     for group, hl in pairs(theme) do
         vim.api.nvim_set_hl(0, group, hl)
