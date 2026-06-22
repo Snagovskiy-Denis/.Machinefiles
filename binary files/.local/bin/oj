@@ -9,45 +9,74 @@ Creates note using template if the note doesn't exist.
 import subprocess
 
 from pathlib import Path
-from typing import Annotated
 from datetime import date
-from os import chdir, environ
+from dataclasses import dataclass
 
 from typer import run, Option, Exit
 from rich import print
 
 
-def main(
-    vault: Annotated[
-        Path,
-        Option(
-            envvar="ZETTELKASTEN",
-            dir_okay=True,
-            exists=True,
-            readable=True,
-            show_default=False,
-        ),
-    ],
-):
-    journal_dir = vault / "Journal"
-    if not journal_dir.exists():
-        print("Missing Journal dir:", journal_dir)
-        raise Exit(code=1)
+@dataclass
+class NotesRepository:
+    journal_dir: Path
+    daily_template: Path
 
-    todays_filename = f"{date.today().isoformat()}.md"
-    todays_note = journal_dir / todays_filename
-
-    if not todays_note.exists():
-        template = vault / "Templates" / "Daily.md"
-        if not template.is_file():
-            print("Invalid template:", template)
+    @classmethod
+    def new(cls: type[NotesRepository], vault: Path) -> NotesRepository:
+        journal_dir = vault / "Journal"
+        if not journal_dir.is_dir():
+            print("Must be a directory:", journal_dir)
             raise Exit(code=1)
-        todays_note.write_text(template.read_text())
 
-    chdir(journal_dir)
-    # edit(filename=str(todays_note)) # typer.edit was deleted
-    editor = environ.get("EDITOR", "nvim")
-    subprocess.run([editor, todays_note])
+        daily_template = vault / "Templates" / "Daily.md"
+        if not daily_template.is_file():
+            print("Template is not a file:", daily_template)
+            raise Exit(code=1)
+
+        return cls(journal_dir, daily_template)
+
+    def get_or_create_todays_note(self) -> Path:
+        today = date.today().isoformat()
+        todays_note = next(
+            iter(sorted(self.journal_dir.glob(f"{today}*.md"))),
+            self.journal_dir / f"{today}.md",
+        )
+        if not todays_note.exists():
+            self.daily_template.copy(todays_note)
+        return todays_note
+
+
+@dataclass
+class Editor:
+    editor: str
+
+    def open(self, path: Path, *, chdir_to: Path | None = None):
+        subprocess.run([self.editor, path], cwd=chdir_to)
+
+
+@dataclass
+class Vault:
+    notes: NotesRepository
+    editor: Editor
+
+    def edit_todays_note(self):
+        todays_note = self.notes.get_or_create_todays_note()
+        self.editor.open(todays_note, chdir_to=self.notes.journal_dir)
+
+
+def main(
+    vault_path: Path = Option(
+        envvar="ZETTELKASTEN",
+        dir_okay=True,
+        readable=True,
+        show_default=False,
+    ),
+    editor: str = Option(envvar="EDITOR", default="nvim"),
+):
+    notes = NotesRepository.new(vault_path)
+    terminal_editor = Editor(editor)
+    vault = Vault(notes, terminal_editor)
+    vault.edit_todays_note()
 
 
 if __name__ == "__main__":

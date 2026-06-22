@@ -91,8 +91,9 @@ vim.pack.add({
 vim.cmd("colorscheme alabaster")
 
 local fg_hilghlight_theme = true
-if fg_hilghlight_theme then
+if vim.o.background == "light" and fg_hilghlight_theme then
     local black = "#000000"
+    local white = "#ffffff"
     local dark_green = "#95cb82"
     local light_green = "#DBECB6"
     local dark_blue = "#71bfe7"
@@ -102,9 +103,9 @@ if fg_hilghlight_theme then
     local brown = "#aa3536"
 
     local theme = {
-        ["@string"] = { bg = light_green, fg = "" },
+        ["@string"] = { bg = light_green },
         String = { bg = light_green },
-        ["@AlabasterString"] = { bg = light_green, fg = "" },
+        ["@AlabasterString"] = { bg = light_green },
 
         ["@string.regex"] = { bg = light_purple, fg = black },
         Special = { fg = brown },
@@ -124,6 +125,8 @@ if fg_hilghlight_theme then
 
         Comment = { bg = light_yellow, fg = "" },
         Todo = { bg = brown, fg = "" },
+
+        Search = { bg = brown, fg = white },
 
         ["@AlabasterDefinition"] = { bg = light_blue },
 
@@ -369,15 +372,9 @@ end, { desc = "Clean unused plugins" })
 -- plugins manager end
 
 local builtin = require "telescope.builtin"
-map({ "n" }, "<leader>f", builtin.find_files, { desc = "Find files (ignore)" })
-map({ "n" }, "<leader>sff", builtin.find_files, { desc = "Find files (ignore)" })
-map({ "n" }, "<leader>sfa", function()
-    builtin.find_files { no_ignore = true, hidden = true }
-end, { desc = "Find files (all)" })
-map({ "n" }, "<leader>stt", builtin.live_grep, { desc = "Live grep (ignore)" })
-map({ "n" }, "<leader>sta", function()
-    builtin.live_grep { no_ignore = true, hidden = true }
-end, { desc = "Live grep (all)" })
+map({ "n" }, "<leader>f", builtin.find_files, { desc = "Find files" })
+map({ "n" }, "<leader>sf", builtin.find_files, { desc = "Find files" })
+map({ "n" }, "<leader>st", builtin.live_grep, { desc = "Live grep" })
 map({ "n" }, "<leader>sc", function()
     local filepath = os.getenv("HOME") .. "/.config/fd/rgrc"
     --vim.cmd("edit " .. filepath)

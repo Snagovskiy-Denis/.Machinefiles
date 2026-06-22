@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+rsync -aAXHv \
+    --exclude-from="${XDG_CONFIG_HOME}/exclude.txt" \
+    --delete --delete-excluded \
+    / "${1}"

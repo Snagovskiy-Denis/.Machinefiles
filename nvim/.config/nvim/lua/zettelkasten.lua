@@ -1,6 +1,7 @@
 -- markdown and configs management stuff
-local builtin = require "telescope.builtin"
 local Path = require "plenary.path"
+
+local builtin = require "telescope.builtin"
 
 function Path:must_exist()
     if not self:exists() then

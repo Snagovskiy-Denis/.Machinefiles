@@ -3,7 +3,7 @@
 # small_font_size = 7
 
 [font]
-size = 12
+size = 7
 
 [[colors.indexed_colors]]
 color = "0xff9900"

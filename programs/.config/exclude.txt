@@ -1,0 +1,33 @@
+# exclude system things that loads on boot
+- /dev/***
+- /proc/***
+- /sys/***
+- /tmp/***
+- /run/***
+- /mnt/***
+- /lost+found/***
+
+# remove sizy cache
+- /var/cache/pacman/***
+- /home/self/.buildozer/***
+- /home/self/.cache/aura/***
+- /home/self/.cache/pypoetry/***
+- /home/self/.cache/vivaldi/Default/Cache/***
+- /home/self/.cache/go/mod/***
+
+# exclude sizy unimportant staff (search with ncdu)
+- /home/self/.local/share/gnome-boxes/***
+
+- /home/self/src/wrk/p100qbox/.buildozer/***
+- /home/self/src/wrk/quiz_head/media/***
+- /home/self/src/wrk/travelroute/media/***
+- /home/self/src/wrk/quiz_be/media/***
+- /home/self/src/wrk/quiz_template/static/***
+- /home/self/src/wrk/quiz_template/blobs/***
+- /home/self/src/wrk/sal/sbackend/venv/***
+- /home/self/src/wrk/experts_catalogues/.dockerdata/***
+
+- /home/self/src/usr/bosnbon/.buildozer/***
+
+- /home/self/Data/Documents/social_media_archives/***
+- /home/self/Data/Documents/Librarium/Courses/goplaylist/***

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=machine | Syncthing
+Exec=/opt/vivaldi/vivaldi --profile-directory=Default --app-id=mfinobjnbcnohnemakjeccbjljpebmlm
+Icon=vivaldi-mfinobjnbcnohnemakjeccbjljpebmlm-Default
+StartupWMClass=crx_mfinobjnbcnohnemakjeccbjljpebmlm
