@@ -10,15 +10,12 @@
 
 # Use the command 'task show' to see all defaults and overrides
 
-# General \ misc
 verbose=blank,footnote,label,new-id,affected,edit,special,project,sync,unwait
 
 data.location=~/.config/.task
 weekstart=Monday
-#include /usr/share/doc/task/rc/dark-violets-256.theme
-#include /usr/share/doc/task/rc/dark-256.theme
-include /usr/share/doc/task/rc/solarized-dark-256.theme
-#include /usr/share/doc/task/rc/no-color.theme
+
+include ./theme
 
 # 
 # scrum setup uses context
@@ -37,12 +34,6 @@ context.w.read=scheduled < 1week or due < 1week
 context.w.write=scheduled:6days
 
 
-## misc
-#context.easy.read=estimate < 90min and -difficult and -w
-
-#context.leisure.read=+joy or project = Art or +I
-
-
 # UDA stands for User Defined Arguments
 ## Esimate — how much time will task occupy
 uda.estimate.label=⏳
@@ -51,9 +42,6 @@ uda.estimate.type=duration
 uda.resistance.label=👿
 uda.resistance.type=string
 uda.resistance.values=gremlin,demon,treshold
-
-uda.dod.label=DoD
-uda.dod.type=string
 
 # report
 # report.next.columns = id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description.count,urgency
@@ -72,30 +60,14 @@ report.retro.columns=uuid.short,end,project,resistance,tags,recur.indicator,desc
 report.retro.sort=project-/,end+
 report.retro.filter=status:completed end > today-1w
 
-# Colors
-color.tag.joy=rgb515
-color.tag.grooming=rgb325
-color.uda.resistance=yellow
-color.tag.PROJECT=cyan
-color.tag.INSTANCE=blue
-
-color.due=none
-color.blocking=none
-color.blocked=on color8
-color.uda.priority.L=none
-
-
 # Urgency coefficients
 #   Due + scheduled + High priority = Top Urgency
 #   Current project = Middle Urgency
 #   Time Estimate matches my free time = Low Urgency
 #   No priority, no estimate, no difficulty, etc. = is this even a task? should I keep it?
-# urgency.uda.why..coefficient=-2
-#urgency.uda.estimate.PT1H.coefficient=0.1  # short tasks = more priority
-#urgency.uda.estimate.PT30M.coefficient=0.25  # short tasks = more priority
-#urgency.uda.estimate.PT15M.coefficient=0.65  # short tasks = more priority
-#urgency.uda.estimate.PT10M.coefficient=1.1  # short tasks = more priority
-#urgency.uda.estimate.PT5M.coefficient=1.5  # short tasks = more priority
+# examples:
+# urgency.user.tag.mytag.coefficient=0
+# urgency.user.project.myproject.coefficient=0
 urgency.uda.estimate..coefficient=-1.5  # no estimate = hard to plan
 urgency.uda.priority.L.coefficient=-3
 urgency.blocking.coefficient=0
@@ -106,12 +78,8 @@ urgency.user.project..coefficient=-1
 urgency.user.tag.red.coefficient=0.2
 
 # Priority goals
-# examples:
-# urgency.user.tag.mytag.coefficient=0
-# urgency.user.project.myproject.coefficient=0
 urgency.user.project.LVLUP2.coefficient=0.5
 urgency.user.project.WORLDWIDE.coefficient=2
-
 
 # plugins
 ## taskwarrior-tui

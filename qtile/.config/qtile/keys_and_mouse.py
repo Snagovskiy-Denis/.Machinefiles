@@ -77,7 +77,7 @@ _application_launcher_keys = [
     Key([mod], "w", lazy.spawn(BROWSER), desc="Web browser"),
     Key([mod], "e", lazy.spawn(terminal_with(EDITOR)), desc="Text editor"),
     Key([mod], "r", lazy.spawn(terminal_with("ranger")), desc="File browser"),
-    Key([mod], "y", lazy.group["scratchpad"].dropdown_toggle("ai")),
+    # Key([mod], "y", lazy.group["scratchpad"].dropdown_toggle("ai")),
     Key([mod], "t", lazy.group["scratchpad"].dropdown_toggle("terminal")),
     Key([mod], "a", lazy.spawn("login.sh"), desc="Auto-login into standart form"),
     Key([mod], "q", lazy.spawn("passmenu"), desc="Frontend for pass"),
