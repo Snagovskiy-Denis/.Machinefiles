@@ -40,7 +40,10 @@ end
 vim.keymap.set({ "n" }, "<leader>cz", '<cmd>cd $ZETTELKASTEN<cr><cmd>:pwd<cr>', { desc = "cd to Vault" })
 vim.keymap.set({ "n", }, "<leader>zf", function()
     local vault = tostring(Path:Zettelkasten())
-    builtin.find_files { cwd = vault }
+    builtin.find_files {
+        cwd = vault,
+        sorter = require("telescope.sorters").get_generic_fuzzy_sorter(), -- support utf chars case insensitivity
+    }
     vim.api.nvim_set_current_dir(vault)
 end, { desc = "Find notes" })
 vim.keymap.set({ "n" }, "<leader>zt", function()

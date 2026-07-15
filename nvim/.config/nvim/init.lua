@@ -53,7 +53,6 @@ vim.pack.add({
     { src = "https://github.com/ThePrimeagen/harpoon",                       version = "harpoon2" },
     { src = "https://github.com/akinsho/toggleterm.nvim",                    version = "v2.13.1" },
     { src = "https://github.com/windwp/nvim-autopairs" },
-    { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/nvim-lualine/lualine.nvim" },
     { src = "https://github.com/romgrk/barbar.nvim" },
     { src = "https://github.com/folke/persistence.nvim" },
@@ -84,59 +83,11 @@ vim.pack.add({
     { src = "https://github.com/navarasu/onedark.nvim" },
     { src = "https://github.com/bignimbus/pop-punk.vim" },
     { src = "https://github.com/dchinmay2/alabaster.nvim" },
+    -- libraries
+    { src = "https://github.com/nvim-lua/plenary.nvim" },
 })
 
--- require "onedark".setup { style = "deep" }
--- require "onedark".load()
-vim.cmd("colorscheme alabaster")
-
-local fg_hilghlight_theme = true
-if vim.o.background == "light" and fg_hilghlight_theme then
-    local black = "#000000"
-    local white = "#ffffff"
-    local dark_green = "#95cb82"
-    local light_green = "#DBECB6"
-    local dark_blue = "#71bfe7"
-    local light_blue = "#DBF1FF"
-    local light_purple = "#cc8bc9"
-    local light_yellow = "#FFFABC"
-    local brown = "#aa3536"
-
-    local theme = {
-        ["@string"] = { bg = light_green },
-        String = { bg = light_green },
-        ["@AlabasterString"] = { bg = light_green },
-
-        ["@string.regex"] = { bg = light_purple, fg = black },
-        Special = { fg = brown },
-        ["@string.escape"] = { bg = light_purple, fg = black },
-        Title = { bg = light_purple, fg = black },
-
-        -- ["@constant.builtin"] = { bg = "#cc8bc9", fg = "#000000" },
-        -- ["@AlabasterConstant"] = { bg = "#cc8bc9", fg = "#000000" },
-        -- Number = { bg = "#cc8bc9" },
-        -- Boolean = { bg = "#cc8bc9" },
-        -- Float = { bg = "#cc8bc9" },
-        -- Character = { bg = "#cc8bc9" },
-        -- Constant = { bg = "#cc8bc9" },
-        -- TSConstBuiltin = { bg = "#cc8bc9" },
-        -- TSNone = { bg = "#cc8bc9" },
-        -- ["@none"] = { bg = "#cc8bc9" },
-
-        Comment = { bg = light_yellow, fg = "" },
-        Todo = { bg = brown, fg = "" },
-
-        Search = { bg = brown, fg = white },
-
-        ["@AlabasterDefinition"] = { bg = light_blue },
-
-        FlashBackdrop = { fg = black, italic = true },
-        BufferCurrentMod = { fg = brown },
-    }
-    for group, hl in pairs(theme) do
-        vim.api.nvim_set_hl(0, group, hl)
-    end
-end
+require "colorscheme"
 
 -- tip: 'help lspconfig-all' for correct names
 local lsp_langs = {
@@ -228,6 +179,7 @@ require "oil".setup {
         autosave_changes = true,
     },
     columns = { "icon" },
+    keymaps = { ["<C-t>"] = false },
 }
 
 local telescope = require "telescope"
@@ -495,3 +447,24 @@ map({ "x", "o" }, "if", function()
     textobjects_select.select_textobject("@function.inner", "textobjects")
 end, { desc = "Select a function" })
 -- end nvim-treesitter-textobjects
+
+map({ "x", "o" }, "<leader>t", function()
+    local filename = vim.fn.expand("%:.")
+
+    local vstart, vend = vim.fn.getpos("v"), vim.fn.getpos(".")
+    local visual_selection = vim.fn.getregion(vstart, vend, vim.empty_dict())
+    local visual_selection_text = table.concat(visual_selection, "")
+
+    local cmd = "te ./" .. filename .. " " .. visual_selection_text
+
+    vim.fn.setreg("+", cmd)
+    vim.notify("Copied: ", cmd)
+
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc", true, false, true), "x", false)
+end, { desc = "Copy selection in test runner format" })
+
+map({ "n" }, "<leader>yr", function()
+    local rel_path = vim.fn.expand("%:.")
+    vim.fn.setreg("+", rel_path)
+    vim.notify("Copied relative path: " .. rel_path)
+end, { desc = "Yank relative filename" })

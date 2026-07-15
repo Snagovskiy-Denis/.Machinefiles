@@ -1,10 +1,20 @@
-from systemd import journal
 from subprocess import run, CompletedProcess
+from unittest.mock import Mock
 
-from tasklib import TaskWarrior, Task
-from tasklib.backends import TaskWarriorException
 from libqtile.widget import base
+from libqtile.log_utils import logger
 
+try:
+    from tasklib import TaskWarrior, Task
+    from tasklib.backends import TaskWarriorException
+
+    import_error = None
+except Exception as e:
+    logger.error(f"import: {e}")
+
+    TaskWarriorException = Exception
+    TaskWarrior = Mock()
+    import_error = e
 
 class TaskWarriorWidget(base.BackgroundPoll):
     """Widget that shows the most urgent task"""
@@ -48,7 +58,7 @@ class TaskWarriorWidget(base.BackgroundPoll):
             if bool(cmd_result.stdout):
                 self.task.done()
         except Exception as e:
-            journal.send(f"qtile - error - TaskWarriorWidget: {e}")
+            logger.error(f"TaskWarriorWidget.prompt_complete: {e}")
 
     def open_annotated_urls(self):
         if self.task:
@@ -56,10 +66,13 @@ class TaskWarriorWidget(base.BackgroundPoll):
             self.tw.execute_command(args, allow_failure=False)
 
     def poll(self):
+        if import_error:
+            return str(import_error)
+
         try:
             self.task = self.next_task()
             text = f"{self.task['id']}:{self.task}" if self.task else "No matches"
             return text[:getattr(self, "max_chars", 60)]
         except TaskWarriorException as e:
-            journal.send(f"qtile - error - TaskWarriorWidget: {e}")
+            logger.error(f"TaskWarriorWidget.poll: {e}")
             return "oops"

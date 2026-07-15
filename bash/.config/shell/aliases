@@ -66,6 +66,12 @@ alias t5=" termdown $(calc  5*60) && mpv ~/Data/Music/alarm.mp3 ; exit"
 alias t10="termdown $(calc 10*60) && mpv ~/Data/Music/alarm.mp3 ; exit"
 alias t15="termdown $(calc 15*60) && mpv ~/Data/Music/alarm.mp3 ; exit"
 tn  ()   { termdown $(calc $1*60) && mpv "${HOME}/Data/Music/alarm.mp3"; }
+tn-task()   {
+    minutes=$(calc "$1"*60)
+    most_urgent_task="$(task export next | jq --raw-output .[0].description)" 
+    alarm="${HOME}/Data/Music/alarm.mp3"
+    termdown $minutes --no-figlet --title "$most_urgent_task" && mpv "$alarm"
+}
 
 # Errorless experience
 alias :q="exit"
