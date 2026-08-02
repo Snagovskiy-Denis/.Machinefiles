@@ -110,7 +110,6 @@ urgency.user.tag.question.coefficient=0.15
 # завести тикет
 urgency.user.tag.ticket.coefficient=-0.2
 
-
 # plugins
 ## taskwarrior-tui
 uda.taskwarrior-tui.task-report.next.filter=status:pending
